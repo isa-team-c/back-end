@@ -1,8 +1,8 @@
 package com.example.ISAproject.model.enumerations;
 
 public enum UserRole {
-	REGISTERED_USER,
-    COMPANY_ADMIN,
-    SYSTEM_ADMIN
+	ROLE_REGULAR,
+    ROLE_COMPANY_ADMIN,
+    ROLE_SYSTEM_ADMIN
 }
 

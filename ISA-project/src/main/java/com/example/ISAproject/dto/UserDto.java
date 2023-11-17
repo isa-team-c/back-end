@@ -4,7 +4,7 @@ import com.example.ISAproject.model.User;
 import com.example.ISAproject.model.enumerations.UserRole;
 
 public class UserDto {
-	private int id;
+	private long id;
 	private String email;
     private String password;
     private String name;
@@ -34,7 +34,7 @@ public class UserDto {
 		role = user.getRole();
 	}
 
-	public UserDto(int id, String email, String password, String name, String surname, String city, String country,
+	public UserDto(long id, String email, String password, String name, String surname, String city, String country,
 			String phoneNumber, String profession, String companyInformation, UserRole role) {
 		this.id = id;		
 		this.email = email;
@@ -49,11 +49,11 @@ public class UserDto {
 		this.role = role;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

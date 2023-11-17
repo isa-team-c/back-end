@@ -7,18 +7,18 @@ import javax.validation.constraints.Pattern;
 import com.example.ISAproject.model.enumerations.UserRole;
 
 @Entity
-@Table(name = "Users")
+@Table(name="users")
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private long id;
 	
+	@Column(name = "email", unique = true, nullable = false)
 	@Email(message = "Email format not correct")
     @Pattern(
         regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$",
         message = "Email format nije ispravan"
-    )
-	@Column(name = "email", unique = true, nullable = false)
+    )	
 	@NotEmpty
 	private String email;
 	
@@ -42,7 +42,7 @@ public class User {
 	@NotEmpty
 	private String country;
 	
-	@Column(name = "phoneNumber", nullable = false)
+	@Column(name = "phone_number", nullable = false)
 	@NotEmpty
 	private String phoneNumber;
 	
@@ -50,7 +50,7 @@ public class User {
 	@NotEmpty
 	private String profession;
 	
-	@Column(name = "companyInformation", nullable = false)
+	@Column(name = "company_information", nullable = false)
 	@NotEmpty
 	private String companyInformation;
 	
@@ -60,8 +60,9 @@ public class User {
 	public User() {
 
 	}
-		
-	public User(int id,
+
+
+	public User(long id,
 			@Email(message = "Email format not correct") @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "Email format nije ispravan") @NotEmpty String email,
 			@NotEmpty String password, @NotEmpty String name, @NotEmpty String surname, @NotEmpty String city,
 			@NotEmpty String country, @NotEmpty String phoneNumber, @NotEmpty String profession,
@@ -82,10 +83,12 @@ public class User {
 
 
 
-	public int getId() {
+
+
+	public long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	public String getEmail() {
