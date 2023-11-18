@@ -15,5 +15,9 @@ public class UserService {
 	public User findOne(Long id) {
 		return userRepository.findById(id).orElseGet(null);
 	}
+	
+	public User save(User user) {
+		return userRepository.saveAndFlush(user);  //da li save ili saveAndFlush
+	}
 
 }

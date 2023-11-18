@@ -15,6 +15,7 @@ public class UserDto {
     private String profession;
     private String companyInformation;
     private UserRole role;
+    private String confirmationPassword;
 
     public UserDto() {
 
@@ -32,10 +33,12 @@ public class UserDto {
 		profession = user.getProfession();
 		companyInformation = user.getCompanyInformation();
 		role = user.getRole();
+		confirmationPassword = "";
+		
 	}
 
 	public UserDto(long id, String email, String password, String name, String surname, String city, String country,
-			String phoneNumber, String profession, String companyInformation, UserRole role) {
+			String phoneNumber, String profession, String companyInformation, UserRole role, String confirmationPassword) {
 		this.id = id;		
 		this.email = email;
 		this.password = password;
@@ -47,6 +50,7 @@ public class UserDto {
 		this.profession = profession;
 		this.companyInformation = companyInformation;
 		this.role = role;
+		this.confirmationPassword = confirmationPassword;
 	}
 
 	public long getId() {
@@ -136,6 +140,14 @@ public class UserDto {
     public void setRole(UserRole role) {
         this.role = role;
     }
+
+	public String getConfirmationPassword() {
+		return confirmationPassword;
+	}
+
+	public void setConfirmationPassword(String confirmationPassword) {
+		this.confirmationPassword = confirmationPassword;
+	}
 
     
     
