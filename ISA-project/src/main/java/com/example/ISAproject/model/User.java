@@ -16,7 +16,7 @@ public class User {
 	@Column(name = "email", unique = true, nullable = false)
 	@Email(message = "Email format not correct")
     @Pattern(
-        regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$",
+    	regexp = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$",
         message = "Email format nije ispravan"
     )	
 	@NotEmpty
@@ -57,6 +57,10 @@ public class User {
 	@Column(name = "role", nullable = false)
 	private UserRole role;
 	
+	@Column(name = "is_verified")
+	private Boolean isVerified;
+
+
 	public User() {
 
 	}
@@ -66,7 +70,7 @@ public class User {
 			@Email(message = "Email format not correct") @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "Email format nije ispravan") @NotEmpty String email,
 			@NotEmpty String password, @NotEmpty String name, @NotEmpty String surname, @NotEmpty String city,
 			@NotEmpty String country, @NotEmpty String phoneNumber, @NotEmpty String profession,
-			@NotEmpty String companyInformation, UserRole role) {
+			@NotEmpty String companyInformation, UserRole role, Boolean isVerified) {
 		super();
 		this.id = id;
 		this.email = email;
@@ -79,11 +83,8 @@ public class User {
 		this.profession = profession;
 		this.companyInformation = companyInformation;
 		this.role = role;
+		this.isVerified = isVerified;
 	}
-
-
-
-
 
 	public long getId() {
 		return id;
@@ -152,6 +153,13 @@ public class User {
 		this.role = role;
 	}	
 	
+	public Boolean getIsVerified() {
+		return isVerified;
+	}
+
+	public void setIsVerified(Boolean isVerified) {
+		this.isVerified = isVerified;
+	}
 	
 }
 
