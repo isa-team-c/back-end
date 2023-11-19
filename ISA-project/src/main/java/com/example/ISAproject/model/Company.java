@@ -26,7 +26,7 @@ public class Company {
 	@Column(name = "average_rating", unique = true, nullable = false)
 	private double averageRating;
 	
-	@Column(name = "equipment", unique = true, nullable = false)
+	@Column(name = "equipment", unique = true)
 	ArrayList<Equipment> equipment;
 	//ArrayList<CompanyAdministrator> CompanyAdministrators; //ili drugacije
 	//ArrayList<Appointment> Appointments;
