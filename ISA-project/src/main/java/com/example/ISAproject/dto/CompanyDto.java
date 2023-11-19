@@ -31,9 +31,12 @@ public class CompanyDto {
 	        this.averageRating = averageRating;
 	 }
 	 
+	 /*
 	 public CompanyDto(Company company) {
 			this(company.getName(), company.getAddress(), company.getDescription(), company.getAverageRating());
 		}
+		*/
+		
 
 	 public long getId() {
 	        return id;
