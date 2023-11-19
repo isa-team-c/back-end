@@ -25,7 +25,7 @@ public class CompanyAdministrator {
     private User user;
     
     @ManyToOne
-    @JoinColumn(name = "company_id") 
+    @JoinColumn(name = "company_id", nullable = true) 
     private Company company;
 
     
