@@ -16,7 +16,7 @@ import com.example.ISAproject.service.CompanyService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("api/companies")
+@RequestMapping("/company")
 public class CompanyController {
 	
 	@Autowired
