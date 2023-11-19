@@ -3,39 +3,27 @@ package com.example.ISAproject.dto;
 import com.example.ISAproject.model.Company;
 
 public class CompanyDto {
-	private long id;
 	private String name;
 	private String address;
 	private String description;
 	private double averageRating;
 	
-	public CompanyDto(Company company)
-	{
-		id = company.getId();
-		name = company.getName();
-		address = company.getAddress();
-		description = company.getDescription();
-		averageRating = company.getAverageRating();
-	}
-	
+	public CompanyDto() {
 
-	public CompanyDto(long id, String name, String address, String description, double averageRating) {
+	}
+
+	public CompanyDto(Company company) {
+		this(company.getName(), company.getAddress(), company.getDescription(), company.getAverageRating());
+	}
+
+	public CompanyDto(String name, String address, String description, double averageRating) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.address = address;
 		this.description = description;
 		this.averageRating = averageRating;
 	}
-	
-	public long getId() {
-		return id;
-	}
-	
-	public void setId(long id) {
-		this.id = id;
-	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -67,6 +55,4 @@ public class CompanyDto {
 	public void setAverageRating(double averageRating) {
 		this.averageRating = averageRating;
 	}
-	
-	
 }

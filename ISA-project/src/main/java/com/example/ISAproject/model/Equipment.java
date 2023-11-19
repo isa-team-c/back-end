@@ -25,8 +25,16 @@ public class Equipment {
 	@NotEmpty
 	private int quantity;
 	
+	@ManyToOne
+    @JoinColumn(name = "company_id") // Assuming the column name in Equipment table for the relationship
+    private Company company;
+	
+	
+	
 	public Equipment() { }
 
+	
+	
 	public Equipment(long id, @NotEmpty String name, @NotEmpty String type, String description,
 			@NotEmpty int quantity) {
 		super();

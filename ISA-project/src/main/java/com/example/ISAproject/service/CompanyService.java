@@ -26,4 +26,11 @@ public class CompanyService {
 	public List<Company> getAllCompanies() {
         return companyRepository.findAll();
     }
+	
+	@Autowired
+	private CompanyRepository companyRepository;
+	
+	public Company save(Company company) {
+		return companyRepository.save(company);
+	}
 }

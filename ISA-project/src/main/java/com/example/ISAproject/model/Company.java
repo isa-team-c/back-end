@@ -1,7 +1,10 @@
 package com.example.ISAproject.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -23,34 +26,28 @@ public class Company {
 	@Column(name = "description", unique = true, nullable = false)
 	private String description;
 	
-	@Column(name = "average_rating", unique = true, nullable = false)
+	@Column(name = "average_rating", nullable = false)
 	private double averageRating;
 	
-	@Column(name = "equipment", unique = true)
-	ArrayList<Equipment> equipment;
-	//ArrayList<CompanyAdministrator> CompanyAdministrators; //ili drugacije
+	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+	private Set<Equipment> equipment = new HashSet<Equipment>();
+	
+	//ArrayList<CompanyAdministrator> CompanyAdministrators;
+	
 	//ArrayList<Appointment> Appointments;
 	
-	public Company() { }	
+	
+	
+	public Company() { }
 
-	public Company(long id, @NotEmpty String name, @NotEmpty String address, String description, double averageRating,
-			ArrayList<Equipment> equipment) {
-		super();
-		Id = id;
-		this.name = name;
-		this.address = address;
-		this.description = description;
-		this.averageRating = averageRating;
-		this.equipment = equipment;
-	}
-
-
+	
+	
 	public long getId() {
 		return Id;
 	}
 
 	public void setId(long id) {
-		this.Id = id;
+		Id = id;
 	}
 
 	public String getName() {
@@ -85,12 +82,42 @@ public class Company {
 		this.averageRating = averageRating;
 	}
 
-	public ArrayList<Equipment> getEquipment() {
+	public Set<Equipment> getEquipment() {
 		return equipment;
 	}
 
-	public void setEquipment(ArrayList<Equipment> equipment) {
+	public void setEquipment(Set<Equipment> equipment) {
 		this.equipment = equipment;
 	}
 
+
+	
+	/*
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		Company c = (Company) o;
+		return Id != null && Id.equals(c.getId());
+	}
+	*/
+	
+	
+	
+	@Override
+	public int hashCode() {
+		return 1337;
+	}
+
+
+
+	@Override
+	public String toString() {
+		return "Company [Id=" + Id + ", name=" + name + ", address=" + address + ", description=" + description
+				+ ", averageRating=" + averageRating + ", equipment=" + equipment + "]";
+	}
 }
