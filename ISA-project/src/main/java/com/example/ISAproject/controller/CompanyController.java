@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.ISAproject.dto.CompanyDto;
 import com.example.ISAproject.model.Company;
 import com.example.ISAproject.service.CompanyService;
 
@@ -36,29 +37,8 @@ public class CompanyController {
 	    }
 
 	    return new ResponseEntity<>(companies, HttpStatus.OK);
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import com.example.ISAproject.dto.CompanyDto;
-import com.example.ISAproject.dto.UserDto;
-import com.example.ISAproject.model.Company;
-import com.example.ISAproject.model.User;
-import com.example.ISAproject.service.CompanyService;
-import com.example.ISAproject.service.EquipmentService;
-
-@RestController
-@CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("company")
-public class CompanyController {
-
-	@Autowired
-    private CompanyService companyService;
-	
-	@Autowired
-    public CompanyController(CompanyService companyService) {
-        this.companyService = companyService;
-    }
+	}
 	
 	@GetMapping("/all")
 	public ResponseEntity<List<CompanyDto>> getAllCompanies() {
