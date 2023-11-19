@@ -59,21 +59,6 @@ public class CompanyController {
 
         return new ResponseEntity<>(companyDtos, HttpStatus.OK); 
 	}
-}
-
-@RestController
-@CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/company")
-public class CompanyController{
-	
-	private CompanyService companyService;
-
-	@Autowired
-    public CompanyController(CompanyService companyService) {
-        this.companyService = companyService;
-    }
-	
-	
 	
 	@PostMapping(value = "/create")
 	public ResponseEntity<String> create(@RequestBody CompanyDto companyDto)
@@ -89,6 +74,4 @@ public class CompanyController{
 		
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
-	
-
 }
