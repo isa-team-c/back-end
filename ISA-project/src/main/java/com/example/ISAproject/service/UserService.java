@@ -37,5 +37,8 @@ public class UserService {
             throw new EntityNotFoundException("User not found with ID: " + updatedUser.getId());
         }
     }
+	public User save(User user) {
+		return userRepository.saveAndFlush(user);  //da li save ili saveAndFlush
+	}
 
 }

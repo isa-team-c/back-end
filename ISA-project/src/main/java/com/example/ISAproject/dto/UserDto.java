@@ -15,6 +15,8 @@ public class UserDto {
     private String profession;
     private String companyInformation;
     private UserRole role;
+    private String confirmationPassword;
+    private Boolean isVerified;
 
     public UserDto() {
 
@@ -32,10 +34,12 @@ public class UserDto {
 		profession = user.getProfession();
 		companyInformation = user.getCompanyInformation();
 		role = user.getRole();
+		confirmationPassword = "";
+		setIsVerified(false);
 	}
 
 	public UserDto(long id, String email, String password, String name, String surname, String city, String country,
-			String phoneNumber, String profession, String companyInformation, UserRole role) {
+			String phoneNumber, String profession, String companyInformation, UserRole role, String confirmationPassword, Boolean isVerified) {
 		this.id = id;		
 		this.email = email;
 		this.password = password;
@@ -47,6 +51,8 @@ public class UserDto {
 		this.profession = profession;
 		this.companyInformation = companyInformation;
 		this.role = role;
+		this.confirmationPassword = confirmationPassword;
+		this.setIsVerified(isVerified);
 	}
 
 	public long getId() {
@@ -137,8 +143,22 @@ public class UserDto {
         this.role = role;
     }
 
-    
-    
+	public String getConfirmationPassword() {
+		return confirmationPassword;
+	}
+
+	public void setConfirmationPassword(String confirmationPassword) {
+		this.confirmationPassword = confirmationPassword;
+	}
+
+	public Boolean getIsVerified() {
+		return isVerified;
+	}
+
+	public void setIsVerified(Boolean isVerified) {
+		this.isVerified = isVerified;
+	}
+ 
 	
 }
 
