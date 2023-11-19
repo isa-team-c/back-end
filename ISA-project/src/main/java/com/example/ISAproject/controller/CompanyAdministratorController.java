@@ -40,8 +40,6 @@ public class CompanyAdministratorController{
 	@PostMapping(value = "/create")
 	public ResponseEntity<String> create(@RequestBody CompanyAdministratorDto companyAdministratorDto)
 	{
-		System.out.println("BRUH" + companyAdministratorDto.getUser().getName());
-		
 		companyAdministratorService.createCompanyAdministrator(companyAdministratorDto);
 		
 		return new ResponseEntity<>(HttpStatus.CREATED);

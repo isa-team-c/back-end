@@ -14,14 +14,14 @@ public class Equipment {
 	@NotEmpty
 	private String name;
 	
-	@Column(name = "type", unique = true, nullable = false)
+	@Column(name = "type", nullable = false)
 	@NotEmpty
 	private String type;
 	
-	@Column(name = "description", unique = true, nullable = false)
+	@Column(name = "description", nullable = false)
 	private String description;
 	
-	@Column(name = "quantity", unique = true, nullable = false)
+	@Column(name = "quantity", nullable = false)
 	@NotEmpty
 	private int quantity;
 	

@@ -6,7 +6,7 @@ public class CompanyDto {
 	private String name;
 	private String address;
 	private String description;
-	private double averageRating;
+	private Double averageRating;
 	
 	public CompanyDto() {
 
@@ -16,7 +16,7 @@ public class CompanyDto {
 		this(company.getName(), company.getAddress(), company.getDescription(), company.getAverageRating());
 	}
 
-	public CompanyDto(String name, String address, String description, double averageRating) {
+	public CompanyDto(String name, String address, String description, Double averageRating) {
 		super();
 		this.name = name;
 		this.address = address;
@@ -48,11 +48,11 @@ public class CompanyDto {
 		this.description = description;
 	}
 
-	public double getAverageRating() {
+	public Double getAverageRating() {
 		return averageRating;
 	}
 
-	public void setAverageRating(double averageRating) {
+	public void setAverageRating(Double averageRating) {
 		this.averageRating = averageRating;
 	}
 }

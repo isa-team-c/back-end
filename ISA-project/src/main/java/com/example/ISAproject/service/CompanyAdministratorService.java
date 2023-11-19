@@ -31,13 +31,9 @@ public class CompanyAdministratorService {
     }
     
     public CompanyAdministrator createCompanyAdministrator(CompanyAdministratorDto newCompanyAdminDto) {
-    	System.out.println("Dobijeno u servisu: " + newCompanyAdminDto.getUser().getName());
-        // Perform necessary validations, transformations, and business logic if required
+    	
+    	CompanyAdministrator newCompanyAdmin = new CompanyAdministrator();
         
-        // Create CompanyAdministrator entity from DTO
-        CompanyAdministrator newCompanyAdmin = new CompanyAdministrator();
-        
-        // Populate fields of newCompanyAdmin from newCompanyAdminDto
         com.example.ISAproject.model.User newUser = new com.example.ISAproject.model.User();
         newUser.setEmail(newCompanyAdminDto.getUser().getEmail());
         newUser.setPassword(newCompanyAdminDto.getUser().getPassword());
@@ -49,11 +45,11 @@ public class CompanyAdministratorService {
         newUser.setProfession(newCompanyAdminDto.getUser().getProfession());
         newUser.setCompanyInformation(newCompanyAdminDto.getUser().getCompanyInformation());
         newUser.setRole(newCompanyAdminDto.getUser().getRole());
+        newUser.setIsVerified(true);
         
         newCompanyAdmin.setUser(newUser);
         newCompanyAdmin.setCompany(null);
         
-        // Save the new company administrator to the database
         return companyAdministratorRepository.save(newCompanyAdmin);
     }
 }

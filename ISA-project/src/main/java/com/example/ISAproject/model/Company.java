@@ -26,8 +26,8 @@ public class Company {
 	@Column(name = "description", unique = true, nullable = false)
 	private String description;
 	
-	@Column(name = "average_rating", nullable = false)
-	private double averageRating;
+	@Column(name = "average_rating", nullable = true)
+	private Double averageRating;
 	
 	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
 	private Set<Equipment> equipment = new HashSet<Equipment>();
@@ -74,11 +74,11 @@ public class Company {
 		this.description = description;
 	}
 
-	public double getAverageRating() {
+	public Double getAverageRating() {
 		return averageRating;
 	}
 
-	public void setAverageRating(double averageRating) {
+	public void setAverageRating(Double averageRating) {
 		this.averageRating = averageRating;
 	}
 

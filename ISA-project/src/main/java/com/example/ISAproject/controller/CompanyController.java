@@ -68,7 +68,7 @@ public class CompanyController {
 		company.setName(companyDto.getName());
 		company.setAddress(companyDto.getAddress());
 		company.setDescription(companyDto.getDescription());
-		company.setAverageRating(companyDto.getAverageRating());
+		company.setAverageRating(null);
 		
 		companyService.save(company);
 		
