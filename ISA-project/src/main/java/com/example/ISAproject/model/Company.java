@@ -29,7 +29,7 @@ public class Company {
 	@Column(name = "average_rating", nullable = true)
 	private Double averageRating;
 	
-	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Set<Equipment> equipment = new HashSet<Equipment>();
 	
 	//ArrayList<CompanyAdministrator> CompanyAdministrators;
@@ -42,6 +42,19 @@ public class Company {
 
 	
 	
+	public Company(long id, @NotEmpty String name, @NotEmpty String address, String description, Double averageRating,
+			Set<Equipment> equipment) {
+		super();
+		Id = id;
+		this.name = name;
+		this.address = address;
+		this.description = description;
+		this.averageRating = averageRating;
+		this.equipment = equipment;
+	}
+
+
+
 	public long getId() {
 		return Id;
 	}

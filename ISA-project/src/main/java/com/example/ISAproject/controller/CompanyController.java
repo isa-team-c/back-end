@@ -44,21 +44,7 @@ public class CompanyController {
 
 	}
 	
-	@GetMapping("/all")
-	public ResponseEntity<List<CompanyDto>> getAllCompanies() {
-
-		List<Company> companies = companyService.getAllCompanies();
-
-		if ( companies == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-
-		List<CompanyDto> companyDtos = companies.stream()
-                .map(CompanyDto::new) 
-                .collect(Collectors.toList());
-
-        return new ResponseEntity<>(companyDtos, HttpStatus.OK); 
-	}
+	
 	
 	@PostMapping(value = "/create")
 	public ResponseEntity<String> create(@RequestBody CompanyDto companyDto)
