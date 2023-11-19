@@ -92,6 +92,6 @@ public class UserController{
 	    }
 	    user.setIsVerified(true);
 	    userService.save(user);
-	    return new ResponseEntity<>("Account activated successfully", HttpStatus.OK);
+	    return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
