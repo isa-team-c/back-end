@@ -41,4 +41,9 @@ public class UserService {
 	public User save(User user) {
 		return userRepository.saveAndFlush(user);  //da li save ili saveAndFlush
 	}
+	
+	public User findByEmail(String email)
+	{
+		return userRepository.findByEmail(email);
+	}
 }

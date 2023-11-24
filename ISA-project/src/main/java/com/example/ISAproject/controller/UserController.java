@@ -58,6 +58,10 @@ public class UserController{
 		if (!userDto.getPassword().equals(userDto.getConfirmationPassword())) {
 			return new ResponseEntity<>("Password and confirmation password do not match", HttpStatus.BAD_REQUEST);
 		}
+		
+	    if (userService.findByEmail(userDto.getEmail()) != null) {
+	        return new ResponseEntity<>("Email is already in use", HttpStatus.BAD_REQUEST);
+	    }
 				
 		User user = new User();
 		user.setEmail(userDto.getEmail());
