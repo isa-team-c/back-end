@@ -28,7 +28,7 @@ public class RegularUser {
         
     }
 	
-	public RegularUser(Long id, User user, Integer penalties, UserRole role) {
+	public RegularUser(Long id, User user, Integer penalties) {
 		super();
 		this.id = id;
 		this.user = user;

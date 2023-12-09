@@ -1,5 +1,6 @@
 package com.example.ISAproject.dto;
 
+import com.example.ISAproject.model.Role;
 import com.example.ISAproject.model.User;
 import com.example.ISAproject.model.enumerations.UserRole;
 
@@ -14,7 +15,7 @@ public class UserDto {
     private String phoneNumber;
     private String profession;
     private String companyInformation;
-    private UserRole role;
+    private Role role;
     private String confirmationPassword;
     private Boolean isVerified;
 
@@ -39,7 +40,7 @@ public class UserDto {
 	}
 
 	public UserDto(long id, String email, String password, String name, String surname, String city, String country,
-			String phoneNumber, String profession, String companyInformation, UserRole role, String confirmationPassword, Boolean isVerified) {
+			String phoneNumber, String profession, String companyInformation, Role role, String confirmationPassword, Boolean isVerified) {
 		this.id = id;		
 		this.email = email;
 		this.password = password;
@@ -135,11 +136,11 @@ public class UserDto {
 		this.companyInformation = companyInformation;
 	}
 	
-	public UserRole getRole() {
+	public Role getRole() {
         return role;
     }
 
-    public void setRole(UserRole role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 

@@ -1,14 +1,31 @@
 package com.example.ISAproject.model;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
-import com.example.ISAproject.model.enumerations.UserRole;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
 
 @Entity
 @Table(name="users")
-public class User {
+public class User implements UserDetails{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
@@ -22,9 +39,13 @@ public class User {
 	@NotEmpty
 	private String email;
 	
+	@JsonIgnore
 	@Column(name = "password", nullable = false)
 	@NotEmpty
 	private String password;
+	
+	@Column(name = "last_password_reset_date")
+    private Timestamp lastPasswordResetDate;
 	
 	@Column(name = "name", nullable = false)
 	@NotEmpty
@@ -54,8 +75,9 @@ public class User {
 	@NotEmpty
 	private String companyInformation;
 	
-	@Column(name = "role", nullable = false)
-	private UserRole role;
+	@ManyToOne()
+	@JoinColumn(name = "role_id")
+    private Role role;
 	
 	@Column(name = "is_verified")
 	private Boolean isVerified;
@@ -67,10 +89,10 @@ public class User {
 
 
 	public User(long id,
-			@Email(message = "Email format not correct") @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "Email format nije ispravan") @NotEmpty String email,
+			@Email(message = "Email format not correct") @Pattern(regexp = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$", message = "Email format nije ispravan") @NotEmpty String email,
 			@NotEmpty String password, @NotEmpty String name, @NotEmpty String surname, @NotEmpty String city,
 			@NotEmpty String country, @NotEmpty String phoneNumber, @NotEmpty String profession,
-			@NotEmpty String companyInformation, UserRole role, Boolean isVerified) {
+			@NotEmpty String companyInformation, Role role, Boolean isVerified) {
 		super();
 		this.id = id;
 		this.email = email;
@@ -85,6 +107,9 @@ public class User {
 		this.role = role;
 		this.isVerified = isVerified;
 	}
+
+
+
 
 	public long getId() {
 		return id;
@@ -102,8 +127,16 @@ public class User {
 		return password;
 	}
 	public void setPassword(String password) {
+        Timestamp now = new Timestamp(new Date().getTime());
+        this.setLastPasswordResetDate(now);
 		this.password = password;
 	}
+    public Timestamp getLastPasswordResetDate() {
+        return lastPasswordResetDate;
+    }
+    public void setLastPasswordResetDate(Timestamp lastPasswordResetDate) {
+        this.lastPasswordResetDate = lastPasswordResetDate;
+    }
 	public String getName() {
 		return name;
 	}
@@ -146,13 +179,12 @@ public class User {
 	public void setCompanyInformation(String companyInformation) {
 		this.companyInformation = companyInformation;
 	}	
-	public UserRole getRole() {
+	public Role getRole() {
 		return role;
 	}
-	public void setRole(UserRole role) {
+	public void setRole(Role role) {
 		this.role = role;
-	}	
-	
+	}		
 	public Boolean getIsVerified() {
 		return isVerified;
 	}
@@ -160,6 +192,45 @@ public class User {
 	public void setIsVerified(Boolean isVerified) {
 		this.isVerified = isVerified;
 	}
+
+
+	@JsonIgnore
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+		List<Role> roles = new ArrayList<>();
+	    roles.add(this.role);
+	    return roles;
+    }
+
+	@JsonIgnore
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@JsonIgnore
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@JsonIgnore
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+
+	@Override
+	public String getUsername() {
+		return email;
+	}
+
+
+	@Override
+	public boolean isEnabled() {
+		return isVerified;
+	}	
 	
 }
 

@@ -51,7 +51,7 @@ public class UserController{
 		return new ResponseEntity<UserDto>(new UserDto(user), HttpStatus.OK);
 	}
 	
-	@PostMapping(value = "/register")
+	@PostMapping(value = "/auth/register")  //dozvoljeno svima
 	public ResponseEntity<String> registerUser(@RequestBody UserDto userDto)
 	{
 
@@ -63,39 +63,22 @@ public class UserController{
 	        return new ResponseEntity<>("Email is already in use", HttpStatus.BAD_REQUEST);
 	    }
 				
-		User user = new User();
-		user.setEmail(userDto.getEmail());
-		user.setPassword(userDto.getPassword());
-		user.setName(userDto.getName());
-		user.setSurname(userDto.getSurname());
-		user.setCity(userDto.getCity());
-		user.setCountry(userDto.getCountry());
-		user.setPhoneNumber(userDto.getPhoneNumber());
-		user.setProfession(userDto.getProfession());
-		user.setCompanyInformation(userDto.getCompanyInformation());
-		user.setRole(UserRole.ROLE_REGULAR);
-		user.setIsVerified(false);
+	    User savedUser = userService.save(userDto);
 		
 		try {
 			System.out.println("Thread id: " + Thread.currentThread().getId());
-			emailService.sendNotificaitionAsync(user);			
+			emailService.sendNotificaitionAsync(savedUser);			
 		}catch( Exception e ){
 			logger.info("Greska prilikom slanja emaila: " + e.getMessage());
 		}
 		
-		userService.save(user);
-		
+				
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/verify/{id}")
-	public ResponseEntity<String> verifyUser(@PathVariable  long id) {
-	    User user = userService.findOne(id);
-	    if (user == null) {
-	        return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
-	    }
-	    user.setIsVerified(true);
-	    userService.save(user);
+	public ResponseEntity<String> verifyUser(@PathVariable  long id) {			
+	    userService.verifyUser(id);
 	    return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
