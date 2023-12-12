@@ -1,5 +1,6 @@
 package com.example.ISAproject.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.ISAproject.dto.CompanyDto;
+import com.example.ISAproject.dto.EquipmentDto;
 import com.example.ISAproject.model.Company;
+import com.example.ISAproject.model.Equipment;
 import com.example.ISAproject.service.CompanyService;
 
 @RestController
@@ -59,5 +62,24 @@ public class CompanyController {
 		companyService.save(company);
 		
 		return new ResponseEntity<>(HttpStatus.CREATED);
+	}
+	
+	
+	
+	@GetMapping("/all")
+	public ResponseEntity<List<CompanyDto>> getAllCompanies() {
+
+		List<Company> companies = companyService.getAllCompanies();
+
+		if (companies == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		List<CompanyDto> companyDtos = new ArrayList<>();
+		for (Company c : companies) {
+			companyDtos.add(new CompanyDto(c));
+		}
+                
+        return new ResponseEntity<>(companyDtos, HttpStatus.OK);
 	}
 }
