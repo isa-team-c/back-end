@@ -1,5 +1,8 @@
 package com.example.ISAproject.dto;
 
+import java.util.List;
+
+import com.example.ISAproject.model.Appointment;
 import com.example.ISAproject.model.Company;
 
 public class CompanyDto {
@@ -8,6 +11,7 @@ public class CompanyDto {
 	private String address;
 	private String description;
 	private Double averageRating;
+	private List<Appointment> appointments;
 	
 	public CompanyDto() {
 
@@ -20,6 +24,9 @@ public class CompanyDto {
         address = company.getAddress();
         description = company.getDescription();
         averageRating = company.getAverageRating();
+	    /*for (Appointment appointment : company.getAppointments()) {
+	        this.appointments.addAll(new AppointmentDto(appointment));
+	    }*/
     }
 
 	 public CompanyDto(long id, String name, String address, String description, double averageRating) {
@@ -31,12 +38,6 @@ public class CompanyDto {
 	        this.averageRating = averageRating;
 	 }
 	 
-	 /*
-	 public CompanyDto(Company company) {
-			this(company.getName(), company.getAddress(), company.getDescription(), company.getAverageRating());
-		}
-		*/
-		
 
 	 public long getId() {
 	        return id;
@@ -76,4 +77,13 @@ public class CompanyDto {
 	public void setAverageRating(Double averageRating) {
 		this.averageRating = averageRating;
 	}
+
+	public List<Appointment> getAppointments() {
+		return appointments;
+	}
+
+	public void setAppointments(List<Appointment> appointments) {
+		this.appointments = appointments;
+	}
+	
 }

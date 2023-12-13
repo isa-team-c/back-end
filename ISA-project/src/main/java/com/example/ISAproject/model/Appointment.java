@@ -13,9 +13,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+
+import com.example.ISAproject.dto.CompanyAdministratorDto;
 
 @Entity
 @Table(name="appointments")
@@ -25,34 +29,33 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@Column(name = "administratorName",  nullable = false)
-	@NotEmpty
-    private String administratorName;
-	
-	
-	@Column(name = "startDate", nullable = false)
+	@ManyToOne
+    @JoinColumn(name = "administrator_id")
+    private CompanyAdministrator companyAdministrator;
+		
+	@Column(name = "start_date", nullable = false)
 	private LocalDateTime startDate;
 	
-	@Column(name = "endDate", nullable = false)
-	private LocalDateTime endDate;
-
+	@Column(name = "duration", nullable = false)
+	private int duration;
 	
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id", referencedColumnName = "id")
-    private Company company;
+	@Column(name = "is_free", nullable = false)
+    private Boolean isFree;   
 
-
-    
-   
-    
-	public Appointment(Long id, Company company, String administratorName, LocalDateTime startDate,
-			LocalDateTime endDate) {
+	@ManyToOne
+	@JoinColumn(name = "company_id")
+	private Company company;
+	
+	
+	public Appointment(long id, CompanyAdministrator companyAdministrator, LocalDateTime startDate, int duration,
+			Boolean isFree, Company company) {
 		super();
 		this.id = id;
-		this.company = company;
-		this.administratorName = administratorName;
+		this.companyAdministrator = companyAdministrator;
 		this.startDate = startDate;
-		this.endDate = endDate;
+		this.duration = duration;
+		this.isFree = isFree;
+		this.company = company;
 	}
 	
 	public Long getId() {
@@ -61,31 +64,38 @@ public class Appointment {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public Company getCompany() {
-		return company;
-	}
-	public void setCompany(Company company) {
-		this.company = company;
-	}
-	public String getAdministratorName() {
-		return administratorName;
-	}
-	public void setAdministratorName(String administratorName) {
-		this.administratorName = administratorName;
-	}
+
 	public LocalDateTime getStartDate() {
 		return startDate;
 	}
 	public void setStartDate(LocalDateTime startDate) {
 		this.startDate = startDate;
 	}
-	public LocalDateTime getEndDate() {
-		return endDate;
+	public CompanyAdministrator getCompanyAdministrator() {
+		return companyAdministrator;
 	}
-	public void setEndDate(LocalDateTime endDate) {
-		this.endDate = endDate;
+	public void setCompanyAdministrator(CompanyAdministrator companyAdministrator) {
+		this.companyAdministrator = companyAdministrator;
 	}
-    
+	public int getDuration() {
+		return duration;
+	}
+	public void setDuration(int duration) {
+		this.duration = duration;
+	}
+	public Boolean getIsFree() {
+		return isFree;
+	}
+	public void setIsFree(Boolean isFree) {
+		this.isFree = isFree;
+	}
 
-  
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+	
 }

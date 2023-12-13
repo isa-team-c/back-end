@@ -20,7 +20,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class TokenUtils {
 
 	// Izdavac tokena
-	@Value("spring-security-example")
+	@Value("medBooking")
 	private String APP_NAME;
 
 	// Tajna koju samo backend aplikacija treba da zna kako bi mogla da generise i proveri JWT https://jwt.io/
@@ -56,18 +56,19 @@ public class TokenUtils {
 	 * @param username Korisničko ime korisnika kojem se token izdaje
 	 * @return JWT token
 	 */
-	public String generateToken(String username) {
-		return Jwts.builder()
-				.setIssuer(APP_NAME)
-				.setSubject(username)
-				.setAudience(generateAudience())
-				.setIssuedAt(new Date())
-				.setExpiration(generateExpirationDate())
-				.signWith(SIGNATURE_ALGORITHM, SECRET).compact();
-		
+	public String generateToken(User user) {
 
-		// moguce je postavljanje proizvoljnih podataka u telo JWT tokena pozivom funkcije .claim("key", value), npr. .claim("role", user.getRole())
-	}
+        return Jwts.builder()
+                .setIssuer(APP_NAME)
+                .setSubject(user.getEmail())
+                .claim("id", user.getId())
+                .claim("role", user.getRole()) 
+                .setAudience(generateAudience())
+                .setIssuedAt(new Date())
+                .setExpiration(generateExpirationDate())
+                .signWith(SIGNATURE_ALGORITHM, SECRET)
+                .compact();
+    }
 	
 	/**
 	 * Funkcija za utvrđivanje tipa uređaja za koji se JWT kreira.

@@ -1,9 +1,7 @@
 package com.example.ISAproject.model;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -33,17 +31,15 @@ public class Company {
 	private Set<Equipment> equipment = new HashSet<Equipment>();
 	
 	//ArrayList<CompanyAdministrator> CompanyAdministrators;
-	
-	//ArrayList<Appointment> Appointments;
-	
-	
+	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<Appointment> appointments;
+		
 	
 	public Company() { }
 
-	
-	
+
 	public Company(long id, @NotEmpty String name, @NotEmpty String address, String description, Double averageRating,
-			Set<Equipment> equipment) {
+			Set<Equipment> equipment, List<Appointment> appointments) {
 		super();
 		Id = id;
 		this.name = name;
@@ -51,7 +47,10 @@ public class Company {
 		this.description = description;
 		this.averageRating = averageRating;
 		this.equipment = equipment;
+		this.appointments = appointments;
 	}
+
+
 
 
 
@@ -103,7 +102,7 @@ public class Company {
 		this.equipment = equipment;
 	}
 
-
+	
 	
 	/*
 	@Override
@@ -119,8 +118,17 @@ public class Company {
 	}
 	*/
 	
-	
-	
+		
+	public List<Appointment> getAppointments() {
+		return appointments;
+	}
+
+	public void setAppointments(List<Appointment> appointments) {
+		this.appointments = appointments;
+	}
+
+
+
 	@Override
 	public int hashCode() {
 		return 1337;
