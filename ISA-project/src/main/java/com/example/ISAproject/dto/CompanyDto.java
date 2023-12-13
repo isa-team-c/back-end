@@ -17,7 +17,8 @@ public class CompanyDto {
 		description = company.getDescription();
 		averageRating = company.getAverageRating();
 	}
-	
+	public CompanyDto() {
+	    }
 
 	public CompanyDto(long id, String name, String address, String description, double averageRating) {
 		super();

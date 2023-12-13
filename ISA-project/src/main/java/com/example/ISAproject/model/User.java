@@ -57,6 +57,8 @@ public class User {
 	@Column(name = "role", nullable = false)
 	private UserRole role;
 	
+
+	
 	public User() {
 
 	}
