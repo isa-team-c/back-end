@@ -15,42 +15,50 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long Id;
 	
-	@Column(name = "name", unique = true, nullable = false)
+	@Column(name = "name",  nullable = false)
 	@NotEmpty
 	private String name;
 	
-	@Column(name = "address", unique = true, nullable = false)
+	@Column(name = "address",  nullable = false)
 	@NotEmpty
 	private String address;
 	
-	@Column(name = "description", unique = true, nullable = false)
+	@Column(name = "description",nullable = false)
 	private String description;
 	
-	@Column(name = "average_rating", nullable = true)
-	private Double averageRating;
+	@Column(name = "average_rating",  nullable = false)
+	private double averageRating;
 	
-	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private Set<Equipment> equipment = new HashSet<Equipment>();
 	
-	//ArrayList<CompanyAdministrator> CompanyAdministrators;
+	 @ManyToMany
+	    @JoinTable(name = "company_equipment",
+	               joinColumns = @JoinColumn(name = "company_id"),
+	               inverseJoinColumns = @JoinColumn(name = "equipment_id"))
+	 private List<Equipment> equipmentList = new ArrayList<>();
 	
-	//ArrayList<Appointment> Appointments;
+	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+	    private List<CompanyAdministrator> administrators = new ArrayList<>();
+
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    private List<Appointment> freeAppointments = new ArrayList<>();
+	
+    
 	
 	
 	
 	public Company() { }
 
-	
-	
-	public Company(long id, @NotEmpty String name, @NotEmpty String address, String description, Double averageRating,
-			Set<Equipment> equipment) {
+	public Company(long id, @NotEmpty String name, @NotEmpty String address, String description, double averageRating,
+			List<CompanyAdministrator> administrators, List<Appointment> freeAppointments, List<Equipment> equipmentList) {
 		super();
 		Id = id;
 		this.name = name;
 		this.address = address;
 		this.description = description;
 		this.averageRating = averageRating;
-		this.equipment = equipment;
+		this.administrators = administrators;
+		this.freeAppointments = freeAppointments;
+		this.equipmentList= equipmentList;
 	}
 
 
@@ -95,14 +103,29 @@ public class Company {
 		this.averageRating = averageRating;
 	}
 
-	public Set<Equipment> getEquipment() {
-		return equipment;
+	public List<Equipment> getEquipmentList() {
+		return equipmentList;
 	}
 
-	public void setEquipment(Set<Equipment> equipment) {
-		this.equipment = equipment;
+	public void setEquipmentList(List<Equipment> equipmentList) {
+		this.equipmentList = equipmentList;
 	}
 
+	public List<CompanyAdministrator> getAdministrators() {
+		return administrators;
+	}
+
+	public void setAdministrators(List<CompanyAdministrator> administrators) {
+		this.administrators = administrators;
+	}
+
+	public List<Appointment> getFreeAppointments() {
+		return freeAppointments;
+	}
+
+	public void setFreeAppointments(List<Appointment> freeAppointments) {
+		this.freeAppointments = freeAppointments;
+	}
 
 	
 	/*
@@ -133,4 +156,8 @@ public class Company {
 		return "Company [Id=" + Id + ", name=" + name + ", address=" + address + ", description=" + description
 				+ ", averageRating=" + averageRating + ", equipment=" + equipment + "]";
 	}
+
+
+	
+
 }

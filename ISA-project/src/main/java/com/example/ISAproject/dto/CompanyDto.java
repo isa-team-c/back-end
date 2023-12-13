@@ -7,9 +7,18 @@ public class CompanyDto {
 	private String name;
 	private String address;
 	private String description;
-	private Double averageRating;
+	private double averageRating;
 	
+	public CompanyDto(Company company)
+	{
+		id = company.getId();
+		name = company.getName();
+		address = company.getAddress();
+		description = company.getDescription();
+		averageRating = company.getAverageRating();
+	}
 	public CompanyDto() {
+	    }
 
 	}
 

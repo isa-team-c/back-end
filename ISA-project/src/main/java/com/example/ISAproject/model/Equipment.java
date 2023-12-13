@@ -3,6 +3,7 @@ package com.example.ISAproject.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
+import java.util.List;
 
 @Entity
 public class Equipment {
@@ -25,24 +26,29 @@ public class Equipment {
 	@NotEmpty
 	private int quantity;
 	
-	@ManyToOne
+	/*@ManyToOne
     @JoinColumn(name = "company_id") // Assuming the column name in Equipment table for the relationship
-    private Company company;
+    private Company company;*/
 	
 	
 	
+	@ManyToMany(mappedBy = "equipmentList")
+	private List<Company> companies;
+	 
 	public Equipment() { }
 
 	
 	
 	public Equipment(long id, @NotEmpty String name, @NotEmpty String type, String description,
-			@NotEmpty int quantity) {
+			@NotEmpty int quantity, List<Company> companies) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.type = type;
 		this.description = description;
 		this.quantity = quantity;
+		this.companies = companies;
+		
 	}
 
 

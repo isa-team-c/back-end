@@ -9,6 +9,8 @@ import com.example.ISAproject.dto.UserDto;
 import com.example.ISAproject.model.CompanyAdministrator;
 import com.example.ISAproject.repository.CompanyAdministratorRepository;
 import com.example.ISAproject.model.*;
+import com.example.ISAproject.model.Company;
+
 
 @Service
 public class CompanyAdministratorService {
@@ -53,3 +55,7 @@ public class CompanyAdministratorService {
         return companyAdministratorRepository.save(newCompanyAdmin);
     }
 }
+
+  
+    
+

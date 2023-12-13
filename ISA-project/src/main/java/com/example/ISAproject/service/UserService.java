@@ -6,7 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.ISAproject.dto.UserDto;
+import com.example.ISAproject.model.Company;
+import com.example.ISAproject.model.CompanyAdministrator;
 import com.example.ISAproject.model.User;
+import com.example.ISAproject.model.enumerations.UserRole;
+import com.example.ISAproject.repository.CompanyAdministratorRepository;
 import com.example.ISAproject.repository.UserRepository;
 
 @Service
@@ -14,6 +18,13 @@ public class UserService {
 	
 	@Autowired
     private UserRepository userRepository;
+	private CompanyAdministratorRepository companyAdministratorRepository;
+	
+	@Autowired
+    public UserService(UserRepository userRepository, CompanyAdministratorRepository companyAdministratorRepository) {
+        this.userRepository = userRepository;
+        this.companyAdministratorRepository = companyAdministratorRepository;
+    }
 
 	public User findOne(Long id) {
 		return userRepository.findById(id).orElseGet(null);
@@ -40,5 +51,9 @@ public class UserService {
 	
 	public User save(User user) {
 		return userRepository.saveAndFlush(user);  //da li save ili saveAndFlush
+	}
+
+	public List<User> getCompanyAdmins() {
+	        return userRepository.findByRole(UserRole.ROLE_COMPANY_ADMIN);
 	}
 }
