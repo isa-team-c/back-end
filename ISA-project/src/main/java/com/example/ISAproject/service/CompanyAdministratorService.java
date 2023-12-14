@@ -2,6 +2,7 @@ package com.example.ISAproject.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.ISAproject.dto.CompanyAdministratorDto;
@@ -20,6 +21,9 @@ public class CompanyAdministratorService {
     
     @Autowired
 	private RoleService roleService;
+    
+    @Autowired
+	private PasswordEncoder passwordEncoder;
 
     public CompanyAdministrator findById(Long id) {
         return companyAdministratorRepository.findById(id).orElseGet(null);
@@ -38,7 +42,7 @@ public class CompanyAdministratorService {
         
         com.example.ISAproject.model.User newUser = new com.example.ISAproject.model.User();
         newUser.setEmail(newCompanyAdminDto.getUser().getEmail());
-        newUser.setPassword(newCompanyAdminDto.getUser().getPassword());
+        newUser.setPassword(passwordEncoder.encode(newCompanyAdminDto.getUser().getPassword()));
         newUser.setName(newCompanyAdminDto.getUser().getName());
         newUser.setSurname(newCompanyAdminDto.getUser().getSurname());
         newUser.setCity(newCompanyAdminDto.getUser().getCity());
