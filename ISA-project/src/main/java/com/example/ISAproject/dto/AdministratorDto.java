@@ -34,4 +34,12 @@ public class AdministratorDto {
 	public void setUser(UserDto user) {
 		this.user = user;
 	}
+	
+	public boolean getLoggedInBefore() {
+		return loggedInBefore;
+	}
+	
+	public void setLoggedInBefore(boolean loggedInBefore) {
+		this.loggedInBefore = loggedInBefore;
+	}
 }
