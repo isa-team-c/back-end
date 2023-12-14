@@ -1,7 +1,9 @@
 package com.example.ISAproject.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
+
+import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,13 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.ISAproject.dto.CompanyDto;
-import com.example.ISAproject.dto.RegularUserDto;
+import com.example.ISAproject.model.Appointment;
 import com.example.ISAproject.model.Company;
-import com.example.ISAproject.model.RegularUser;
+import com.example.ISAproject.model.Equipment;
 import com.example.ISAproject.service.CompanyService;
 
 @RestController
@@ -63,7 +64,7 @@ public class CompanyController {
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/get/{id}")
 	public ResponseEntity<CompanyDto> get(@PathVariable Long id) {
 
 		Company company = companyService.findById(id);
@@ -74,4 +75,25 @@ public class CompanyController {
 
 		return new ResponseEntity<CompanyDto>(new CompanyDto(company), HttpStatus.OK);
 	}
+	
+	@GetMapping("/{companyId}/equipment")
+    public ResponseEntity<Set<Equipment>> getEquipmentByCompanyId(@PathVariable long companyId) {
+        try {
+            Set<Equipment> equipment = companyService.getEquipmentByCompanyId(companyId);
+            return new ResponseEntity<>(equipment, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+	
+	@GetMapping("/{companyId}/appointments")
+	public ResponseEntity<Set<Appointment>> getAppointmentsByCompanyId(@PathVariable long companyId) {
+	    try {
+	        Set<Appointment> appointments = companyService.getAppointmentsByCompanyId(companyId);
+	        return new ResponseEntity<>(appointments, HttpStatus.OK);
+	    } catch (EntityNotFoundException e) {
+	        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	    }
+	}
+
 }

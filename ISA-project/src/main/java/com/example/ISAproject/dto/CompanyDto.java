@@ -1,5 +1,6 @@
 package com.example.ISAproject.dto;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import com.example.ISAproject.model.Appointment;
@@ -26,12 +27,15 @@ public class CompanyDto {
         address = company.getAddress();
         description = company.getDescription();
         averageRating = company.getAverageRating();
+        this.equipment = new HashSet<>();  // Add this line
+        this.appointments = new HashSet<>();  // Add this line
+
         for (Equipment equipment : company.getEquipment()) {
-	        this.equipment.add(new EquipmentDto(equipment));
-	    }
-	    for (Appointment appointment : company.getAppointments()) {
-	        this.appointments.add(new AppointmentDto(appointment));
-	    }
+            this.equipment.add(new EquipmentDto(equipment));
+        }
+        for (Appointment appointment : company.getAppointments()) {
+            this.appointments.add(new AppointmentDto(appointment));
+        }
     }
 
 
