@@ -10,6 +10,7 @@ import com.example.ISAproject.dto.UserDto;
 import com.example.ISAproject.model.Administrator;
 import com.example.ISAproject.model.CompanyAdministrator;
 import com.example.ISAproject.model.RegularUser;
+import com.example.ISAproject.model.Role;
 import com.example.ISAproject.repository.AdministratorRepository;
 
 @Service
@@ -19,6 +20,9 @@ public class AdministratorService {
 	
 	@Autowired
     private UserService userService;
+	
+	@Autowired
+	private RoleService roleService;
 	
 	public Administrator createAdministrator(AdministratorDto newAdminDto) {
     	
@@ -34,7 +38,8 @@ public class AdministratorService {
         newUser.setPhoneNumber(newAdminDto.getUser().getPhoneNumber());
         newUser.setProfession(newAdminDto.getUser().getProfession());
         newUser.setCompanyInformation(newAdminDto.getUser().getCompanyInformation());
-        newUser.setRole(newAdminDto.getUser().getRole());
+        Role role = roleService.findByName("ROLE_ADMIN");
+        newUser.setRole(role);
         newUser.setIsVerified(true);
         
         newAdmin.setUser(newUser);
