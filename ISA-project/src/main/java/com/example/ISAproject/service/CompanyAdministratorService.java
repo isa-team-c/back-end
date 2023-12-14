@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.ISAproject.dto.CompanyAdministratorDto;
 import com.example.ISAproject.dto.UserDto;
-import com.example.ISAproject.model.CompanyAdministrator;
 import com.example.ISAproject.repository.CompanyAdministratorRepository;
 import com.example.ISAproject.model.*;
 
@@ -18,6 +17,9 @@ public class CompanyAdministratorService {
 
     @Autowired
     private UserService userService;
+    
+    @Autowired
+	private RoleService roleService;
 
     public CompanyAdministrator findById(Long id) {
         return companyAdministratorRepository.findById(id).orElseGet(null);
@@ -44,7 +46,8 @@ public class CompanyAdministratorService {
         newUser.setPhoneNumber(newCompanyAdminDto.getUser().getPhoneNumber());
         newUser.setProfession(newCompanyAdminDto.getUser().getProfession());
         newUser.setCompanyInformation(newCompanyAdminDto.getUser().getCompanyInformation());
-        newUser.setRole(newCompanyAdminDto.getUser().getRole());
+        Role role = roleService.findByName("ROLE_COMPANY_ADMIN");
+        newUser.setRole(role);
         newUser.setIsVerified(true);
         
         newCompanyAdmin.setUser(newUser);
