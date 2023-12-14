@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.ISAproject.dto.CompanyDto;
+import com.example.ISAproject.dto.RegularUserDto;
 import com.example.ISAproject.model.Company;
+import com.example.ISAproject.model.RegularUser;
 import com.example.ISAproject.service.CompanyService;
 
 @RestController
@@ -59,5 +61,17 @@ public class CompanyController {
 		companyService.save(company);
 		
 		return new ResponseEntity<>(HttpStatus.CREATED);
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<CompanyDto> get(@PathVariable Long id) {
+
+		Company company = companyService.findById(id);
+
+		if (company == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<CompanyDto>(new CompanyDto(company), HttpStatus.OK);
 	}
 }

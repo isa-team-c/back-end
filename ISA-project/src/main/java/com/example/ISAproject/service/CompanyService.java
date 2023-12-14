@@ -30,4 +30,9 @@ public class CompanyService {
 	public Company save(Company company) {
 		return companyRepository.save(company);
 	}
+
+
+	public Company findById(Long id) {
+		return companyRepository.findById(id).orElseGet(null);
+	}
 }
