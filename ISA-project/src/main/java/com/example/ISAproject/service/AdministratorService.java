@@ -48,6 +48,8 @@ public class AdministratorService {
         
         newAdmin.setUser(newUser);
         
+        newAdmin.setLoggedInBefore(false);
+        
         return administratorRepository.save(newAdmin);
     }
 }
