@@ -1,6 +1,8 @@
 package com.example.ISAproject.dto;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.example.ISAproject.model.Equipment;
 import com.example.ISAproject.model.Reservation;
@@ -9,10 +11,10 @@ import com.example.ISAproject.model.enumerations.ReservationStatus;
 public class ReservationDto {
 	private long id;
 	private ReservationStatus status;	
-	private ArrayList<EquipmentDto> equipment;
+	private Set<EquipmentDto> equipment;
 	private AppointmentDto appointment;
 	
-	public ReservationDto(long id, ReservationStatus status, ArrayList<EquipmentDto> equipment,
+	public ReservationDto(long id, ReservationStatus status, Set<EquipmentDto> equipment,
 			AppointmentDto appointment) {
 		super();
 		this.id = id;
@@ -25,7 +27,7 @@ public class ReservationDto {
 	{
 		this.id = reservation.getId();
 		this.status = reservation.getStatus();
-	    this.equipment = new ArrayList<>();
+	    this.equipment = new HashSet<>();
 	    for (Equipment equipment : reservation.getEquipment()) {
 	        this.equipment.add(new EquipmentDto(equipment));
 	    }
@@ -48,11 +50,11 @@ public class ReservationDto {
 		this.status = status;
 	}
 
-	public ArrayList<EquipmentDto> getEquipment() {
+	public Set<EquipmentDto> getEquipment() {
 		return equipment;
 	}
 
-	public void setEquipment(ArrayList<EquipmentDto> equipment) {
+	public void setEquipment(Set<EquipmentDto> equipment) {
 		this.equipment = equipment;
 	}
 

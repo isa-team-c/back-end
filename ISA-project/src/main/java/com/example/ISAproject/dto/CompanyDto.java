@@ -1,8 +1,10 @@
 package com.example.ISAproject.dto;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
-import com.example.ISAproject.model.Appointment;
 import com.example.ISAproject.model.Company;
 
 public class CompanyDto {
@@ -11,7 +13,8 @@ public class CompanyDto {
 	private String address;
 	private String description;
 	private Double averageRating;
-	private List<Appointment> appointments;
+	private Set<EquipmentDto> equipment;
+	private Set<AppointmentDto> appointments;
 	
 	public CompanyDto() {
 
@@ -25,21 +28,26 @@ public class CompanyDto {
         description = company.getDescription();
         averageRating = company.getAverageRating();
 	    /*for (Appointment appointment : company.getAppointments()) {
-	        this.appointments.addAll(new AppointmentDto(appointment));
+	        this.appointments.add(new AppointmentDto(appointment));
 	    }*/
     }
 
-	 public CompanyDto(long id, String name, String address, String description, double averageRating) {
-	        super();
-	        this.id = id;
-	        this.name = name;
-	        this.address = address;
-	        this.description = description;
-	        this.averageRating = averageRating;
-	 }
-	 
 
-	 public long getId() {
+	public CompanyDto(long id, String name, String address, String description, Double averageRating,
+			Set<EquipmentDto> equipment, Set<AppointmentDto> appointments) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.address = address;
+		this.description = description;
+		this.averageRating = averageRating;
+		this.equipment = equipment;
+		this.appointments = appointments;
+	}
+
+
+
+	public long getId() {
 	        return id;
 	 }
 
@@ -78,12 +86,21 @@ public class CompanyDto {
 		this.averageRating = averageRating;
 	}
 
-	public List<Appointment> getAppointments() {
+	public Set<EquipmentDto> getEquipment() {
+		return equipment;
+	}
+
+	public void setEquipment(Set<EquipmentDto> equipment) {
+		this.equipment = equipment;
+	}
+
+	public Set<AppointmentDto> getAppointments() {
 		return appointments;
 	}
 
-	public void setAppointments(List<Appointment> appointments) {
+	public void setAppointments(Set<AppointmentDto> appointments) {
 		this.appointments = appointments;
 	}
+	
 	
 }

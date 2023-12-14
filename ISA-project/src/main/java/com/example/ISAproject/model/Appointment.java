@@ -41,21 +41,16 @@ public class Appointment {
 	
 	@Column(name = "is_free", nullable = false)
     private Boolean isFree;   
-
-	@ManyToOne
-	@JoinColumn(name = "company_id")
-	private Company company;
 	
 	
 	public Appointment(long id, CompanyAdministrator companyAdministrator, LocalDateTime startDate, int duration,
-			Boolean isFree, Company company) {
+			Boolean isFree) {
 		super();
 		this.id = id;
 		this.companyAdministrator = companyAdministrator;
 		this.startDate = startDate;
 		this.duration = duration;
 		this.isFree = isFree;
-		this.company = company;
 	}
 	
 	public Long getId() {
@@ -89,13 +84,4 @@ public class Appointment {
 	public void setIsFree(Boolean isFree) {
 		this.isFree = isFree;
 	}
-
-	public Company getCompany() {
-		return company;
-	}
-
-	public void setCompany(Company company) {
-		this.company = company;
-	}
-	
 }

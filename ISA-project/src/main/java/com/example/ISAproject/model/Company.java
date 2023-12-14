@@ -27,19 +27,22 @@ public class Company {
 	@Column(name = "average_rating", nullable = true)
 	private Double averageRating;
 	
-	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "company_equipment", joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "id"),
+		inverseJoinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "id"))
 	private Set<Equipment> equipment = new HashSet<Equipment>();
 	
-	//ArrayList<CompanyAdministrator> CompanyAdministrators;
-	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private List<Appointment> appointments;
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "company_appointment", joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "id"),
+		inverseJoinColumns = @JoinColumn(name = "appointment_id", referencedColumnName = "id"))
+	private Set<Appointment> appointments = new HashSet<Appointment>();
 		
 	
 	public Company() { }
 
 
 	public Company(long id, @NotEmpty String name, @NotEmpty String address, String description, Double averageRating,
-			Set<Equipment> equipment, List<Appointment> appointments) {
+			Set<Equipment> equipment, Set<Appointment> appointments) {
 		super();
 		Id = id;
 		this.name = name;
@@ -49,10 +52,6 @@ public class Company {
 		this.equipment = equipment;
 		this.appointments = appointments;
 	}
-
-
-
-
 
 	public long getId() {
 		return Id;
@@ -119,16 +118,15 @@ public class Company {
 	*/
 	
 		
-	public List<Appointment> getAppointments() {
+	public Set<Appointment> getAppointments() {
 		return appointments;
 	}
 
-	public void setAppointments(List<Appointment> appointments) {
+	public void setAppointments(Set<Appointment> appointments) {
 		this.appointments = appointments;
 	}
 
-
-
+	
 	@Override
 	public int hashCode() {
 		return 1337;
