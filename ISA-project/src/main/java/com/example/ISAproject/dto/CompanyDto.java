@@ -18,18 +18,11 @@ public class CompanyDto {
 		averageRating = company.getAverageRating();
 	}
 	public CompanyDto() {
-	    }
-
 	}
 
-	public CompanyDto(Company company)
-    {
-        id = company.getId();
-        name = company.getName();
-        address = company.getAddress();
-        description = company.getDescription();
-        averageRating = company.getAverageRating();
-    }
+	
+
+	
 
 	 public CompanyDto(long id, String name, String address, String description, double averageRating) {
 	        super();

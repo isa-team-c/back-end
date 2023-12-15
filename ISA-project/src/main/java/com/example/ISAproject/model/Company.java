@@ -15,26 +15,23 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long Id;
 	
-	@Column(name = "name",  nullable = false)
+	@Column(name = "name", unique = true,  nullable = false)
 	@NotEmpty
 	private String name;
 	
-	@Column(name = "address",  nullable = false)
+	@Column(name = "address",unique = true,  nullable = false)
 	@NotEmpty
 	private String address;
 	
-	@Column(name = "description",nullable = false)
+	@Column(name = "description",unique = true, nullable = false)
 	private String description;
 	
-	@Column(name = "average_rating",  nullable = false)
-	private double averageRating;
+	@Column(name = "average_rating",  nullable = true)
+	private Double averageRating;
 	
 	
-	 @ManyToMany
-	    @JoinTable(name = "company_equipment",
-	               joinColumns = @JoinColumn(name = "company_id"),
-	               inverseJoinColumns = @JoinColumn(name = "equipment_id"))
-	 private List<Equipment> equipmentList = new ArrayList<>();
+	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Set<Equipment> equipment = new HashSet<Equipment>();
 	
 	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
 	    private List<CompanyAdministrator> administrators = new ArrayList<>();
@@ -48,8 +45,8 @@ public class Company {
 	
 	public Company() { }
 
-	public Company(long id, @NotEmpty String name, @NotEmpty String address, String description, double averageRating,
-			List<CompanyAdministrator> administrators, List<Appointment> freeAppointments, List<Equipment> equipmentList) {
+	public Company(long id, @NotEmpty String name, @NotEmpty String address, String description, Double averageRating,
+			List<CompanyAdministrator> administrators, List<Appointment> freeAppointments, Set<Equipment> equipment) {
 		super();
 		Id = id;
 		this.name = name;
@@ -58,7 +55,7 @@ public class Company {
 		this.averageRating = averageRating;
 		this.administrators = administrators;
 		this.freeAppointments = freeAppointments;
-		this.equipmentList= equipmentList;
+		this.equipment= equipment;
 	}
 
 
@@ -103,13 +100,14 @@ public class Company {
 		this.averageRating = averageRating;
 	}
 
-	public List<Equipment> getEquipmentList() {
-		return equipmentList;
+	public Set<Equipment> getEquipment() {
+		return equipment;
 	}
 
-	public void setEquipmentList(List<Equipment> equipmentList) {
-		this.equipmentList = equipmentList;
+	public void setEquipment(Set<Equipment> equipment) {
+		this.equipment = equipment;
 	}
+	
 
 	public List<CompanyAdministrator> getAdministrators() {
 		return administrators;
@@ -151,11 +149,11 @@ public class Company {
 
 
 
-	@Override
+	/*@Override
 	public String toString() {
 		return "Company [Id=" + Id + ", name=" + name + ", address=" + address + ", description=" + description
 				+ ", averageRating=" + averageRating + ", equipment=" + equipment + "]";
-	}
+	}*/
 
 
 	

@@ -1,5 +1,7 @@
 package com.example.ISAproject.service;
 
+import java.util.List;
+
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +20,9 @@ public class UserService {
 	
 	@Autowired
     private UserRepository userRepository;
-	private CompanyAdministratorRepository companyAdministratorRepository;
 	
-	@Autowired
-    public UserService(UserRepository userRepository, CompanyAdministratorRepository companyAdministratorRepository) {
-        this.userRepository = userRepository;
-        this.companyAdministratorRepository = companyAdministratorRepository;
-    }
+	
+	
 
 	public User findOne(Long id) {
 		return userRepository.findById(id).orElseGet(null);

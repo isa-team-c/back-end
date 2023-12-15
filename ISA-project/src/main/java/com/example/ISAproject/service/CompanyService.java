@@ -24,6 +24,7 @@ public class CompanyService {
 
 	@Autowired
     private CompanyRepository companyRepository;
+	private CompanyAdministratorRepository companyAdministratorRepository;
 
 	 @Autowired
         
