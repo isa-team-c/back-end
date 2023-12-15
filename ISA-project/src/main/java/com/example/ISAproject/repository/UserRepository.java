@@ -10,4 +10,6 @@ import com.example.ISAproject.model.enumerations.UserRole;
 public interface UserRepository extends JpaRepository<User, Long>{
 	 List<User> findByRole(UserRole role);
 	 //User findUserById(Long useriD);
+	User findByEmail(String email);
+	User getById(long id);
 }

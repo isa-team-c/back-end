@@ -1,9 +1,7 @@
 package com.example.ISAproject.model;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -29,39 +27,31 @@ public class Company {
 	@Column(name = "average_rating",  nullable = false)
 	private double averageRating;
 	
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "company_equipment", joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "id"),
+		inverseJoinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "id"))
+	private Set<Equipment> equipment = new HashSet<Equipment>();
 	
-	 @ManyToMany
-	    @JoinTable(name = "company_equipment",
-	               joinColumns = @JoinColumn(name = "company_id"),
-	               inverseJoinColumns = @JoinColumn(name = "equipment_id"))
-	 private List<Equipment> equipmentList = new ArrayList<>();
-	
-	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
-	    private List<CompanyAdministrator> administrators = new ArrayList<>();
-
-    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
-    private List<Appointment> freeAppointments = new ArrayList<>();
-	
-    
-	
-	
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "company_appointment", joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "id"),
+		inverseJoinColumns = @JoinColumn(name = "appointment_id", referencedColumnName = "id"))
+	private Set<Appointment> appointments = new HashSet<Appointment>();
+		
 	
 	public Company() { }
 
-	public Company(long id, @NotEmpty String name, @NotEmpty String address, String description, double averageRating,
-			List<CompanyAdministrator> administrators, List<Appointment> freeAppointments, List<Equipment> equipmentList) {
+
+	public Company(long id, @NotEmpty String name, @NotEmpty String address, String description, Double averageRating,
+			Set<Equipment> equipment, Set<Appointment> appointments) {
 		super();
 		Id = id;
 		this.name = name;
 		this.address = address;
 		this.description = description;
 		this.averageRating = averageRating;
-		this.administrators = administrators;
-		this.freeAppointments = freeAppointments;
-		this.equipmentList= equipmentList;
+		this.equipment = equipment;
+		this.appointments = appointments;
 	}
-
-
 
 	public long getId() {
 		return Id;
@@ -103,30 +93,15 @@ public class Company {
 		this.averageRating = averageRating;
 	}
 
-	public List<Equipment> getEquipmentList() {
-		return equipmentList;
+	public Set<Equipment> getEquipment() {
+		return equipment;
 	}
 
-	public void setEquipmentList(List<Equipment> equipmentList) {
-		this.equipmentList = equipmentList;
+	public void setEquipment(Set<Equipment> equipment) {
+		this.equipment = equipment;
 	}
 
-	public List<CompanyAdministrator> getAdministrators() {
-		return administrators;
-	}
-
-	public void setAdministrators(List<CompanyAdministrator> administrators) {
-		this.administrators = administrators;
-	}
-
-	public List<Appointment> getFreeAppointments() {
-		return freeAppointments;
-	}
-
-	public void setFreeAppointments(List<Appointment> freeAppointments) {
-		this.freeAppointments = freeAppointments;
-	}
-
+	
 	
 	/*
 	@Override
@@ -142,7 +117,15 @@ public class Company {
 	}
 	*/
 	
-	
+		
+	public Set<Appointment> getAppointments() {
+		return appointments;
+	}
+
+	public void setAppointments(Set<Appointment> appointments) {
+		this.appointments = appointments;
+	}
+
 	
 	@Override
 	public int hashCode() {

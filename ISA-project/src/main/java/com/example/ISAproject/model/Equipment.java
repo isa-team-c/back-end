@@ -26,21 +26,10 @@ public class Equipment {
 	@NotEmpty
 	private int quantity;
 	
-	/*@ManyToOne
-    @JoinColumn(name = "company_id") // Assuming the column name in Equipment table for the relationship
-    private Company company;*/
-	
-	
-	
-	@ManyToMany(mappedBy = "equipmentList")
-	private List<Company> companies;
-	 
 	public Equipment() { }
 
-	
-	
-	public Equipment(long id, @NotEmpty String name, @NotEmpty String type, String description,
-			@NotEmpty int quantity, List<Company> companies) {
+
+	public Equipment(long id, @NotEmpty String name, @NotEmpty String type, String description, @NotEmpty int quantity) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -50,7 +39,6 @@ public class Equipment {
 		this.companies = companies;
 		
 	}
-
 
 	public long getId() {
 		return id;
@@ -91,6 +79,5 @@ public class Equipment {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-
 	
 }

@@ -5,6 +5,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import com.example.ISAproject.dto.UserDto;
 import com.example.ISAproject.model.User;
 
 import org.springframework.mail.MailException;

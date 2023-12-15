@@ -1,17 +1,17 @@
 package com.example.ISAproject.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
-import com.example.ISAproject.model.enumerations.UserRole;
-
 @Entity
-public class RegularUser {
+public class Administrator {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
 	@OneToOne
@@ -19,19 +19,15 @@ public class RegularUser {
     @JoinColumn(name = "user_id")
     private User user;
 	
-	@Column(name = "penalties", nullable = false)
-	private Integer penalties;
-	
-	
-	public RegularUser() {
-        
-    }
-	
-	public RegularUser(Long id, User user, Integer penalties) {
+	public Administrator()
+	{
+		
+	}
+
+	public Administrator(Long id, User user) {
 		super();
 		this.id = id;
 		this.user = user;
-		this.penalties = penalties;
 	}
 
 	public Long getId() {
@@ -49,14 +45,4 @@ public class RegularUser {
 	public void setUser(User user) {
 		this.user = user;
 	}
-
-	public Integer getPenalties() {
-		return penalties;
-	}
-
-	public void setPenalties(Integer penalties) {
-		this.penalties = penalties;
-	}
-
-	
 }

@@ -1,10 +1,15 @@
 package com.example.ISAproject.controller;
 
+import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -54,57 +59,50 @@ public class UserController{
 		return new ResponseEntity<UserDto>(new UserDto(user), HttpStatus.OK);
 	}
 	
-	
-	/*@GetMapping("/{userId}")
-    public ResponseEntity<Company> getCompanyForUser(@PathVariable("userId") long userId) {
-        Company company = userService.getCompanyForUserId(userId);
-
-        if (company != null) {
-            return new ResponseEntity<>(company, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }*/
-	@PostMapping(value = "/register")
+	@PostMapping(value = "/auth/register")  //dozvoljeno svima
 	public ResponseEntity<String> registerUser(@RequestBody UserDto userDto)
 	{
 		if (!userDto.getPassword().equals(userDto.getConfirmationPassword())) {
 			return new ResponseEntity<>("Password and confirmation password do not match", HttpStatus.BAD_REQUEST);
 		}
+		
+	    if (userService.findByEmail(userDto.getEmail()) != null) {
+	        return new ResponseEntity<>("Email is already in use", HttpStatus.BAD_REQUEST);
+	    }
 				
-		User user = new User();
-		user.setEmail(userDto.getEmail());
-		user.setPassword(userDto.getPassword());
-		user.setName(userDto.getName());
-		user.setSurname(userDto.getSurname());
-		user.setCity(userDto.getCity());
-		user.setCountry(userDto.getCountry());
-		user.setPhoneNumber(userDto.getPhoneNumber());
-		user.setProfession(userDto.getProfession());
-		user.setCompanyInformation(userDto.getCompanyInformation());
-		user.setRole(UserRole.ROLE_REGULAR);
-		user.setIsVerified(false);
+	    User savedUser = userService.save(userDto);
 		
 		try {
 			System.out.println("Thread id: " + Thread.currentThread().getId());
-			emailService.sendNotificaitionAsync(user);			
+			emailService.sendNotificaitionAsync(savedUser);			
 		}catch( Exception e ){
 			logger.info("Greska prilikom slanja emaila: " + e.getMessage());
 		}
 		
-		userService.save(user);
-		
+				
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/verify/{id}")
-	public ResponseEntity<String> verifyUser(@PathVariable  long id) {
-	    User user = userService.findOne(id);
-	    if (user == null) {
-	        return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
-	    }
-	    user.setIsVerified(true);
-	    userService.save(user);
+	public ResponseEntity<String> verifyUser(@PathVariable  long id) {			
+	    userService.verifyUser(id);
 	    return new ResponseEntity<>(HttpStatus.OK);
 	}
+	
+	@GetMapping("/whoami")
+	public User user(Principal user) {
+		return this.userService.findByEmail(user.getName());
+	}
+	
+	@GetMapping("/getByEmail/{email}")
+	public User user(@PathVariable String email) {
+		return this.userService.findByEmail(email);
+	}
+	
+	@GetMapping("/foo")
+    public Map<String, String> getFoo() {
+        Map<String, String> fooObj = new HashMap<>();
+        fooObj.put("foo", "bar");
+        return fooObj;
+    }
 }
