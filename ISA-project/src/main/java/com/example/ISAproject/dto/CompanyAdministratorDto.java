@@ -12,8 +12,14 @@ public class CompanyAdministratorDto {
     }
 
     public CompanyAdministratorDto(CompanyAdministrator companyAdministrator) {
-        this.id = companyAdministrator.getId();
-        this.user = new UserDto(companyAdministrator.getUser());
+    	if (companyAdministrator != null) {
+            this.id = companyAdministrator.getId();
+            
+            // Check if user is not null before accessing properties
+            if (companyAdministrator.getUser() != null) {
+                this.user = new UserDto(companyAdministrator.getUser());
+            }
+        }
         //this.company = companyAdministrator.getCompany();
     }
 

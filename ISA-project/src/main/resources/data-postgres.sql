@@ -12,6 +12,7 @@ INSERT INTO public.regular_user(
 	user_id, penalties)
 	VALUES (1, 0);
 
+
 INSERT INTO public.company(address, average_rating, description, name)
 	VALUES ('Vuka Karadzica', 5, 'odlicno', 'company1');
 INSERT INTO public.company(address, average_rating, description, name)
@@ -34,15 +35,14 @@ INSERT INTO public.company_equipment(
 	company_id, equipment_id)
 	VALUES (2, 3);
 
-INSERT INTO public.company_administrator(
-	user_id, company_id)
-	VALUES (2, 1);
 
 INSERT INTO public.appointments(duration, is_free, start_date, administrator_id)
-	VALUES ( 5, false, '2023-12-31T12:00:00', 2);
+VALUES (5, false, '2023-12-31T12:00:00', 2);
 
 INSERT INTO public.company_appointment(
 	company_id, appointment_id)
 	VALUES (1, 1);
 
-
+INSERT INTO public.company_administrator(
+	user_id, company_id)
+	VALUES (2, 1);
