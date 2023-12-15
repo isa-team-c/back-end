@@ -35,7 +35,9 @@ public class AdministratorService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
-	
+	public Administrator findById(Long id) {
+	    return administratorRepository.findById(id).orElseGet(() -> null);
+	}
 	
 	public Administrator createAdministrator(AdministratorDto newAdminDto) {
     	
@@ -69,8 +71,11 @@ public class AdministratorService {
 	}
 	
 	public Administrator updateAdministrator(AdministratorDto updatedAdminDto) {
-		User existingUser = userRepository.findById(updatedAdminDto.getUser().getId()).orElseGet(null);
-		Administrator existingAdministrator = administratorRepository.findById(updatedAdminDto.getId()).orElseGet(null);
+		User existingUser = userRepository.findById(updatedAdminDto.getUser().getId())
+			    .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + updatedAdminDto.getUser().getId()));
+
+			Administrator existingAdministrator = administratorRepository.findById(updatedAdminDto.getId())
+			    .orElseThrow(() -> new EntityNotFoundException("Admin not found with ID: " + updatedAdminDto.getId()));
 		
 		if((existingUser != null) && (existingAdministrator != null)) {
 			existingUser.setEmail(updatedAdminDto.getUser().getEmail());
