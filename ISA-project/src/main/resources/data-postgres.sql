@@ -38,26 +38,20 @@ INSERT INTO public.company_administrator(
 	user_id, company_id)
 	VALUES (2, 1);
 
-INSERT INTO public.appointments(duration, is_free, start_date, administrator_id)
-	VALUES ( 5, false, '2023-12-31T12:00:00', 2);
+INSERT INTO public.appointments(
+	id, duration, is_free, start_date, administrator_id)
+	VALUES (1 ,5, false, '2023-12-31T12:00:00', 2);
 
 INSERT INTO public.appointments(
 	id, duration, is_free, start_date, administrator_id)
-	VALUES (1, 30, true, '2023-12-17 22:56:45.647+01', 2);
+	VALUES (2, 30, true, '2023-12-17 22:56:45.647+01', 2);
 
 INSERT INTO public.company_appointment(
 	company_id, appointment_id)
 	VALUES (1, 1);
-
 	
 INSERT INTO public.company_appointment(
 	company_id, appointment_id)
-	VALUES (1, 1);
-	
-INSERT INTO public.equipment(
-	id, description, name, quantity, type)
-	VALUES (1, 'e1', 'e1', 100, 't1');
-	
-INSERT INTO public.company_equipment(
-	company_id, equipment_id)
-	VALUES (1, 1);
+	VALUES (1, 2);
+
+
