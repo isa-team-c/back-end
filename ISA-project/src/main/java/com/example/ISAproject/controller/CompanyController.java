@@ -32,21 +32,38 @@ public class CompanyController {
     private CompanyService companyService;
 
 	@GetMapping("/search")
-	public ResponseEntity<List<Company>> searchCompanies(
+	public ResponseEntity<List<CompanyDto>> searchCompanies(
 	    @RequestParam(required = false) String searchTerm
 	) {
-	    List<Company> companies;
+	    List<CompanyDto> companyDtos;
 
 	    if (searchTerm != null && !searchTerm.isEmpty()) {
-	        companies = companyService.searchCompanies(searchTerm);
+	        List<Company> companies = companyService.searchCompanies(searchTerm);
+	        companyDtos = companies.stream()
+	            .map(company -> new CompanyDto(
+	                company.getId(),
+	                company.getName(),
+	                company.getAddress(),
+	                company.getDescription(),
+	                company.getAverageRating()
+	            ))
+	            .collect(Collectors.toList());
 	    } else {
-	        companies = companyService.getAllCompanies();
+	        List<Company> companies = companyService.getAllCompanies();
+	        companyDtos = companies.stream()
+	            .map(company -> new CompanyDto(
+	                company.getId(),
+	                company.getName(),
+	                company.getAddress(),
+	                company.getDescription(),
+	                company.getAverageRating()
+	            ))
+	            .collect(Collectors.toList());
 	    }
 
-	    return new ResponseEntity<>(companies, HttpStatus.OK);
-
+	    return new ResponseEntity<>(companyDtos, HttpStatus.OK);
 	}
-	
+
 	
 	
 	@PostMapping(value = "/create")
