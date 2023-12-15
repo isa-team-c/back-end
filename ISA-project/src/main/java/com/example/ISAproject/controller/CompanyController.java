@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.ISAproject.dto.AppointmentDto;
 import com.example.ISAproject.dto.CompanyDto;
 import com.example.ISAproject.model.Appointment;
 import com.example.ISAproject.model.Company;
@@ -105,10 +106,20 @@ public class CompanyController {
     }
 	
 	@GetMapping("/{companyId}/appointments")
-	public ResponseEntity<Set<Appointment>> getAppointmentsByCompanyId(@PathVariable long companyId) {
+	public ResponseEntity<Set<AppointmentDto>> getAppointmentsByCompanyId(@PathVariable long companyId) {
 	    try {
 	        Set<Appointment> appointments = companyService.getAppointmentsByCompanyId(companyId);
-	        return new ResponseEntity<>(appointments, HttpStatus.OK);
+
+	        Set<AppointmentDto> appointmentDtos = appointments.stream()
+	                .map(appointment -> new AppointmentDto(
+	                        appointment.getId(),
+	                        appointment.getStartDate(),
+	                        appointment.getDuration(),
+	                        appointment.getIsFree()
+	                ))
+	                .collect(Collectors.toSet());
+
+	        return new ResponseEntity<>(appointmentDtos, HttpStatus.OK);
 	    } catch (EntityNotFoundException e) {
 	        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	    }
