@@ -6,7 +6,7 @@ import com.example.ISAproject.model.CompanyAdministrator;
 public class CompanyAdministratorDto {
     private Long id;
     private UserDto user;
-    //private Company company;
+    private CompanyDto company;
 
     public CompanyAdministratorDto() {
     }
@@ -14,7 +14,7 @@ public class CompanyAdministratorDto {
     public CompanyAdministratorDto(CompanyAdministrator companyAdministrator) {
         this.id = companyAdministrator.getId();
         this.user = new UserDto(companyAdministrator.getUser());
-        //this.company = companyAdministrator.getCompany();
+        this.company = new CompanyDto(companyAdministrator.getCompany());
     }
 
     public Long getId() {
@@ -32,4 +32,14 @@ public class CompanyAdministratorDto {
     public void setUser(UserDto user) {
         this.user = user;
     }
+
+	public CompanyDto getCompany() {
+		return company;
+	}
+
+	public void setCompany(CompanyDto company) {
+		this.company = company;
+	}
+    
+    
 }
