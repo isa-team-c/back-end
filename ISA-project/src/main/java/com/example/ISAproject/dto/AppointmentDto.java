@@ -17,11 +17,10 @@ public class AppointmentDto {
     	
     }
     
-	public AppointmentDto(long id, CompanyAdministratorDto companyAdministrator, LocalDateTime startDate, int duration,
+	public AppointmentDto(long id, LocalDateTime startDate, int duration,
 			Boolean isFree) {
 		super();
 		this.id = id;
-		this.companyAdministrator = companyAdministrator;
 		this.startDate = startDate;
 		this.duration = duration;
 		this.isFree = isFree;
