@@ -14,7 +14,7 @@ public class CompanyAdministratorDto {
     public CompanyAdministratorDto(CompanyAdministrator companyAdministrator) {
         this.id = companyAdministrator.getId();
         this.user = new UserDto(companyAdministrator.getUser());
-        this.companyDto = new CompanyDto(companyAdministrator.getCompany());
+        //this.companyDto = new CompanyDto(companyAdministrator.getCompany());
     }
 
     public Long getId() {

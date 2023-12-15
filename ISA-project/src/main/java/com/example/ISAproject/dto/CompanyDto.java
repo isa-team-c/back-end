@@ -16,16 +16,8 @@ public class CompanyDto {
 	private Set<EquipmentDto> equipment;
 	private Set<AppointmentDto> appointments;
 	
-	public CompanyDto(Company company)
-	{
-		id = company.getId();
-		name = company.getName();
-		address = company.getAddress();
-		description = company.getDescription();
-		averageRating = company.getAverageRating();
-	}
+
 	public CompanyDto() {
-	    }
 
 	}
 

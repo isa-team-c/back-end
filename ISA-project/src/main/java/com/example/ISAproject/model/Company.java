@@ -24,8 +24,8 @@ public class Company {
 	@Column(name = "description",nullable = false)
 	private String description;
 	
-	@Column(name = "average_rating",  nullable = false)
-	private double averageRating;
+	@Column(name = "average_rating",  nullable = true)
+	private Double averageRating;
 	
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "company_equipment", joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "id"),

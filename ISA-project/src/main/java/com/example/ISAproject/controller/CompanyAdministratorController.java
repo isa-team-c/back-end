@@ -28,7 +28,6 @@ import com.example.ISAproject.model.CompanyAdministrator;
 import com.example.ISAproject.service.CompanyAdministratorService;
 import com.example.ISAproject.service.CompanyService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 
 @RestController
@@ -52,7 +51,7 @@ public class CompanyAdministratorController{
 		
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
-}
+
 	@GetMapping("/{id}")
 	public ResponseEntity<CompanyAdministratorDto> get(@PathVariable Long id) {
 

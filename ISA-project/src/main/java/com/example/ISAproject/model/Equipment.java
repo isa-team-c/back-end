@@ -36,7 +36,7 @@ public class Equipment {
 		this.type = type;
 		this.description = description;
 		this.quantity = quantity;
-		this.companies = companies;
+		
 		
 	}
 

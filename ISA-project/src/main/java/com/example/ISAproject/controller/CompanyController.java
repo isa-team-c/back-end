@@ -23,7 +23,6 @@ import com.example.ISAproject.service.CompanyService;
 import com.example.ISAproject.model.User;
 import com.example.ISAproject.service.UserService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")

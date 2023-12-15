@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.example.ISAproject.model.Role;
 import com.example.ISAproject.model.User;
 import com.example.ISAproject.model.enumerations.UserRole;
 
@@ -12,4 +13,5 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	 //User findUserById(Long useriD);
 	User findByEmail(String email);
 	User getById(long id);
+	User findByRole(Role role);
 }

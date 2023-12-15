@@ -28,10 +28,12 @@ public class UserService {
     private UserRepository userRepository;
 	private CompanyAdministratorRepository companyAdministratorRepository;
 	
+	
 	@Autowired
     public UserService(UserRepository userRepository, CompanyAdministratorRepository companyAdministratorRepository) {
         this.userRepository = userRepository;
         this.companyAdministratorRepository = companyAdministratorRepository;
+        
     }
 	
 	@Autowired
@@ -98,8 +100,10 @@ public class UserService {
 	    return this.userRepository.save(user);
 
 	}
+	/*public List<User> getCompanyAdmins() {
+		String name = "ADMIN";
+	    Role adminRole = this.roleRepository.findByName(name); // pretpostavljamo da postoji metoda koja pronalazi ulogu po imenu
+	    return userRepository.findByRole(adminRole);
+	}*/
 
-	public List<User> getCompanyAdmins() {
-	        return userRepository.findByRole(UserRole.ROLE_COMPANY_ADMIN);
-	}
 }
