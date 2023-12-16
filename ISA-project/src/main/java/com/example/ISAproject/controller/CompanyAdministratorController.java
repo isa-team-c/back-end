@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.ISAproject.dto.CompanyAdministratorDto;
 import com.example.ISAproject.model.User;
 import com.example.ISAproject.model.CompanyAdministrator;
-import com.example.ISAproject.model.enumerations.UserRole;
 import com.example.ISAproject.service.UserService;
 import com.example.ISAproject.service.CompanyAdministratorService;
 

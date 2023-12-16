@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.ISAproject.dto.UserDto;
 import com.example.ISAproject.model.User;
-import com.example.ISAproject.model.enumerations.UserRole;
 import com.example.ISAproject.service.EmailService;
 import com.example.ISAproject.service.UserService;
 

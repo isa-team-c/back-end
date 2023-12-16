@@ -9,13 +9,13 @@ INSERT INTO public.users(city, company_information, country, email, is_verified,
 	VALUES ('Cacak', 'preduzece1', 'Srbija', 'admin@gmail.com', true, null, 'Isidora', '$2a$10$lhYgvOwC1Q.fxzQBkwVNI.xqwKaoQiY6Gum5fzeN9jsuYStzORNGi', '065728314', 'softverski inzenjer', 'Milosevic',2);
 
 INSERT INTO public.regular_user(
-	user_id, penalties)
-	VALUES (1, 0);
+	user_id, penalties, role)
+	VALUES (1, 0, 'REGULAR');
 
-INSERT INTO public.company(address, average_rating, description, name)
-	VALUES ('Vuka Karadzica', 5, 'odlicno', 'company1');
-INSERT INTO public.company(address, average_rating, description, name)
-	VALUES ('Cirpanova', 5, 'odlicnooo', 'company2');
+INSERT INTO company (name, address, description, average_rating, work_end_time, work_start_time)
+VALUES ('company1', 'Vuka Karadzica', 'odlicno', 5, '17:00:00', '09:00:00');
+INSERT INTO company (name, address, description, average_rating, work_end_time, work_start_time)
+VALUES ('company2', 'Cirpanova', 'odlicnooo', 5, '19:00:00', '09:00:00');
 
 INSERT INTO public.equipment(description, name, quantity, type)
 	VALUES ('medicinska', 'Stethoscope', 5, 'Medical Device');

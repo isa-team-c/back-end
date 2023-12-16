@@ -1,5 +1,6 @@
 package com.example.ISAproject.dto;
 
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -14,6 +15,8 @@ public class CompanyDto {
 	private String address;
 	private String description;
 	private Double averageRating;
+	private LocalTime workStartTime;
+	private LocalTime workEndTime;
 	private Set<EquipmentDto> equipment;
 	private Set<AppointmentDto> appointments;
 	
@@ -27,19 +30,24 @@ public class CompanyDto {
         address = company.getAddress();
         description = company.getDescription();
         averageRating = company.getAverageRating();
-        
+        workStartTime = company.getWorkStartTime();
+        workEndTime = company.getWorkEndTime();
     }
 
-	public CompanyDto(long id, String name, String address, String description, Double averageRating) {
+	
+
+
+	public CompanyDto(long id, String name, String address, String description, Double averageRating,
+			LocalTime workStartTime, LocalTime workEndTime) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.address = address;
 		this.description = description;
 		this.averageRating = averageRating;
+		this.workStartTime = workStartTime;
+		this.workEndTime = workEndTime;
 	}
-
-
 
 	public long getId() {
 	        return id;
@@ -95,6 +103,23 @@ public class CompanyDto {
 	public void setAppointments(Set<AppointmentDto> appointments) {
 		this.appointments = appointments;
 	}
+
+	public LocalTime getWorkStartTime() {
+		return workStartTime;
+	}
+
+	public void setWorkStartTime(LocalTime workStartTime) {
+		this.workStartTime = workStartTime;
+	}
+
+	public LocalTime getWorkEndTime() {
+		return workEndTime;
+	}
+
+	public void setWorkEndTime(LocalTime workEndTime) {
+		this.workEndTime = workEndTime;
+	}
+	
 	
 	
 }

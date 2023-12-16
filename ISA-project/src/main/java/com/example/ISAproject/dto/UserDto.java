@@ -2,7 +2,6 @@ package com.example.ISAproject.dto;
 
 import com.example.ISAproject.model.Role;
 import com.example.ISAproject.model.User;
-import com.example.ISAproject.model.enumerations.UserRole;
 
 public class UserDto {
 	private long id;
