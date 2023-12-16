@@ -50,8 +50,8 @@ public class EmailService {
 		SimpleMailMessage mail = new SimpleMailMessage();
 		mail.setTo(user.getEmail());
 		mail.setFrom(env.getProperty("spring.mail.username"));
-		mail.setSubject("Primer slanja emaila pomoću asinhronog Spring taska");
-		mail.setText("Odgovor na vasu zalbu: " + text);
+		mail.setSubject("Odgovor na zalbu");
+		mail.setText("Admin sistema je odgovorio na vasu zalbu. Tekst odgovora glasi: \n\n" + text);
 		javaMailSender.send(mail);
 
 		System.out.println("Email poslat!");
