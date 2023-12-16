@@ -2,6 +2,7 @@ package com.example.ISAproject.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class Equipment {
 	private String description;
 	
 	@Column(name = "quantity", nullable = false)
-	@NotEmpty
+	@NotNull
 	private int quantity;
 	
 	public Equipment() { }

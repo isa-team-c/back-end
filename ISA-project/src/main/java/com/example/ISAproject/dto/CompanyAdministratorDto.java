@@ -7,6 +7,7 @@ public class CompanyAdministratorDto {
 	private Long id;
     private UserDto user;
     private CompanyDto companyDto;
+    private boolean loggedInBefore;
 
     public CompanyAdministratorDto() {
     }
@@ -14,6 +15,7 @@ public class CompanyAdministratorDto {
     public CompanyAdministratorDto(CompanyAdministrator companyAdministrator) {
         this.id = companyAdministrator.getId();
         this.user = new UserDto(companyAdministrator.getUser());
+        this.loggedInBefore = companyAdministrator.getLoggedInBefore();
         //this.companyDto = new CompanyDto(companyAdministrator.getCompany());
     }
 
@@ -39,6 +41,14 @@ public class CompanyAdministratorDto {
 
 	public void setCompanyDto(CompanyDto companyDto) {
 		this.companyDto = companyDto;
+	}
+	
+	public boolean getLoggedInBefore() {
+		return loggedInBefore;
+	}
+	
+	public void setLoggedInBefore(boolean loggedInBefore) {
+		this.loggedInBefore = loggedInBefore;
 	}
 }
     

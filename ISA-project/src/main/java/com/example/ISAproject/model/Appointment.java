@@ -53,6 +53,8 @@ public class Appointment {
 		this.isFree = isFree;
 	}
 	
+	public Appointment() {}
+	
 	public Long getId() {
 		return id;
 	}
