@@ -25,6 +25,9 @@ INSERT INTO public.equipment (description,name,quantity,type)
 INSERT INTO public.equipment (description,name,quantity,type) 
 	VALUES ('laboratorijska oprema','Microscope',3,'Laboratory Equipment');
 
+INSERT INTO public.complaints(user_id, company_id, complaint_content)
+	VALUES (1, 1, 'bruhbruh');
+
 INSERT INTO public.company_equipment(
 	company_id, equipment_id)
 	VALUES (1, 1);
