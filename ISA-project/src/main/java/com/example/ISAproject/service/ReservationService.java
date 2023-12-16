@@ -35,17 +35,15 @@ public class ReservationService {
 	private AppointmentRepository appointmentRepository;
 	
 	
-	public Reservation reserveEquipment(Long equipmentId, Long appointmentId, Long userId) {        
-        Equipment equipment = equipmentRepository.findById(equipmentId).orElse(null);
+	public Reservation reserveEquipment(List<Long> equipmentIds, Long appointmentId, Long userId) {        
+		List<Equipment> equipmentList = equipmentRepository.findAllById(equipmentIds);
         Appointment appointment = appointmentRepository.findById(appointmentId).orElse(null);
         User user = userRepository.findById(userId).orElse(null);
         
         Reservation reservation = new Reservation();
         
         reservation.setStatus(ReservationStatus.PENDING);
-        Set<Equipment> equipmentList = new HashSet<Equipment>();
-        equipmentList.add(equipment);
-        reservation.setEquipment(equipmentList);
+        reservation.setEquipment(new HashSet<>(equipmentList));
         reservation.setAppointment(appointment);
         appointment.setIsFree(false);
         reservation.setUser(user);

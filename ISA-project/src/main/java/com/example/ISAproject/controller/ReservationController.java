@@ -33,11 +33,11 @@ public class ReservationController {
 	@Autowired
 	private ReservationService reservationService;
 	
-	@PostMapping("reserveEquipment/{equipmentId}/{appointmentId}/{userId}")
-    public ResponseEntity<String> reserveEquipment(@PathVariable Long equipmentId, @PathVariable Long appointmentId,
+	@PostMapping("reserveEquipment/{equipmentIds}/{appointmentId}/{userId}")
+    public ResponseEntity<String> reserveEquipment(@PathVariable List<Long> equipmentIds, @PathVariable Long appointmentId,
             @PathVariable Long userId) {
 		
-		Reservation savedReservation = reservationService.reserveEquipment(equipmentId, appointmentId, userId);
+		Reservation savedReservation = reservationService.reserveEquipment(equipmentIds, appointmentId, userId);
 		
 		try {
 			System.out.println("Thread id: " + Thread.currentThread().getId());

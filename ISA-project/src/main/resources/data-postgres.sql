@@ -36,11 +36,15 @@ INSERT INTO public.company_administrator(
 
 INSERT INTO public.appointments(
 	id, duration, is_free, start_date, administrator_id)
-	VALUES (1 ,5, false, '2023-12-31T12:00:00', 2);
+	VALUES (1 ,5, true, '2023-12-31T12:00:00', 2);
 
 INSERT INTO public.appointments(
 	id, duration, is_free, start_date, administrator_id)
-	VALUES (2, 30, true, '2023-12-17 22:56:45.647+01', 2);
+	VALUES (2, 30, true, '2024-6-11T12:00:00', 2);
+
+INSERT INTO public.appointments(
+	id, duration, is_free, start_date, administrator_id)
+	VALUES (3 ,5, true, '2024-6-11T12:00:00', 2);
 
 INSERT INTO public.company_appointment(
 	company_id, appointment_id)
@@ -49,15 +53,3 @@ INSERT INTO public.company_appointment(
 INSERT INTO public.company_appointment(
 	company_id, appointment_id)
 	VALUES (1, 2);
-
-INSERT INTO public.reservation(
-	id, status, appointment_id)
-	VALUES (1, 1, 1);
-
-INSERT INTO public.reservation_equipment(
-	reservation_id, equipment_id)
-	VALUES (1, 1);
-
-INSERT INTO public.reservation_user(
-	user_id, reservation_id)
-	VALUES (1, 1);

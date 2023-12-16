@@ -101,8 +101,11 @@ public class EmailService {
 
 	    QRCodeWriter qrCodeWriter = new QRCodeWriter();
 	    String equipmentDetails = reservation.getEquipment().stream()
-	            .map(Equipment::toString)
-	            .collect(Collectors.joining(","));
+	            .map(equipment -> "Equipment ID: " + equipment.getId() +
+	                    "\nName: " + equipment.getName() +
+	                    "\nType: " + equipment.getType() +
+	                    "\nDescription: " + equipment.getDescription())
+	            .collect(Collectors.joining("\n\n"));
 	    String reservationDetails = "Reservation id: " + reservation.getId() +
 	            "\nStatus: " + reservation.getStatus() +
 	            "\nEquipment: " + equipmentDetails +
