@@ -4,7 +4,7 @@ INSERT INTO public.role(name)
 VALUES ('ROLE_COMPANY_ADMINISTRATOR');
 
 INSERT INTO public.users(city, company_information, country, email, is_verified, last_password_reset_date, name, password, phone_number, profession, surname, role_id)
-	VALUES ('Beograd', 'preduzece1', 'Srbija', 'petar@gmail.com', true, null, 'Petar', '$2a$10$lhYgvOwC1Q.fxzQBkwVNI.xqwKaoQiY6Gum5fzeN9jsuYStzORNGi', '065728314', 'softverski inzenjer', 'Knezevic',1);
+	VALUES ('Beograd', 'preduzece1', 'Srbija', 'projekatisa2023@gmail.com', true, null, 'Petar', '$2a$10$lhYgvOwC1Q.fxzQBkwVNI.xqwKaoQiY6Gum5fzeN9jsuYStzORNGi', '065728314', 'softverski inzenjer', 'Knezevic',1);
 INSERT INTO public.users(city, company_information, country, email, is_verified, last_password_reset_date, name, password, phone_number, profession, surname, role_id)
 	VALUES ('Cacak', 'preduzece1', 'Srbija', 'admin@gmail.com', true, null, 'Isidora', '$2a$10$lhYgvOwC1Q.fxzQBkwVNI.xqwKaoQiY6Gum5fzeN9jsuYStzORNGi', '065728314', 'softverski inzenjer', 'Milosevic',2);
 
@@ -40,11 +40,15 @@ INSERT INTO public.company_administrator(
 
 INSERT INTO public.appointments(
 	id, duration, is_free, start_date, administrator_id)
-	VALUES (1 ,5, false, '2023-12-31T12:00:00', 2);
+	VALUES (1 ,5, true, '2023-12-31T12:00:00', 2);
 
 INSERT INTO public.appointments(
 	id, duration, is_free, start_date, administrator_id)
-	VALUES (2, 30, true, '2023-12-17 22:56:45.647+01', 2);
+	VALUES (2, 30, true, '2024-6-11T12:00:00', 2);
+
+INSERT INTO public.appointments(
+	id, duration, is_free, start_date, administrator_id)
+	VALUES (3 ,5, true, '2024-6-11T12:00:00', 2);
 
 INSERT INTO public.company_appointment(
 	company_id, appointment_id)
