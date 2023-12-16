@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
@@ -30,7 +31,7 @@ public class Reservation {
 	@Column(name = "status", nullable = false)
 	private ReservationStatus status;
 	
-	@OneToMany
+	@ManyToMany
 	@JoinTable(name = "reservation_equipment", joinColumns = @JoinColumn(name = "reservation_id", referencedColumnName = "id"),
 		inverseJoinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "id"))
 	private Set<Equipment> equipment  = new HashSet<Equipment>();
