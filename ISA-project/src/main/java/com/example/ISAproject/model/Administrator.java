@@ -19,15 +19,19 @@ public class Administrator {
     @JoinColumn(name = "user_id")
     private User user;
 	
+	@JoinColumn(name = "logged_in_before")
+	private boolean loggedInBefore;
+	
 	public Administrator()
 	{
 		
 	}
 
-	public Administrator(Long id, User user) {
+	public Administrator(Long id, User user, boolean loggedInBefore) {
 		super();
 		this.id = id;
 		this.user = user;
+		this.loggedInBefore = loggedInBefore;
 	}
 
 	public Long getId() {
@@ -44,5 +48,13 @@ public class Administrator {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	public boolean getLoggedInBefore() {
+		return loggedInBefore;
+	}
+	
+	public void setLoggedInBefore(boolean loggedInBefore) {
+		this.loggedInBefore = loggedInBefore;
 	}
 }

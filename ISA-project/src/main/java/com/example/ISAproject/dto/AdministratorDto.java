@@ -6,6 +6,7 @@ import com.example.ISAproject.model.CompanyAdministrator;
 public class AdministratorDto {
 	private Long id;
     private UserDto user;
+    private boolean loggedInBefore;
     
     public AdministratorDto()
     {
@@ -15,6 +16,7 @@ public class AdministratorDto {
     public AdministratorDto(Administrator administrator) {
         this.id = administrator.getId();
         this.user = new UserDto(administrator.getUser());
+        this.loggedInBefore = administrator.getLoggedInBefore();
     }
 
 	public Long getId() {
@@ -31,5 +33,13 @@ public class AdministratorDto {
 
 	public void setUser(UserDto user) {
 		this.user = user;
+	}
+	
+	public boolean getLoggedInBefore() {
+		return loggedInBefore;
+	}
+	
+	public void setLoggedInBefore(boolean loggedInBefore) {
+		this.loggedInBefore = loggedInBefore;
 	}
 }
