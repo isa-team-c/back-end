@@ -47,7 +47,9 @@ public class CompanyController {
 	                company.getName(),
 	                company.getAddress(),
 	                company.getDescription(),
-	                company.getAverageRating()
+	                company.getAverageRating(),
+	                company.getWorkStartTime(),
+	                company.getWorkEndTime()
 	            ))
 	            .collect(Collectors.toList());
 	    } else {
@@ -58,7 +60,9 @@ public class CompanyController {
 	                company.getName(),
 	                company.getAddress(),
 	                company.getDescription(),
-	                company.getAverageRating()
+	                company.getAverageRating(),
+	                company.getWorkStartTime(),
+	                company.getWorkEndTime()
 	            ))
 	            .collect(Collectors.toList());
 	    }
@@ -77,7 +81,8 @@ public class CompanyController {
 		company.setAddress(companyDto.getAddress());
 		company.setDescription(companyDto.getDescription());
 		company.setAverageRating(null);
-		
+		company.setWorkStartTime(null);
+		company.setWorkEndTime(null);
 		companyService.save(company);
 		
 		return new ResponseEntity<>(HttpStatus.CREATED);

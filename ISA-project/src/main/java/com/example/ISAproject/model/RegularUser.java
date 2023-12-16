@@ -2,12 +2,14 @@ package com.example.ISAproject.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
-import com.example.ISAproject.model.enumerations.UserRole;
+import com.example.ISAproject.model.enumerations.RegularUserRole;
 
 @Entity
 public class RegularUser {
@@ -22,17 +24,24 @@ public class RegularUser {
 	@Column(name = "penalties", nullable = false)
 	private Integer penalties;
 	
+	@Column(name = "role")
+	@Enumerated(EnumType.STRING)
+	private RegularUserRole role;
+
 	
 	public RegularUser() {
         
     }
 	
-	public RegularUser(Long id, User user, Integer penalties) {
+	
+	public RegularUser(Long id, User user, Integer penalties, RegularUserRole role) {
 		super();
 		this.id = id;
 		this.user = user;
 		this.penalties = penalties;
+		this.role = role;
 	}
+
 
 	public Long getId() {
 		return id;
@@ -57,6 +66,18 @@ public class RegularUser {
 	public void setPenalties(Integer penalties) {
 		this.penalties = penalties;
 	}
+
+
+	public RegularUserRole getRole() {
+		return role;
+	}
+
+
+	public void setRole(RegularUserRole role) {
+		this.role = role;
+	}
+	
+	
 
 	
 }
