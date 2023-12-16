@@ -1,11 +1,14 @@
 package com.example.ISAproject.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.ISAproject.dto.AppointmentDto;
 import com.example.ISAproject.model.Appointment;
 import com.example.ISAproject.model.Equipment;
 import com.example.ISAproject.model.Reservation;
@@ -50,6 +53,15 @@ public class ReservationService {
         return reservationRepository.save(reservation);
 	}
 	
-	
+	public List<AppointmentDto> getAppointmentsByUserId(long userId) {
+        List<Reservation> userReservations = reservationRepository.getByUserId(userId);
+        List<AppointmentDto> userAppointments = new ArrayList<>();
+
+        for (Reservation reservation : userReservations) {
+            userAppointments.add(new AppointmentDto(reservation.getAppointment()));
+        }
+
+        return userAppointments;
+    }
 	
 }

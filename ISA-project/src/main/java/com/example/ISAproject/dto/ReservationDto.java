@@ -13,14 +13,16 @@ public class ReservationDto {
 	private ReservationStatus status;	
 	private Set<EquipmentDto> equipment;
 	private AppointmentDto appointment;
+	private UserDto user;
 	
 	public ReservationDto(long id, ReservationStatus status, Set<EquipmentDto> equipment,
-			AppointmentDto appointment) {
+			AppointmentDto appointment, UserDto user) {
 		super();
 		this.id = id;
 		this.status = status;
 		this.equipment = equipment;
 		this.appointment = appointment;
+		this.user = user;
 	}
 	
 	public ReservationDto(Reservation reservation)
@@ -32,6 +34,7 @@ public class ReservationDto {
 	        this.equipment.add(new EquipmentDto(equipment));
 	    }
 	    this.appointment = new AppointmentDto(reservation.getAppointment());
+	    this.user = new UserDto(reservation.getUser());
 	}
 
 	public long getId() {
@@ -65,5 +68,14 @@ public class ReservationDto {
 	public void setAppointment(AppointmentDto appointment) {
 		this.appointment = appointment;
 	}
+
+	public UserDto getUser() {
+		return user;
+	}
+
+	public void setUser(UserDto user) {
+		this.user = user;
+	}
+	
 	
 }

@@ -49,3 +49,15 @@ INSERT INTO public.company_appointment(
 INSERT INTO public.company_appointment(
 	company_id, appointment_id)
 	VALUES (1, 2);
+
+INSERT INTO public.reservation(
+	id, status, appointment_id)
+	VALUES (1, 1, 1);
+
+INSERT INTO public.reservation_equipment(
+	reservation_id, equipment_id)
+	VALUES (1, 1);
+
+INSERT INTO public.reservation_user(
+	user_id, reservation_id)
+	VALUES (1, 1);
