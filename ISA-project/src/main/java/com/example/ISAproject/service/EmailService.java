@@ -38,5 +38,22 @@ public class EmailService {
 		System.out.println("Email poslat!");
 	}
 
+	
+	
+	@Async
+	public void sendMail(User user, String text) throws MailException, InterruptedException {
+		System.out.println("Async metoda se izvrsava u drugom Threadu u odnosu na prihvaceni zahtev. Thread id: " + Thread.currentThread().getId());
+		//Simulacija duze aktivnosti da bi se uocila razlika
+		Thread.sleep(10000);
+		System.out.println("Slanje emaila...");
 
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(user.getEmail());
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Primer slanja emaila pomoću asinhronog Spring taska");
+		mail.setText("Odgovor na vasu zalbu: " + text);
+		javaMailSender.send(mail);
+
+		System.out.println("Email poslat!");
+	}
 }

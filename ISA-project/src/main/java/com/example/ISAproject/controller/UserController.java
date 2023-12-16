@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.ISAproject.dto.UserDto;
@@ -105,4 +106,22 @@ public class UserController{
         fooObj.put("foo", "bar");
         return fooObj;
     }
+	
+	
+	
+	
+	
+	@PostMapping(value = "/auth/sendResponse")
+	public ResponseEntity<String> sendResponse(@RequestBody UserDto userDto, @RequestParam("responseContent") String responseContent) {
+	    User savedUser = userService.findByEmail(userDto.getEmail());
+	    
+	    try {
+	        System.out.println("Thread id: " + Thread.currentThread().getId());
+	        emailService.sendMail(savedUser, responseContent);         
+	    } catch(Exception e) {
+	        logger.info("Error sending email: " + e.getMessage());
+	    }
+	    
+	    return new ResponseEntity<>(HttpStatus.CREATED);
+	}
 }
