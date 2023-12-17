@@ -11,7 +11,6 @@ import com.example.ISAproject.model.Appointment;
 import com.example.ISAproject.model.Company;
 import com.example.ISAproject.model.CompanyAdministrator;
 import com.example.ISAproject.model.User;
-import com.example.ISAproject.model.enumerations.UserRole;
 import com.example.ISAproject.repository.CompanyAdministratorRepository;
 import com.example.ISAproject.repository.CompanyRepository;
 import com.example.ISAproject.repository.UserRepository;
