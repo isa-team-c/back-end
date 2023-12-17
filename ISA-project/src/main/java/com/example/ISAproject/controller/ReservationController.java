@@ -54,5 +54,4 @@ public class ReservationController {
         List<AppointmentDto> userAppointments = reservationService.getAppointmentsByUserId(userId);
         return new ResponseEntity<>(userAppointments, HttpStatus.OK);
     }
-
 }

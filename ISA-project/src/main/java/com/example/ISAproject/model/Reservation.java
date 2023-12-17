@@ -104,9 +104,7 @@ public class Reservation {
 		return user;
 	}
 
-
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
 }

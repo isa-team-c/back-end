@@ -40,7 +40,7 @@ public class Appointment {
 	private int duration;
 	
 	@Column(name = "is_free", nullable = false)
-    private Boolean isFree;   
+    private Boolean isFree;  
 	
 	public Appointment() {}
 	

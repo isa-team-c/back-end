@@ -76,6 +76,4 @@ public class ReservationDto {
 	public void setUser(UserDto user) {
 		this.user = user;
 	}
-	
-	
 }
