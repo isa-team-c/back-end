@@ -48,7 +48,7 @@ INSERT INTO public.appointments(
 
 INSERT INTO public.appointments(
 	id, duration, is_free, start_date, administrator_id)
-	VALUES (3 ,5, true, '2024-6-11T12:00:00', 2);
+	VALUES (3 ,5, false, '2024-6-11T12:00:00', 2);
 
 INSERT INTO public.company_appointment(
 	company_id, appointment_id)
@@ -57,3 +57,7 @@ INSERT INTO public.company_appointment(
 INSERT INTO public.company_appointment(
 	company_id, appointment_id)
 	VALUES (1, 2);
+
+INSERT INTO public.company_appointment(
+	company_id, appointment_id)
+	VALUES (1, 3);

@@ -12,6 +12,7 @@ import com.example.ISAproject.dto.UserDto;
 import com.example.ISAproject.model.CompanyAdministrator;
 import com.example.ISAproject.repository.AppointmentRepository;
 import com.example.ISAproject.repository.CompanyAdministratorRepository;
+import com.example.ISAproject.repository.CompanyRepository;
 import com.example.ISAproject.model.*;
 
 @Service
@@ -23,6 +24,9 @@ public class CompanyAdministratorService {
     @Autowired
     private AppointmentRepository appointmentRepository;
 
+    @Autowired
+    private CompanyRepository companyRepository;
+    
     @Autowired
     private UserService userService;
 
