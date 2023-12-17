@@ -10,6 +10,8 @@ import com.example.ISAproject.model.CompanyAdministrator;
 public interface CompanyAdministratorRepository extends JpaRepository<CompanyAdministrator, Long>{
 
 
-	List<CompanyAdministrator> findByCompany(Long companyId);
+	List<CompanyAdministrator> findByCompany(Company company);
+	
+	CompanyAdministrator findById(long id);
 
 }

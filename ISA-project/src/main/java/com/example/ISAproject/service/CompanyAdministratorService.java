@@ -64,8 +64,8 @@ public class CompanyAdministratorService {
         return companyAdministratorRepository.save(newCompanyAdmin);
     }
     
-    public List<CompanyAdministrator> findByCompanyId(long companyId) {
-        return companyAdministratorRepository.findByCompany(companyId);
+    public List<CompanyAdministrator> findByCompany(Company company) {
+        return companyAdministratorRepository.findByCompany(company);
     }
     
     

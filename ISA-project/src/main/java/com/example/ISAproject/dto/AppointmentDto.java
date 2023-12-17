@@ -74,6 +74,7 @@ public class AppointmentDto {
 	public void setIsFree(Boolean isFree) {
 		this.isFree = isFree;
 	}
+
 	
     
     
