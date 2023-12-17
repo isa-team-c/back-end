@@ -18,6 +18,9 @@ public class EquipmentDto {
 		description = equipment.getDescription();
 		quantity = equipment.getQuantity();
 	}	
+	public EquipmentDto() {
+	    
+	}
 
 	public EquipmentDto(long id, String name, String type, String description, int quantity) {
 		super();

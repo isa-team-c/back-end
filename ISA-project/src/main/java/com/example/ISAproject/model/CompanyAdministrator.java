@@ -25,15 +25,19 @@ public class CompanyAdministrator {
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = true) 
     private Company company;
+    
+    @JoinColumn(name = "logged_in_before")
+	private boolean loggedInBefore;
 
     
     public CompanyAdministrator() {}
     
-    public CompanyAdministrator(Long id, User user, Company company) {
+    public CompanyAdministrator(Long id, User user, Company company, boolean loggedInBefore) {
         super();
         this.id = id;
         this.user = user;
         this.company = company;
+        this.loggedInBefore = loggedInBefore;
     }
 
     public Long getId() {
@@ -59,4 +63,12 @@ public class CompanyAdministrator {
     public void setCompany(Company company) {
         this.company = company;
     }
+    
+    public boolean getLoggedInBefore() {
+		return loggedInBefore;
+	}
+	
+	public void setLoggedInBefore(boolean loggedInBefore) {
+		this.loggedInBefore = loggedInBefore;
+	}
 }

@@ -2,9 +2,10 @@ package com.example.ISAproject.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
+import com.example.ISAproject.model.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import com.example.ISAproject.model.CompanyAdministrator;
 import com.example.ISAproject.repository.AppointmentRepository;
 import com.example.ISAproject.repository.CompanyAdministratorRepository;
 import com.example.ISAproject.repository.CompanyRepository;
+import com.example.ISAproject.repository.UserRepository;
 import com.example.ISAproject.model.*;
 import com.example.ISAproject.model.Company;
 
@@ -35,6 +37,9 @@ public class CompanyAdministratorService {
     
     @Autowired
 	private RoleService roleService;
+    
+    @Autowired
+	private UserRepository userRepository;
     
     @Autowired
 	private PasswordEncoder passwordEncoder;
@@ -70,6 +75,7 @@ public class CompanyAdministratorService {
         
         newCompanyAdmin.setUser(newUser);
         newCompanyAdmin.setCompany(null);
+        newCompanyAdmin.setLoggedInBefore(false);
         
         return companyAdministratorRepository.save(newCompanyAdmin);
     }
@@ -78,4 +84,47 @@ public class CompanyAdministratorService {
         return companyAdministratorRepository.findByCompany(company);
     }   
     
+    public CompanyAdministrator updateCompanyAdministratorForPassword(CompanyAdministratorDto updatedAdminDto) {
+		User existingUser = userRepository.findById(updatedAdminDto.getUser().getId())
+			    .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + updatedAdminDto.getUser().getId()));
+
+			CompanyAdministrator existingAdministrator = companyAdministratorRepository.findById(updatedAdminDto.getId())
+			    .orElseThrow(() -> new EntityNotFoundException("Admin not found with ID: " + updatedAdminDto.getId()));
+		
+		if((existingUser != null) && (existingAdministrator != null)) {
+			existingUser.setEmail(updatedAdminDto.getUser().getEmail());
+			existingUser.setPassword(passwordEncoder.encode(updatedAdminDto.getUser().getPassword()));
+	        existingUser.setName(updatedAdminDto.getUser().getName());
+	        existingUser.setSurname(updatedAdminDto.getUser().getSurname());
+	        existingUser.setCity(updatedAdminDto.getUser().getCity());
+	        existingUser.setCountry(updatedAdminDto.getUser().getCountry());
+	        existingUser.setPhoneNumber(updatedAdminDto.getUser().getPhoneNumber());
+	        existingUser.setProfession(updatedAdminDto.getUser().getProfession());
+	        existingUser.setCompanyInformation(updatedAdminDto.getUser().getCompanyInformation());
+	        Role role = roleService.findByName("ROLE_COMPANY_ADMIN");
+	        existingUser.setRole(role);
+	        existingUser.setIsVerified(true);
+	        
+	        userRepository.save(existingUser);
+	        
+	        existingAdministrator.setId(updatedAdminDto.getId());
+	        existingAdministrator.setUser(existingUser);
+	        existingAdministrator.setLoggedInBefore(updatedAdminDto.getLoggedInBefore());
+	        
+	        return companyAdministratorRepository.save(existingAdministrator);
+		} else {
+        	
+            throw new EntityNotFoundException("Admin not found with ID: " + updatedAdminDto.getId());
+        }
+	}
+    
+    
+    public CompanyAdministrator findByUserId(Long userId) {
+        return companyAdministratorRepository.findByUserId(userId);
+    }
+
 }
+
+  
+    
+

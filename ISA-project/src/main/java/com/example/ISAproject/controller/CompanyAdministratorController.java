@@ -80,6 +80,24 @@ public class CompanyAdministratorController{
         }
     }
 	
+	@PutMapping(value = "/updateForPassword")
+	public ResponseEntity<String> updateCompanyAdministratorForPassword(@RequestBody CompanyAdministratorDto administratorDto)
+	{
+		companyAdministratorService.updateCompanyAdministratorForPassword(administratorDto);
+		
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@GetMapping("/user/{userId}")
+    public ResponseEntity<CompanyAdministrator> getCompanyAdministratorByUserId(@PathVariable Long userId) {
+        CompanyAdministrator administrator = companyAdministratorService.findByUserId(userId);
+        if (administrator != null) {
+            return ResponseEntity.ok(administrator);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+	
 	
 }
 	

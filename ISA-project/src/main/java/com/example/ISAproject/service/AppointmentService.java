@@ -97,6 +97,10 @@ public class AppointmentService {
 	public List<Appointment> findByCompanyAdministrator(CompanyAdministrator administrator) {
         return appointmentRepository.findByCompanyAdministrator(administrator);
     }
+
+	public Appointment save(Appointment appointment) {
+		return appointmentRepository.save(appointment);
+	}
 	
 	public Appointment saveGeneratedAppointment(AppointmentDto appointmentDto) {
 	    try {
@@ -121,9 +125,10 @@ public class AppointmentService {
 	    } catch (Exception e) {
 	        throw new RuntimeException("An error occurred while saving the appointment.", e);
 	    }
+
+
 	}
 
-	
-	
 
+	
 }

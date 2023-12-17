@@ -2,6 +2,9 @@ package com.example.ISAproject.dto;
 
 import java.time.LocalTime;
 import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -33,6 +36,9 @@ public class CompanyDto {
         averageRating = company.getAverageRating();
         workStartTime = company.getWorkStartTime();
         workEndTime = company.getWorkEndTime();
+        /*for (Appointment appointment : company.getAppointments()) {
+	        this.appointments.add(new AppointmentDto(appointment));
+	    }*/
     }
 
 	
@@ -87,6 +93,24 @@ public class CompanyDto {
 
 	public void setAverageRating(Double averageRating) {
 		this.averageRating = averageRating;
+	}
+	
+	
+
+	public LocalTime getWorkStartTime() {
+		return workStartTime;
+	}
+
+	public void setWorkStartTime(LocalTime workStartTime) {
+		this.workStartTime = workStartTime;
+	}
+
+	public LocalTime getWorkEndTime() {
+		return workEndTime;
+	}
+
+	public void setWorkEndTime(LocalTime workEndTime) {
+		this.workEndTime = workEndTime;
 	}
 
 	public Set<EquipmentDto> getEquipment() {

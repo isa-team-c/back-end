@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.ISAproject.dto.AppointmentDto;
 import com.example.ISAproject.dto.CompanyDto;
 import com.example.ISAproject.model.Appointment;
+import com.example.ISAproject.model.Equipment;
 import com.example.ISAproject.model.Company;
 import com.example.ISAproject.model.Equipment;
 import com.example.ISAproject.service.CompanyService;
@@ -140,6 +142,8 @@ public class CompanyController {
             companyToUpdate.setAddress(updatedCompanyDto.getAddress());
             companyToUpdate.setDescription(updatedCompanyDto.getDescription());
             companyToUpdate.setAverageRating(updatedCompanyDto.getAverageRating());
+            companyToUpdate.setWorkStartTime(updatedCompanyDto.getWorkStartTime());
+            companyToUpdate.setWorkEndTime(updatedCompanyDto.getWorkEndTime());
            
 
             Company updatedCompany = companyService.updateCompany(companyToUpdate);
@@ -215,4 +219,44 @@ public class CompanyController {
 	    }
 	}
 
+	@DeleteMapping("/{companyId}/equipment/{equipmentId}")
+    public ResponseEntity<String> deleteCompanyEquipment(
+            @PathVariable long companyId,
+            @PathVariable long equipmentId
+    ) {
+        try {
+            companyService.deleteEquipmentByCompanyIdAndEquipmentId(companyId, equipmentId);
+            return new ResponseEntity<>("Equipment deleted successfully", HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+	
+	@PostMapping("/save-with-equipment")
+    public ResponseEntity<Company> saveCompanyWithEquipment(
+            @RequestBody Company company,
+            @RequestBody List<Equipment> equipmentList) {
+
+        Company savedCompany = companyService.saveCompanyWithEquipment(company, equipmentList);
+        return ResponseEntity.ok(savedCompany);
+    }
+
+	@PostMapping("/{companyId}/add-equipment")
+    public ResponseEntity<Company> addEquipmentToCompany(
+            @PathVariable("companyId") Long companyId,
+            @RequestBody Equipment equipmentToAdd
+    ) {
+        try {
+            Company company = companyService.findCompanyById(companyId);
+            if (company == null) {
+                return ResponseEntity.notFound().build();
+            }
+            
+            Company updatedCompany = companyService.addEquipmentToCompany(company, equipmentToAdd);
+            return ResponseEntity.ok(updatedCompany);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+	
 }

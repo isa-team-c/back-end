@@ -13,4 +13,6 @@ public interface CompanyAdministratorRepository extends JpaRepository<CompanyAdm
 	CompanyAdministrator findByUser(User user);
 	List<CompanyAdministrator> findByCompany(Company company);	
 	CompanyAdministrator findById(long id);
+    CompanyAdministrator findByUserId(Long userId);
+
 }

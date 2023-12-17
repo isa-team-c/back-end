@@ -6,10 +6,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.ISAproject.model.Company;
 
-public interface CompanyRepository extends JpaRepository<Company, Long>{	
-    
-	List<Company> findByNameContainingIgnoreCaseOrAddressContainingIgnoreCase(String name, String address);
 
+public interface CompanyRepository extends JpaRepository<Company, Long>{
+	
+    List<Company> findByNameContainingIgnoreCaseOrAddressContainingIgnoreCase(String name, String address);
+    
     @Override
     <S extends Company> S save(S entity);
+
+  
 }

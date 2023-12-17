@@ -19,6 +19,8 @@ INSERT INTO public.regular_user(
 	user_id, penalties, role)
 	VALUES (1, 0, 'REGULAR');
 
+
+
 INSERT INTO public.administrator(
 	user_id, logged_in_before)
 	VALUES (4, false);
@@ -47,11 +49,11 @@ INSERT INTO public.company_equipment(
 	VALUES (2, 3);
 
 INSERT INTO public.company_administrator(
-	user_id, company_id)
-	VALUES (2, 1);
+	user_id, company_id, logged_in_before)
+	VALUES (2, 1,true);
 INSERT INTO public.company_administrator(
-	user_id, company_id)
-	VALUES (3, 2);
+	user_id, company_id,logged_in_before)
+	VALUES (3, 2,false);
 
 INSERT INTO public.appointments(
 	id, duration, is_free, start_date, administrator_id)
@@ -76,3 +78,4 @@ INSERT INTO public.company_appointment(
 INSERT INTO public.company_appointment(
 	company_id, appointment_id)
 	VALUES (2, 3);
+	
