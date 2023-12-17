@@ -50,5 +50,14 @@ public class AppointmentController {
 		return new ResponseEntity<>(HttpStatus.CREATED);
 
 	}
+	
+	@PostMapping(value = "/generated")
+    public ResponseEntity<AppointmentDto> saveGeneratedAppointment(@RequestBody AppointmentDto appointmentDto)
+    {
+
+        Appointment appointment = appointmentService.saveGeneratedAppointment(appointmentDto);
+
+        return new ResponseEntity<AppointmentDto>(new AppointmentDto(appointment), HttpStatus.CREATED);
+    }
 
 }

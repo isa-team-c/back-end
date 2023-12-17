@@ -1,5 +1,7 @@
 package com.example.ISAproject.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.ISAproject.model.Company;
@@ -10,4 +12,5 @@ public interface CompanyAdministratorRepository extends JpaRepository<CompanyAdm
 	 Company findCompanyByUserId(Long userId);
 	 CompanyAdministrator findByUser(User user);
 	 CompanyAdministrator findByUserId(Long userId);
+	 List<CompanyAdministrator> findByCompany(Company company);
 }
