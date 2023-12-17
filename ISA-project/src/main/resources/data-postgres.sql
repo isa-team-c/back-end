@@ -31,12 +31,12 @@ INSERT INTO company (id, name, address, description, average_rating, work_end_ti
 INSERT INTO company (id, name, address, description, average_rating, work_end_time, work_start_time)
     VALUES (2, 'company2', 'Cirpanova', 'odlicnooo', 5, '19:00:00', '09:00:00');
 
-INSERT INTO public.equipment(id, description, name, quantity, type)
-	VALUES (1, 'medicinska', 'Stethoscope', 5, 'Medical Device');
-INSERT INTO public.equipment (id, description,name,quantity,type) 
-	VALUES (2, 'racunarska oprema','Laptop',10,'IT Equipment');
-INSERT INTO public.equipment (id, description,name,quantity,type) 
-	VALUES (3, 'laboratorijska oprema','Microscope',3,'Laboratory Equipment');
+INSERT INTO public.equipment( description, name, quantity, type)
+	VALUES ( 'medicinska', 'Stethoscope', 5, 'Medical Device');
+INSERT INTO public.equipment ( description,name,quantity,type) 
+	VALUES ( 'racunarska oprema','Laptop',10,'IT Equipment');
+INSERT INTO public.equipment ( description,name,quantity,type) 
+	VALUES ( 'laboratorijska oprema','Microscope',3,'Laboratory Equipment');
 
 INSERT INTO public.company_equipment(
 	company_id, equipment_id)

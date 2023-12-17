@@ -18,7 +18,6 @@ import com.example.ISAproject.model.User;
 import com.example.ISAproject.model.Equipment;
 import com.example.ISAproject.model.Reservation;
 import com.example.ISAproject.model.enumerations.ReservationStatus;
-import com.example.ISAproject.model.enumerations.UserRole;
 import com.example.ISAproject.repository.CompanyAdministratorRepository;
 import com.example.ISAproject.repository.CompanyRepository;
 import com.example.ISAproject.repository.EquipmentRepository;
@@ -111,15 +110,7 @@ public class CompanyService {
 		return companyRepository.findById(id).orElseGet(null);
 	}
 	
-	public Set<Equipment> getEquipmentByCompanyId(long companyId) {
-        Company company = findById(companyId);
-
-        if (company == null) {
-            throw new EntityNotFoundException("Company not found with id: " + companyId);
-        }
-
-        return company.getEquipment();
-    }
+	
 	
 	public Set<Appointment> getAppointmentsByCompanyId(long companyId) {
         Company company = findById(companyId);

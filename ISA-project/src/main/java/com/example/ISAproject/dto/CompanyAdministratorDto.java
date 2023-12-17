@@ -4,7 +4,7 @@ import com.example.ISAproject.model.Company;
 import com.example.ISAproject.model.CompanyAdministrator;
 
 public class CompanyAdministratorDto {
-	private Long id;
+	private long id;
     private UserDto user;
     private CompanyDto companyDto;
     private boolean loggedInBefore;

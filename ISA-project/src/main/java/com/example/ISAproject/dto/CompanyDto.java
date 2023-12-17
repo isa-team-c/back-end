@@ -129,21 +129,7 @@ public class CompanyDto {
 		this.appointments = appointments;
 	}
 
-	public LocalTime getWorkStartTime() {
-		return workStartTime;
-	}
-
-	public void setWorkStartTime(LocalTime workStartTime) {
-		this.workStartTime = workStartTime;
-	}
-
-	public LocalTime getWorkEndTime() {
-		return workEndTime;
-	}
-
-	public void setWorkEndTime(LocalTime workEndTime) {
-		this.workEndTime = workEndTime;
-	}
+	
 	
 	
 	
