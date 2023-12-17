@@ -21,6 +21,7 @@ import com.example.ISAproject.dto.CompanyDto;
 import com.example.ISAproject.dto.EquipmentDto;
 import com.example.ISAproject.model.Company;
 import com.example.ISAproject.model.Equipment;
+import com.example.ISAproject.service.CompanyService;
 import com.example.ISAproject.service.EquipmentService;
 import com.example.ISAproject.service.UserService;
 
@@ -30,10 +31,12 @@ import com.example.ISAproject.service.UserService;
 public class EquipmentController {
 	
 	private EquipmentService equipmentService;
+	private CompanyService companyService;
 	
 	@Autowired
-    public EquipmentController(EquipmentService equipmentService) {
+    public EquipmentController(EquipmentService equipmentService, CompanyService companyService) {
         this.equipmentService = equipmentService;
+        this.companyService = companyService;
     }
 	
 	@GetMapping("/all")
@@ -111,6 +114,38 @@ public class EquipmentController {
 	        return new ResponseEntity<>("Equipment successfully deleted", HttpStatus.OK);
 	    } else {
 	        return new ResponseEntity<>("Equipment not found", HttpStatus.NOT_FOUND);
+	    }
+	}
+	
+	@PostMapping(value = "/{companyId}/addToCompany")
+	public ResponseEntity<String> AddEquipmentToCompany(@RequestBody EquipmentDto equipmentDto, @PathVariable Long companyId) {
+	    try {
+	        Equipment equipment = new Equipment();
+	        equipment.setName(equipmentDto.getName());
+	        equipment.setType(equipmentDto.getType());
+	        equipment.setDescription(equipmentDto.getDescription());
+	        equipment.setQuantity(equipmentDto.getQuantity());
+
+	        // Čuvanje opreme
+	        Equipment savedEquipment = equipmentService.save(equipment);
+
+	        if (savedEquipment != null) {
+	            // Pronalaženje kompanije
+	            Company company = companyService.findCompanyById(companyId);
+
+	            if (company != null) {
+	                // Dodavanje opreme kompaniji
+	                company.getEquipment().add(savedEquipment);
+	                companyService.updateCompany(company);
+	                return new ResponseEntity<>(HttpStatus.CREATED);
+	            } else {
+	                return new ResponseEntity<>("Company not found", HttpStatus.NOT_FOUND);
+	            }
+	        } else {
+	            return new ResponseEntity<>("Failed to save equipment", HttpStatus.INTERNAL_SERVER_ERROR);
+	        }
+	    } catch (Exception ex) {
+	        return new ResponseEntity<>("Error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	    }
 	}
 

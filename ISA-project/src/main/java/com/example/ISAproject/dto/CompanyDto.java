@@ -1,5 +1,6 @@
 package com.example.ISAproject.dto;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -13,6 +14,8 @@ public class CompanyDto {
 	private String address;
 	private String description;
 	private Double averageRating;
+	private LocalTime workStartTime;
+	private LocalTime workEndTime;
 	private Set<EquipmentDto> equipment;
 	private Set<AppointmentDto> appointments;
 	
@@ -28,13 +31,15 @@ public class CompanyDto {
         address = company.getAddress();
         description = company.getDescription();
         averageRating = company.getAverageRating();
-	    /*for (Appointment appointment : company.getAppointments()) {
+        workStartTime = company.getWorkStartTime();
+        workEndTime = company.getWorkEndTime();
+        /*for (Appointment appointment : company.getAppointments()) {
 	        this.appointments.add(new AppointmentDto(appointment));
 	    }*/
     }
 
 
-	public CompanyDto(long id, String name, String address, String description, Double averageRating,
+	public CompanyDto(long id, String name, String address, String description, Double averageRating, LocalTime workStartTime, LocalTime workEndTime,
 			Set<EquipmentDto> equipment, Set<AppointmentDto> appointments) {
 		super();
 		this.id = id;
@@ -42,6 +47,8 @@ public class CompanyDto {
 		this.address = address;
 		this.description = description;
 		this.averageRating = averageRating;
+		this.workStartTime = workStartTime;
+		this.workEndTime = workEndTime;
 		this.equipment = equipment;
 		this.appointments = appointments;
 	}
@@ -85,6 +92,24 @@ public class CompanyDto {
 
 	public void setAverageRating(Double averageRating) {
 		this.averageRating = averageRating;
+	}
+	
+	
+
+	public LocalTime getWorkStartTime() {
+		return workStartTime;
+	}
+
+	public void setWorkStartTime(LocalTime workStartTime) {
+		this.workStartTime = workStartTime;
+	}
+
+	public LocalTime getWorkEndTime() {
+		return workEndTime;
+	}
+
+	public void setWorkEndTime(LocalTime workEndTime) {
+		this.workEndTime = workEndTime;
 	}
 
 	public Set<EquipmentDto> getEquipment() {

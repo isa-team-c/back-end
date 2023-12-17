@@ -1,6 +1,7 @@
 package com.example.ISAproject.service;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,10 +15,13 @@ import com.example.ISAproject.model.Company;
 import com.example.ISAproject.model.CompanyAdministrator;
 import com.example.ISAproject.model.User;
 import com.example.ISAproject.model.Equipment;
+import com.example.ISAproject.model.Reservation;
+import com.example.ISAproject.model.enumerations.ReservationStatus;
 import com.example.ISAproject.model.enumerations.UserRole;
 import com.example.ISAproject.repository.CompanyAdministratorRepository;
 import com.example.ISAproject.repository.CompanyRepository;
 import com.example.ISAproject.repository.EquipmentRepository;
+import com.example.ISAproject.repository.ReservationRepository;
 import com.example.ISAproject.repository.UserRepository;
 
 
@@ -33,12 +37,14 @@ public class CompanyService {
     private CompanyRepository companyRepository;
 	private CompanyAdministratorRepository companyAdministratorRepository;
 	private EquipmentRepository equipmentRepository;
+	private ReservationRepository reservationRepository;
 
 	 @Autowired
         
-    public CompanyService(CompanyAdministratorRepository companyAdministratorRepository,EquipmentRepository equipmentRepository ) {
+    public CompanyService(CompanyAdministratorRepository companyAdministratorRepository,EquipmentRepository equipmentRepository,ReservationRepository reservationRepository ) {
        this.companyAdministratorRepository = companyAdministratorRepository;
        this.equipmentRepository = equipmentRepository;
+       this.reservationRepository = reservationRepository;
     }
 
 	public List<Company> searchCompanies(String searchTerm) {
@@ -108,12 +114,61 @@ public class CompanyService {
             throw new EntityNotFoundException("Equipment with id " + equipmentId + " is not associated with company id " + companyId);
         }
 
-        // Uklanjanje opreme iz liste opreme kompanije
-        company.getEquipment().remove(equipmentToDelete);
+        // Provera da li je oprema rezervisana i da li su rezervacije preuzete
+        if (!isEquipmentReservedAndTaken(equipmentId)) {
+            // Uklanjanje opreme iz liste opreme kompanije
+            company.getEquipment().remove(equipmentToDelete);
 
-        // Brisanje opreme iz baze podataka
-        equipmentRepository.delete(equipmentToDelete);
+            // Brisanje opreme iz baze podataka
+            equipmentRepository.delete(equipmentToDelete);
+        } else {
+            throw new IllegalStateException("Equipment cannot be deleted as it has pending reservations or is not taken.");
+        }
     }
+
+    private boolean isEquipmentReservedAndTaken(long equipmentId) {
+        Equipment equipment = equipmentRepository.findById(equipmentId)
+            .orElseThrow(() -> new EntityNotFoundException("Equipment not found with id: " + equipmentId));
+
+        // Dobijanje svih rezervacija za ovu opremu
+        List<Reservation> reservations = reservationRepository.findByEquipmentId(equipmentId);
+
+        for (Reservation reservation : reservations) {
+            if (reservation.getStatus() != ReservationStatus.TAKEN) {
+                // Ukoliko je status rezervacije različit od TAKEN, oprema nije preuzeta
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
+    public Company saveCompanyWithEquipment(Company company, List<Equipment> equipmentList) {
+        // Sačuvaj kompaniju
+        Company savedCompany = companyRepository.save(company);
+
+        // Postavi opremu kompaniji i sačuvaj u bazi
+        savedCompany.setEquipment(new HashSet<>(equipmentList));
+        companyRepository.save(savedCompany);
+
+        return savedCompany;
+    }
+    
+    public Company addEquipmentToCompany(Company company, Equipment equipment) {
+        // Inicijalizacija liste opreme ako nije inicijalizovana
+        Set<Equipment> companyEquipment = company.getEquipment();
+        if (companyEquipment == null) {
+            companyEquipment = new HashSet<>();
+            company.setEquipment(companyEquipment);
+        }
+
+        // Dodavanje opreme kompaniji
+        companyEquipment.add(equipment);
+
+        // Sačuvajte kompaniju sa dodatom opremom
+        return companyRepository.save(company);
+    }
+
 
 
 }

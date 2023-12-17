@@ -1,5 +1,6 @@
 package com.example.ISAproject.model;
 
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,6 +28,12 @@ public class Company {
 	@Column(name = "average_rating",  nullable = true)
 	private Double averageRating;
 	
+	@Column(name = "work_start_time")
+    private LocalTime workStartTime;
+
+    @Column(name = "work_end_time")
+    private LocalTime workEndTime;
+	
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "company_equipment", joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "id"),
 		inverseJoinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "id"))
@@ -41,7 +48,7 @@ public class Company {
 	public Company() { }
 
 
-	public Company(long id, @NotEmpty String name, @NotEmpty String address, String description, Double averageRating,
+	public Company(long id, @NotEmpty String name, @NotEmpty String address, String description, Double averageRating, LocalTime workStartTime, LocalTime workEndTime,
 			Set<Equipment> equipment, Set<Appointment> appointments) {
 		super();
 		Id = id;
@@ -49,6 +56,8 @@ public class Company {
 		this.address = address;
 		this.description = description;
 		this.averageRating = averageRating;
+		this.workStartTime = workStartTime;
+		this.workEndTime = workEndTime;
 		this.equipment = equipment;
 		this.appointments = appointments;
 	}
@@ -92,6 +101,28 @@ public class Company {
 	public void setAverageRating(Double averageRating) {
 		this.averageRating = averageRating;
 	}
+	
+	
+
+	public LocalTime getWorkStartTime() {
+		return workStartTime;
+	}
+
+
+	public void setWorkStartTime(LocalTime workStartTime) {
+		this.workStartTime = workStartTime;
+	}
+
+
+	public LocalTime getWorkEndTime() {
+		return workEndTime;
+	}
+
+
+	public void setWorkEndTime(LocalTime workEndTime) {
+		this.workEndTime = workEndTime;
+	}
+
 
 	public Set<Equipment> getEquipment() {
 		return equipment;

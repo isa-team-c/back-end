@@ -64,6 +64,8 @@ public class CompanyController {
 		company.setAddress(companyDto.getAddress());
 		company.setDescription(companyDto.getDescription());
 		company.setAverageRating(null);
+		company.setWorkStartTime(companyDto.getWorkStartTime());
+		company.setWorkEndTime(companyDto.getWorkEndTime());
 		
 		companyService.save(company);
 		
@@ -117,6 +119,8 @@ public class CompanyController {
             companyToUpdate.setAddress(updatedCompanyDto.getAddress());
             companyToUpdate.setDescription(updatedCompanyDto.getDescription());
             companyToUpdate.setAverageRating(updatedCompanyDto.getAverageRating());
+            companyToUpdate.setWorkStartTime(updatedCompanyDto.getWorkStartTime());
+            companyToUpdate.setWorkEndTime(updatedCompanyDto.getWorkEndTime());
            
 
             Company updatedCompany = companyService.updateCompany(companyToUpdate);
@@ -170,6 +174,33 @@ public class CompanyController {
             return new ResponseEntity<>("Equipment deleted successfully", HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+	
+	@PostMapping("/save-with-equipment")
+    public ResponseEntity<Company> saveCompanyWithEquipment(
+            @RequestBody Company company,
+            @RequestBody List<Equipment> equipmentList) {
+
+        Company savedCompany = companyService.saveCompanyWithEquipment(company, equipmentList);
+        return ResponseEntity.ok(savedCompany);
+    }
+
+	@PostMapping("/{companyId}/add-equipment")
+    public ResponseEntity<Company> addEquipmentToCompany(
+            @PathVariable("companyId") Long companyId,
+            @RequestBody Equipment equipmentToAdd
+    ) {
+        try {
+            Company company = companyService.findCompanyById(companyId);
+            if (company == null) {
+                return ResponseEntity.notFound().build();
+            }
+            
+            Company updatedCompany = companyService.addEquipmentToCompany(company, equipmentToAdd);
+            return ResponseEntity.ok(updatedCompany);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 	
