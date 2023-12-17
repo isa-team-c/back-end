@@ -47,6 +47,18 @@ public class AdministratorController {
 		return new ResponseEntity<AdministratorDto>(new AdministratorDto(administrator), HttpStatus.OK);
 	}
 	
+	@GetMapping("/byUserId/{userId}")
+	public ResponseEntity<AdministratorDto> getByUserId(@PathVariable Long userId) {
+
+		Administrator administrator = administratorService.findByUserId(userId);
+
+		if (administrator == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<AdministratorDto>(new AdministratorDto(administrator), HttpStatus.OK);
+	}
+	
 	@PostMapping(value = "/create")
 	public ResponseEntity<String> create(@RequestBody AdministratorDto administratorDto)
 	{

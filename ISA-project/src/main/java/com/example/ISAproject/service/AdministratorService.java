@@ -1,5 +1,7 @@
 package com.example.ISAproject.service;
 
+import java.util.List;
+
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,18 @@ public class AdministratorService {
 	
 	public Administrator findById(Long id) {
 	    return administratorRepository.findById(id).orElseGet(() -> null);
+	}
+	
+	public Administrator findByUserId(Long userId) {
+	    List<Administrator> allAdministrators = administratorRepository.findAll();
+	    
+	    for (Administrator admin : allAdministrators) {
+	        if (admin.getUser().getId() == userId) {
+	            return admin;
+	        }
+	    }
+	    
+	    return null; // Return null if no matching administrator is found
 	}
 	
 	public Administrator createAdministrator(AdministratorDto newAdminDto) {
