@@ -60,4 +60,5 @@ public class CompanyService {
 
         return company.getAppointments();
     }
+	
 }

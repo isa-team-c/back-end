@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.ISAproject.dto.AppointmentDto;
@@ -39,6 +41,10 @@ public class ReservationService {
 		List<Equipment> equipmentList = equipmentRepository.findAllById(equipmentIds);
         Appointment appointment = appointmentRepository.findById(appointmentId).orElse(null);
         User user = userRepository.findById(userId).orElse(null);
+
+        if (!appointment.getIsFree()) {
+        	
+        }
         
         Reservation reservation = new Reservation();
         
@@ -47,6 +53,8 @@ public class ReservationService {
         reservation.setAppointment(appointment);
         appointment.setIsFree(false);
         reservation.setUser(user);
+        
+        appointmentRepository.save(appointment);
         
         return reservationRepository.save(reservation);
 	}

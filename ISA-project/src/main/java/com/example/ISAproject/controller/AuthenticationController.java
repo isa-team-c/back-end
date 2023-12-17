@@ -57,6 +57,9 @@ public class AuthenticationController {
 
 		// Kreiraj token za tog korisnika
 		User user = (User) authentication.getPrincipal();
+	    if (!user.getIsVerified()) {
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new UserTokenState("User is not verified", 0));
+	    }	    
 		String jwt = tokenUtils.generateToken(user);
 		int expiresIn = tokenUtils.getExpiredIn();
 

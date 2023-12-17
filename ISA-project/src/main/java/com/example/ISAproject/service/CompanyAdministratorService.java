@@ -1,5 +1,7 @@
 package com.example.ISAproject.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.stereotype.Service;
@@ -8,6 +10,7 @@ import com.example.ISAproject.dto.CompanyAdministratorDto;
 import com.example.ISAproject.dto.UserDto;
 import com.example.ISAproject.model.CompanyAdministrator;
 import com.example.ISAproject.repository.CompanyAdministratorRepository;
+import com.example.ISAproject.repository.CompanyRepository;
 import com.example.ISAproject.model.*;
 
 @Service
@@ -16,6 +19,9 @@ public class CompanyAdministratorService {
     @Autowired
     private CompanyAdministratorRepository companyAdministratorRepository;
 
+    @Autowired
+    private CompanyRepository companyRepository;
+    
     @Autowired
     private UserService userService;
 
