@@ -1,28 +1,31 @@
 INSERT INTO public.role(name)
-VALUES ('ROLE_REGULAR_USER');
+    VALUES ('ROLE_REGULAR_USER');
 INSERT INTO public.role(name)
-VALUES ('ROLE_COMPANY_ADMINISTRATOR');
+    VALUES ('ROLE_COMPANY_ADMINISTRATOR');
+  
+INSERT INTO public.users(id, city, company_information, country, email, is_verified, last_password_reset_date, name, password, phone_number, profession, surname, role_id)
+	VALUES (1, 'Beograd', 'preduzece1', 'Srbija', 'miljevictamara@gmail.com', true, null, 'Petar', '$2a$10$lhYgvOwC1Q.fxzQBkwVNI.xqwKaoQiY6Gum5fzeN9jsuYStzORNGi', '065728314', 'softverski inzenjer', 'Knezevic',1);
+INSERT INTO public.users(id, city, company_information, country, email, is_verified, last_password_reset_date, name, password, phone_number, profession, surname, role_id)
+	VALUES (2, 'Cacak', 'preduzece1', 'Srbija', 'admin@gmail.com', true, null, 'Isidora', '$2a$10$lhYgvOwC1Q.fxzQBkwVNI.xqwKaoQiY6Gum5fzeN9jsuYStzORNGi', '065728314', 'softverski inzenjer', 'Milosevic',2);
+INSERT INTO public.users(id, city, company_information, country, email, is_verified, last_password_reset_date, name, password, phone_number, profession, surname, role_id)
+	VALUES (3, 'Sabac', 'preduzece3', 'Srbija', 'admin1@gmail.com', true, null, 'Natasa', '$2a$10$lhYgvOwC1Q.fxzQBkwVNI.xqwKaoQiY6Gum5fzeN9jsuYStzORNGi', '065728314', 'softverski inzenjer', 'Simic',2);
 
-INSERT INTO public.users(city, company_information, country, email, is_verified, last_password_reset_date, name, password, phone_number, profession, surname, role_id)
-	VALUES ('Beograd', 'preduzece1', 'Srbija', 'projekatisa2023@gmail.com', true, null, 'Petar', '$2a$10$lhYgvOwC1Q.fxzQBkwVNI.xqwKaoQiY6Gum5fzeN9jsuYStzORNGi', '065728314', 'softverski inzenjer', 'Knezevic',1);
-INSERT INTO public.users(city, company_information, country, email, is_verified, last_password_reset_date, name, password, phone_number, profession, surname, role_id)
-	VALUES ('Cacak', 'preduzece1', 'Srbija', 'admin@gmail.com', true, null, 'Isidora', '$2a$10$lhYgvOwC1Q.fxzQBkwVNI.xqwKaoQiY6Gum5fzeN9jsuYStzORNGi', '065728314', 'softverski inzenjer', 'Milosevic',2);
-
+	
 INSERT INTO public.regular_user(
 	user_id, penalties, role)
 	VALUES (1, 0, 'REGULAR');
 
-INSERT INTO company (name, address, description, average_rating, work_end_time, work_start_time)
-VALUES ('company1', 'Vuka Karadzica', 'odlicno', 5, '17:00:00', '09:00:00');
-INSERT INTO company (name, address, description, average_rating, work_end_time, work_start_time)
-VALUES ('company2', 'Cirpanova', 'odlicnooo', 5, '19:00:00', '09:00:00');
+INSERT INTO company (id, name, address, description, average_rating, work_end_time, work_start_time)
+    VALUES (1, 'company1', 'Vuka Karadzica', 'odlicno', 5, '17:00:00', '09:00:00');
+INSERT INTO company (id, name, address, description, average_rating, work_end_time, work_start_time)
+    VALUES (2, 'company2', 'Cirpanova', 'odlicnooo', 5, '19:00:00', '09:00:00');
 
-INSERT INTO public.equipment(description, name, quantity, type)
-	VALUES ('medicinska', 'Stethoscope', 5, 'Medical Device');
-INSERT INTO public.equipment (description,name,quantity,type) 
-	VALUES ('racunarska oprema','Laptop',10,'IT Equipment');
-INSERT INTO public.equipment (description,name,quantity,type) 
-	VALUES ('laboratorijska oprema','Microscope',3,'Laboratory Equipment');
+INSERT INTO public.equipment(id, description, name, quantity, type)
+	VALUES (1, 'medicinska', 'Stethoscope', 5, 'Medical Device');
+INSERT INTO public.equipment (id, description,name,quantity,type) 
+	VALUES (2, 'racunarska oprema','Laptop',10,'IT Equipment');
+INSERT INTO public.equipment (id, description,name,quantity,type) 
+	VALUES (3, 'laboratorijska oprema','Microscope',3,'Laboratory Equipment');
 
 INSERT INTO public.company_equipment(
 	company_id, equipment_id)
@@ -37,6 +40,9 @@ INSERT INTO public.company_equipment(
 INSERT INTO public.company_administrator(
 	user_id, company_id)
 	VALUES (2, 1);
+INSERT INTO public.company_administrator(
+	user_id, company_id)
+	VALUES (3, 2);
 
 INSERT INTO public.appointments(
 	id, duration, is_free, start_date, administrator_id)
@@ -48,7 +54,7 @@ INSERT INTO public.appointments(
 
 INSERT INTO public.appointments(
 	id, duration, is_free, start_date, administrator_id)
-	VALUES (3 ,5, true, '2024-6-11T12:00:00', 2);
+	VALUES (3 ,5, true, '2024-6-11T12:00:00', 3);
 
 INSERT INTO public.company_appointment(
 	company_id, appointment_id)
@@ -57,3 +63,7 @@ INSERT INTO public.company_appointment(
 INSERT INTO public.company_appointment(
 	company_id, appointment_id)
 	VALUES (1, 2);
+
+INSERT INTO public.company_appointment(
+	company_id, appointment_id)
+	VALUES (2, 3);

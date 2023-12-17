@@ -18,6 +18,9 @@ public class CompanyService {
 
 	@Autowired
     private CompanyRepository companyRepository;
+	
+	@Autowired
+    private CompanyAdministratorService companyAdministratorService;
 
 	public List<Company> searchCompanies(String searchTerm) {
 	    if (searchTerm != null) {
@@ -59,6 +62,10 @@ public class CompanyService {
         }
 
         return company.getAppointments();
+    }
+	
+	public void update(Company company) {
+        companyRepository.save(company);
     }
 
 
