@@ -1,11 +1,13 @@
 package com.example.ISAproject.dto;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import com.example.ISAproject.model.Appointment;
 import com.example.ISAproject.model.Company;
+import com.example.ISAproject.model.Equipment;
 
 public class CompanyDto {
 	private long id;
@@ -13,6 +15,8 @@ public class CompanyDto {
 	private String address;
 	private String description;
 	private Double averageRating;
+	private LocalTime workStartTime;
+	private LocalTime workEndTime;
 	private Set<EquipmentDto> equipment;
 	private Set<AppointmentDto> appointments;
 	
@@ -21,32 +25,30 @@ public class CompanyDto {
 
 	}
 
-	public CompanyDto(Company company)
-    {
+	public CompanyDto(Company company) {
         id = company.getId();
         name = company.getName();
         address = company.getAddress();
         description = company.getDescription();
         averageRating = company.getAverageRating();
-	    /*for (Appointment appointment : company.getAppointments()) {
-	        this.appointments.add(new AppointmentDto(appointment));
-	    }*/
+        workStartTime = company.getWorkStartTime();
+        workEndTime = company.getWorkEndTime();
     }
+
+	
 
 
 	public CompanyDto(long id, String name, String address, String description, Double averageRating,
-			Set<EquipmentDto> equipment, Set<AppointmentDto> appointments) {
+			LocalTime workStartTime, LocalTime workEndTime) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.address = address;
 		this.description = description;
 		this.averageRating = averageRating;
-		this.equipment = equipment;
-		this.appointments = appointments;
+		this.workStartTime = workStartTime;
+		this.workEndTime = workEndTime;
 	}
-
-
 
 	public long getId() {
 	        return id;
@@ -102,6 +104,23 @@ public class CompanyDto {
 	public void setAppointments(Set<AppointmentDto> appointments) {
 		this.appointments = appointments;
 	}
+
+	public LocalTime getWorkStartTime() {
+		return workStartTime;
+	}
+
+	public void setWorkStartTime(LocalTime workStartTime) {
+		this.workStartTime = workStartTime;
+	}
+
+	public LocalTime getWorkEndTime() {
+		return workEndTime;
+	}
+
+	public void setWorkEndTime(LocalTime workEndTime) {
+		this.workEndTime = workEndTime;
+	}
+	
 	
 	
 }

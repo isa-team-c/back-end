@@ -76,6 +76,19 @@
 			<artifactId>jjwt</artifactId>
 			<version>0.6.0</version>
 		</dependency>
+
+		<!--dependency za QR kod -->
+		<dependency>
+		    <groupId>com.google.zxing</groupId>
+		    <artifactId>core</artifactId>
+		    <version>3.4.1</version> <!-- Replace with the latest version -->
+		</dependency>
+		<dependency>
+		    <groupId>com.google.zxing</groupId>
+		    <artifactId>javase</artifactId>
+		    <version>3.4.1</version> <!-- Replace with the latest version -->
+		</dependency>
+
 	</dependencies>
 
 	<build>

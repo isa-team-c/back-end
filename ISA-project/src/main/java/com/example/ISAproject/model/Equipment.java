@@ -79,5 +79,14 @@ public class Equipment {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
+
+
+	@Override
+	public String toString() {
+		return "Equipment [name=" + name + ", type=" + type + ", description=" + description + "]";
+	}
+
+	
+	
 	
 }

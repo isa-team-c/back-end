@@ -45,4 +45,5 @@ public class EquipmentController {
                 
         return new ResponseEntity<>(equipmentDtos, HttpStatus.OK); 
 	}
+	
 }

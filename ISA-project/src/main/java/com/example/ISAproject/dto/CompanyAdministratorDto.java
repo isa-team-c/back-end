@@ -12,9 +12,19 @@ public class CompanyAdministratorDto {
     }
 
     public CompanyAdministratorDto(CompanyAdministrator companyAdministrator) {
+    	/*if (companyAdministrator != null) {
+            this.id = companyAdministrator.getId();
+            
+            // Check if user is not null before accessing properties
+            if (companyAdministrator.getUser() != null) {
+                this.user = new UserDto(companyAdministrator.getUser());
+            }
+        }*/
+        //this.company = companyAdministrator.getCompany();
         this.id = companyAdministrator.getId();
         this.user = new UserDto(companyAdministrator.getUser());
         //this.companyDto = new CompanyDto(companyAdministrator.getCompany());
+        this.companyDto = new CompanyDto(companyAdministrator.getCompany());
     }
 
     public Long getId() {
@@ -33,7 +43,7 @@ public class CompanyAdministratorDto {
         this.user = user;
     }
 
-    	public CompanyDto getCompanyDto() {
+    public CompanyDto getCompanyDto() {
 		return companyDto;
 	}
 

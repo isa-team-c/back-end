@@ -1,5 +1,8 @@
 package com.example.ISAproject.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -7,7 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.ISAproject.dto.CompanyAdministratorDto;
 import com.example.ISAproject.dto.UserDto;
+import com.example.ISAproject.model.CompanyAdministrator;
+import com.example.ISAproject.repository.AppointmentRepository;
 import com.example.ISAproject.repository.CompanyAdministratorRepository;
+import com.example.ISAproject.repository.CompanyRepository;
 import com.example.ISAproject.model.*;
 import com.example.ISAproject.model.Company;
 
@@ -17,7 +23,13 @@ public class CompanyAdministratorService {
 
     @Autowired
     private CompanyAdministratorRepository companyAdministratorRepository;
+    
+    @Autowired
+    private AppointmentRepository appointmentRepository;
 
+    @Autowired
+    private CompanyRepository companyRepository;
+    
     @Autowired
     private UserService userService;
     
@@ -61,8 +73,9 @@ public class CompanyAdministratorService {
         
         return companyAdministratorRepository.save(newCompanyAdmin);
     }
-}
-
-  
+   
+    public List<CompanyAdministrator> findByCompany(Company company) {
+        return companyAdministratorRepository.findByCompany(company);
+    }   
     
-
+}

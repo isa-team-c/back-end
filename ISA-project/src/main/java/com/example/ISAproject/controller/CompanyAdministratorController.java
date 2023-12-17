@@ -1,5 +1,7 @@
 package com.example.ISAproject.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.persistence.EntityNotFoundException;
@@ -19,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.ISAproject.dto.CompanyAdministratorDto;
 import com.example.ISAproject.model.User;
+import com.example.ISAproject.model.Company;
 import com.example.ISAproject.model.CompanyAdministrator;
-import com.example.ISAproject.model.enumerations.UserRole;
 import com.example.ISAproject.service.UserService;
 import com.example.ISAproject.service.CompanyAdministratorService;
 import com.example.ISAproject.model.Company;
@@ -78,5 +80,7 @@ public class CompanyAdministratorController{
         }
     }
 	
+	
+}
 	
 }
