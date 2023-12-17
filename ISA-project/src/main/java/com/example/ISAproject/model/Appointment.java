@@ -40,8 +40,9 @@ public class Appointment {
 	private int duration;
 	
 	@Column(name = "is_free", nullable = false)
-    private Boolean isFree;   
+    private Boolean isFree;  
 	
+	public Appointment() {}
 	
 	public Appointment(long id, CompanyAdministrator companyAdministrator, LocalDateTime startDate, int duration,
 			Boolean isFree) {
