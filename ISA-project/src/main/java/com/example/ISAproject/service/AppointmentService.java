@@ -130,5 +130,31 @@ public class AppointmentService {
 	}
 
 
+	public Appointment saveAppointment(AppointmentDto appointmentDto) {
+	    try {
+	        Appointment appointment = new Appointment();
+
+	        CompanyAdministratorDto administratorDto = appointmentDto.getCompanyAdministrator();
+	        long administratorId = administratorDto.getId();
+	        CompanyAdministrator administrator = companyAdministratorService.findById(administratorId);
+	        appointment.setCompanyAdministrator(administrator);
+
+	        appointment.setStartDate(appointmentDto.getStartDate());
+	        appointment.setDuration(appointmentDto.getDuration());
+	        appointment.setIsFree(true);
+
+	        appointmentRepository.save(appointment);
+
+	        Company company = administrator.getCompany();
+	        company.getAppointments().add(appointment);
+	        companyService.update(company);
+
+	        return appointment;
+	    } catch (Exception e) {
+	        throw new RuntimeException("An error occurred while saving the appointment.", e);
+	    }
+
+
+	}
 	
 }

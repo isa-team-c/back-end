@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.ISAproject.dto.CompanyAdministratorDto;
+import com.example.ISAproject.dto.CompanyAdministratorPasswordDto;
 import com.example.ISAproject.dto.UserDto;
 import com.example.ISAproject.model.CompanyAdministrator;
 import com.example.ISAproject.repository.AppointmentRepository;
@@ -84,7 +85,7 @@ public class CompanyAdministratorService {
         return companyAdministratorRepository.findByCompany(company);
     }   
     
-    public CompanyAdministrator updateCompanyAdministratorForPassword(CompanyAdministratorDto updatedAdminDto) {
+    public CompanyAdministrator updateCompanyAdministratorForPassword(CompanyAdministratorPasswordDto updatedAdminDto) {
 		User existingUser = userRepository.findById(updatedAdminDto.getUser().getId())
 			    .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + updatedAdminDto.getUser().getId()));
 

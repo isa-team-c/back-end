@@ -93,6 +93,15 @@ public class AppointmentController {
 		return new ResponseEntity<AppointmentDto>(new AppointmentDto(appointment), HttpStatus.CREATED);
 	}
 	
+	@PostMapping(value = "/generatedAppointment")  
+	public ResponseEntity<AppointmentDto> saveAppointment(@RequestBody AppointmentDto appointmentDto)
+	{
+		
+	    Appointment appointment = appointmentService.saveAppointment(appointmentDto);
+				
+		return new ResponseEntity<AppointmentDto>(new AppointmentDto(appointment), HttpStatus.CREATED);
+	}
+	
 	
 	@PostMapping(value = "/create/{adminId}")
 	public ResponseEntity<String> create(@PathVariable long adminId, @RequestBody AppointmentDto appointmentDto)

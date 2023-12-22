@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.ISAproject.dto.CompanyAdministratorDto;
+import com.example.ISAproject.dto.CompanyAdministratorPasswordDto;
 import com.example.ISAproject.model.User;
 import com.example.ISAproject.model.Company;
 import com.example.ISAproject.model.CompanyAdministrator;
@@ -81,7 +82,7 @@ public class CompanyAdministratorController{
     }
 	
 	@PutMapping(value = "/updateForPassword")
-	public ResponseEntity<String> updateCompanyAdministratorForPassword(@RequestBody CompanyAdministratorDto administratorDto)
+	public ResponseEntity<String> updateCompanyAdministratorForPassword(@RequestBody CompanyAdministratorPasswordDto administratorDto)
 	{
 		companyAdministratorService.updateCompanyAdministratorForPassword(administratorDto);
 		
