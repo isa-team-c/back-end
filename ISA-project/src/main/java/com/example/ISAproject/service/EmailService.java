@@ -143,10 +143,27 @@ public class EmailService {
 	    }
 
 	    // Save the QR code image on disk
-	    File qrCodeFile = new File("qrcode.png");
-	    ImageIO.write(qrImage, "png", qrCodeFile);
+	   // File qrCodeFile = new File("qrcode.png");
+	    
 
+	   
+	    
+	    // Postavite putanju do direktorijuma gde želite da čuvate QR kodove
+	    String directoryPath = "./qrcodes/";
+
+	    String timestamp = String.valueOf(System.currentTimeMillis());
+	    //ovde sam izmenila da bi mi bilo lakse da dohvatim qr kodove za odredjenog korisnika
+        String qrCodeImageName = reservation.getUser().getId() + "_"+ reservation.getId() + "_" + timestamp + ".png";
+
+        // Create the full path to the QR code image
+        //String qrCodeImagePath = directoryPath + qrCodeImageName;
+
+	    // Kreirajte File objekat koristeći novu putanju
+	    File qrCodeFile = new File(directoryPath + qrCodeImageName);
+	    ImageIO.write(qrImage, "png", qrCodeFile);
+	    
 	    return qrCodeFile;
+
 	}
 
    
