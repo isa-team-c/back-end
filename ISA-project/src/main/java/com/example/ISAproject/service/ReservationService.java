@@ -39,6 +39,15 @@ public class ReservationService {
 	
 	public Reservation reserveEquipment(List<Long> equipmentIds, Long appointmentId, Long userId) {        
 		List<Equipment> equipmentList = equipmentRepository.findAllById(equipmentIds);
+
+       for (Equipment equipment : equipmentList) {
+           if (equipment.getQuantity() == equipment.getReservedQuantity()) {
+               return null;
+           }else {
+               equipment.setReservedQuantity(equipment.getReservedQuantity() + 1);
+               equipmentRepository.save(equipment);
+           }
+       }
         Appointment appointment = appointmentRepository.findById(appointmentId).orElse(null);
         User user = userRepository.findById(userId).orElse(null);
 

@@ -27,17 +27,21 @@ public class Equipment {
 	@NotNull
 	private int quantity;
 	
-	public Equipment() { }
+	@Column(name = "reserved_quantity", nullable = false)
+	@NotNull
+	private int reservedQuantity;
+	
+	public Equipment() { this.reservedQuantity = 0; }
 
 
-	public Equipment(long id, @NotEmpty String name, @NotEmpty String type, String description, @NotEmpty int quantity) {
+	public Equipment(long id, @NotEmpty String name, @NotEmpty String type, String description, @NotEmpty int quantity, @NotEmpty int reservedQuantity) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.type = type;
 		this.description = description;
 		this.quantity = quantity;
-		
+		this.reservedQuantity = reservedQuantity;
 		
 	}
 
@@ -79,6 +83,16 @@ public class Equipment {
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+	
+
+	public int getReservedQuantity() {
+		return reservedQuantity;
+	}
+
+
+	public void setReservedQuantity(int reservedQuantity) {
+		this.reservedQuantity = reservedQuantity;
 	}
 
 
