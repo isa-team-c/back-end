@@ -32,6 +32,9 @@ public class Reservation {
 	@Column(name = "status", nullable = false)
 	private ReservationStatus status;
 	
+	@Column(name = "price", nullable = false)
+	private double price;
+	
 	//@JsonIgnore 
 	@ManyToMany
 	@JoinTable(name = "reservation_equipment", joinColumns = @JoinColumn(name = "reservation_id", referencedColumnName = "id"),
@@ -52,11 +55,12 @@ public class Reservation {
 	public Reservation() { }
 
 
-	public Reservation(long id, ReservationStatus status, Set<Equipment> equipment, Appointment appointment,
+	public Reservation(long id, ReservationStatus status, double price, Set<Equipment> equipment, Appointment appointment,
 			User user) {
 		super();
 		this.id = id;
 		this.status = status;
+		this.price = price;
 		this.equipment = equipment;
 		this.appointment = appointment;
 		this.user = user;
@@ -80,6 +84,18 @@ public class Reservation {
 		this.status = status;
 	}	
 	
+	
+	
+
+	public double getPrice() {
+		return price;
+	}
+
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
 
 	public Set<Equipment> getEquipment() {
 		return equipment;
