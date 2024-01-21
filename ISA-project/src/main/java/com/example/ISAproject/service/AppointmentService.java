@@ -15,9 +15,13 @@ import com.example.ISAproject.dto.UserDto;
 import com.example.ISAproject.model.Appointment;
 import com.example.ISAproject.model.Company;
 import com.example.ISAproject.model.CompanyAdministrator;
+import com.example.ISAproject.model.RegularUser;
+import com.example.ISAproject.model.Reservation;
 import com.example.ISAproject.model.Role;
 import com.example.ISAproject.model.User;
 import com.example.ISAproject.repository.AppointmentRepository;
+import com.example.ISAproject.repository.RegularUserRepository;
+import com.example.ISAproject.repository.UserRepository;
 
 @Service
 public class AppointmentService {
@@ -31,6 +35,12 @@ public class AppointmentService {
     
     @Autowired
     private AppointmentRepository appointmentRepository;
+    
+    @Autowired
+    private UserRepository userRepository;
+    
+    @Autowired
+    private RegularUserRepository regularUserRepository;
 	
 	public List<Appointment> generateAppointments(LocalDateTime selectedDateTime, int duration, long companyId) {
 		Company company = companyService.findById(companyId);
@@ -128,6 +138,24 @@ public class AppointmentService {
 
 
 	}
+	
+	public void cancelAppointment(long appointmentId, long userId) {
+        Appointment appointment = appointmentRepository.findById(appointmentId)
+                .orElseThrow(() -> new IllegalArgumentException("Appointment not found"));
+        
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        RegularUser regularUser = regularUserRepository.findByUser(user);
+        
+        int penaltyReduction = (currentDateTime.isBefore(appointment.getStartDate().minusHours(24))) ? 2 : 1;
+        regularUser.setPenalties(regularUser.getPenalties() - penaltyReduction);
+        regularUserRepository.save(regularUser);
+        
+        appointment.setIsFree(true); 
+        appointmentRepository.save(appointment);
+    }
 
 
 	
