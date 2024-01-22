@@ -1,5 +1,6 @@
 package com.example.ISAproject.service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -15,12 +16,16 @@ import com.example.ISAproject.dto.UserDto;
 import com.example.ISAproject.model.Appointment;
 import com.example.ISAproject.model.Company;
 import com.example.ISAproject.model.CompanyAdministrator;
+import com.example.ISAproject.model.Equipment;
 import com.example.ISAproject.model.RegularUser;
 import com.example.ISAproject.model.Reservation;
 import com.example.ISAproject.model.Role;
 import com.example.ISAproject.model.User;
+import com.example.ISAproject.model.enumerations.ReservationStatus;
 import com.example.ISAproject.repository.AppointmentRepository;
+import com.example.ISAproject.repository.EquipmentRepository;
 import com.example.ISAproject.repository.RegularUserRepository;
+import com.example.ISAproject.repository.ReservationRepository;
 import com.example.ISAproject.repository.UserRepository;
 
 @Service
@@ -41,6 +46,12 @@ public class AppointmentService {
     
     @Autowired
     private RegularUserRepository regularUserRepository;
+    
+    @Autowired 
+    private ReservationRepository reservationRepository;
+    
+    @Autowired
+    private EquipmentRepository equipmentRepository;
 	
 	public List<Appointment> generateAppointments(LocalDateTime selectedDateTime, int duration, long companyId) {
 		Company company = companyService.findById(companyId);
@@ -146,17 +157,41 @@ public class AppointmentService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        LocalDateTime currentDateTime = LocalDateTime.now();
         RegularUser regularUser = regularUserRepository.findByUser(user);
         
-        int penaltyReduction = (currentDateTime.isBefore(appointment.getStartDate().minusHours(24))) ? 2 : 1;
-        regularUser.setPenalties(regularUser.getPenalties() - penaltyReduction);
-        regularUserRepository.save(regularUser);
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        LocalDateTime appointmentStart = appointment.getStartDate();
+
+        Duration timeDifference = Duration.between(currentDateTime, appointmentStart);
+
+        int penaltyReduction = (timeDifference.toDays() <= 1) ? 2 : 1;
+        updatePenalties(regularUser, penaltyReduction);
         
-        appointment.setIsFree(true); 
-        appointmentRepository.save(appointment);
+        Reservation reservation = reservationRepository.findByAppointmentAndUser(appointment, user);
+        updateReservationAndEquipment(reservation, ReservationStatus.CANCELLED);
+      
+        updateAppointmentStatus(appointment, true);
     }
 
+	private void updatePenalties(RegularUser regularUser, int penaltyReduction) {
+	    regularUser.setPenalties(regularUser.getPenalties() + penaltyReduction);
+	    regularUserRepository.save(regularUser);
+	}
+	
+	private void updateReservationAndEquipment(Reservation reservation, ReservationStatus status) {
+	    reservation.setStatus(status);
+	    reservationRepository.save(reservation);
+	    
+        for (Equipment equipment : reservation.getEquipment())
+        {
+        	equipment.setReservedQuantity(equipment.getReservedQuantity() - 1);
+        	equipmentRepository.save(equipment);
+        }
+	}
 
+	private void updateAppointmentStatus(Appointment appointment, boolean isFree) {
+	    appointment.setIsFree(isFree);
+	    appointmentRepository.save(appointment);
+	}
 	
 }
