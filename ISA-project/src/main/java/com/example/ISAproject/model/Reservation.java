@@ -36,7 +36,7 @@ public class Reservation {
 	private double price;
 	
 	//@JsonIgnore 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "reservation_equipment", joinColumns = @JoinColumn(name = "reservation_id", referencedColumnName = "id"),
 		inverseJoinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "id"))
 	private Set<Equipment> equipment  = new HashSet<Equipment>();

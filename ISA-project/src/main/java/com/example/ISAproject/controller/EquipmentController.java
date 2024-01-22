@@ -89,6 +89,7 @@ public class EquipmentController {
 		equipment.setQuantity(equipmentDto.getQuantity());
 		//dodato
 		equipment.setReservedQuantity(0);
+		equipment.setPrice(45);
 		
 		equipmentService.save(equipment);
 		

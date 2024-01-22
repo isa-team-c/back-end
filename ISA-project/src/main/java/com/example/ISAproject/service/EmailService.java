@@ -126,6 +126,7 @@ public class EmailService {
 	            .collect(Collectors.joining("\n\n"));
 	    String reservationDetails = "Reservation id: " + reservation.getId() +
 	            "\nStatus: " + reservation.getStatus() +
+	            "\nPrice: " + reservation.getPrice() +
 	            "\nEquipment: " + equipmentDetails +
 	            "\nAppointment Date: " + reservation.getAppointment().getStartDate() +
 	            "\nUser ID: " + reservation.getUser().getId() +

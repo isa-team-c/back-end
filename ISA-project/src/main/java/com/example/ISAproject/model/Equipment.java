@@ -23,6 +23,9 @@ public class Equipment {
 	@Column(name = "description", nullable = false)
 	private String description;
 	
+	@Column(name = "price", nullable = false)
+	private double price;
+	
 	@Column(name = "quantity", nullable = false)
 	@NotNull
 	private int quantity;
@@ -34,12 +37,13 @@ public class Equipment {
 	public Equipment() { this.reservedQuantity = 0; }
 
 
-	public Equipment(long id, @NotEmpty String name, @NotEmpty String type, String description, @NotEmpty int quantity, @NotEmpty int reservedQuantity) {
+	public Equipment(long id, @NotEmpty String name, @NotEmpty String type, String description, double price, @NotEmpty int quantity, @NotEmpty int reservedQuantity) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.type = type;
 		this.description = description;
+		this.price = price;
 		this.quantity = quantity;
 		this.reservedQuantity = reservedQuantity;
 		
@@ -76,6 +80,18 @@ public class Equipment {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	
+
+	public double getPrice() {
+		return price;
+	}
+
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
 
 	public int getQuantity() {
 		return quantity;

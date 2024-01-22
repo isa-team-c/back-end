@@ -11,15 +11,17 @@ import com.example.ISAproject.model.enumerations.ReservationStatus;
 public class ReservationDto {
 	private long id;
 	private ReservationStatus status;	
+	private double price;
 	private Set<EquipmentDto> equipment;
 	private AppointmentDto appointment;
 	private UserDto user;
 	
-	public ReservationDto(long id, ReservationStatus status, Set<EquipmentDto> equipment,
+	public ReservationDto(long id, ReservationStatus status, double price, Set<EquipmentDto> equipment,
 			AppointmentDto appointment, UserDto user) {
 		super();
 		this.id = id;
 		this.status = status;
+		this.price = price;
 		this.equipment = equipment;
 		this.appointment = appointment;
 		this.user = user;
@@ -29,6 +31,7 @@ public class ReservationDto {
 	{
 		this.id = reservation.getId();
 		this.status = reservation.getStatus();
+		this.price = reservation.getPrice();
 	    this.equipment = new HashSet<>();
 	    for (Equipment equipment : reservation.getEquipment()) {
 	        this.equipment.add(new EquipmentDto(equipment));
@@ -51,6 +54,15 @@ public class ReservationDto {
 
 	public void setStatus(ReservationStatus status) {
 		this.status = status;
+	}
+	
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
 	}
 
 	public Set<EquipmentDto> getEquipment() {

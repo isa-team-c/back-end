@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.ISAproject.dto.AppointmentDto;
+import com.example.ISAproject.dto.ReservationDto;
 import com.example.ISAproject.model.Appointment;
 import com.example.ISAproject.model.Equipment;
 import com.example.ISAproject.model.Reservation;
@@ -39,7 +40,6 @@ public class ReservationService {
 	
 	public Reservation reserveEquipment(List<Long> equipmentIds, Long appointmentId, Long userId) {        
 		List<Equipment> equipmentList = equipmentRepository.findAllById(equipmentIds);
-
        for (Equipment equipment : equipmentList) {
            if (equipment.getQuantity() == equipment.getReservedQuantity()) {
                return null;
@@ -59,6 +59,9 @@ public class ReservationService {
         
         reservation.setStatus(ReservationStatus.PENDING);
         reservation.setEquipment(new HashSet<>(equipmentList));
+        for (Equipment equipment : equipmentList) {
+            reservation.setPrice(reservation.getPrice() + equipment.getPrice());
+        }
         reservation.setAppointment(appointment);
         appointment.setIsFree(false);
         reservation.setUser(user);
@@ -68,15 +71,43 @@ public class ReservationService {
         return reservationRepository.save(reservation);
 	}
 	
-	public List<AppointmentDto> getAppointmentsByUserId(long userId) {
+	public List<ReservationDto> getAppointmentsByUserId(long userId) {
         List<Reservation> userReservations = reservationRepository.getByUserId(userId);
-        List<AppointmentDto> userAppointments = new ArrayList<>();
+        List<ReservationDto> reservationsDto = new ArrayList<>();
+        //List<AppointmentDto> userAppointments = new ArrayList<>();
 
+        //for (Reservation reservation : userReservations) {
+            //userAppointments.add(new AppointmentDto(reservation.getAppointment()));
+        //}
         for (Reservation reservation : userReservations) {
-            userAppointments.add(new AppointmentDto(reservation.getAppointment()));
+        	reservationsDto.add(new ReservationDto(reservation));
         }
 
-        return userAppointments;
+        return reservationsDto;
+    }
+	
+	public List<ReservationDto> getTakenReservationsByUserId(long userId) {
+		List<Reservation> reservations = new ArrayList<>();
+		List<ReservationDto> reservationsDto = new ArrayList<>();
+        reservations = reservationRepository.findByUserIdAndStatus(userId, ReservationStatus.TAKEN);
+        
+        for (Reservation reservation : reservations) {
+        	reservationsDto.add(new ReservationDto(reservation));
+        }
+        
+        return reservationsDto;
+    }
+	
+	public List<ReservationDto> getUpcomingReservationsByUserId(long userId) {
+		List<Reservation> reservations = new ArrayList<>();
+		List<ReservationDto> reservationsDto = new ArrayList<>();
+        reservations = reservationRepository.findByUserIdAndStatus(userId, ReservationStatus.PENDING);
+        
+        for (Reservation reservation : reservations) {
+        	reservationsDto.add(new ReservationDto(reservation));
+        }
+        
+        return reservationsDto;
     }
 	
 }

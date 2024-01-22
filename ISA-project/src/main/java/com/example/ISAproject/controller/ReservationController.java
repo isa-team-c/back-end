@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.ISAproject.dto.AppointmentDto;
+import com.example.ISAproject.dto.ReservationDto;
 import com.example.ISAproject.model.Reservation;
 import com.example.ISAproject.service.EmailService;
 import com.example.ISAproject.service.ReservationService;
@@ -50,8 +51,20 @@ public class ReservationController {
     }
 	
 	@GetMapping("/appointmentsByUserId/{userId}")
-    public ResponseEntity<List<AppointmentDto>> getAppointmentsByUserId(@PathVariable Long userId) {
-        List<AppointmentDto> userAppointments = reservationService.getAppointmentsByUserId(userId);
+    public ResponseEntity<List<ReservationDto>> getAppointmentsByUserId(@PathVariable Long userId) {
+        List<ReservationDto> userAppointments = reservationService.getAppointmentsByUserId(userId);
         return new ResponseEntity<>(userAppointments, HttpStatus.OK);
+    }
+	
+	@GetMapping("/takenReservationsByUserId/{userId}")
+    public ResponseEntity<List<ReservationDto>> getTakenReservationsByUserId(@PathVariable Long userId) {
+        List<ReservationDto> takenReservations = reservationService.getTakenReservationsByUserId(userId);
+        return new ResponseEntity<>(takenReservations, HttpStatus.OK);
+    }
+	
+	@GetMapping("/upcomingReservationsByUserId/{userId}")
+    public ResponseEntity<List<ReservationDto>> getUpcomingReservationsByUserId(@PathVariable Long userId) {
+        List<ReservationDto> upcomingReservations = reservationService.getUpcomingReservationsByUserId(userId);
+        return new ResponseEntity<>(upcomingReservations, HttpStatus.OK);
     }
 }
