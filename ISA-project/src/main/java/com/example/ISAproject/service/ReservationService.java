@@ -104,21 +104,16 @@ public class ReservationService {
 	    return false;
 	}
 	
-	//future appointments
-	public List<AppointmentDto> getAppointmentsByUserId(long userId) {
-		LocalDateTime currentDateTime = LocalDateTime.now();
-		
+	public List<ReservationDto> getAppointmentsByUserId(long userId) {
         List<Reservation> userReservations = reservationRepository.getByUserId(userId);
-        
-        List<Reservation> activeAndFutureReservations = userReservations.stream()
-                .filter(reservation -> !reservation.getStatus().equals(ReservationStatus.CANCELLED))
-                .filter(reservation -> reservation.getAppointment().getStartDate().isAfter(currentDateTime))
-                .collect(Collectors.toList());
-        
-        List<AppointmentDto> userAppointments = new ArrayList<>();
+        List<ReservationDto> reservationsDto = new ArrayList<>();
+        //List<AppointmentDto> userAppointments = new ArrayList<>();
 
-        for (Reservation reservation : activeAndFutureReservations) {
-            userAppointments.add(new AppointmentDto(reservation.getAppointment()));
+        //for (Reservation reservation : userReservations) {
+            //userAppointments.add(new AppointmentDto(reservation.getAppointment()));
+        //}
+        for (Reservation reservation : userReservations) {
+        	reservationsDto.add(new ReservationDto(reservation));
         }
 
         return reservationsDto;
