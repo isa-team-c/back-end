@@ -55,8 +55,8 @@ public class EmailService {
 		SimpleMailMessage mail = new SimpleMailMessage();
 		mail.setTo(user.getEmail());
 		mail.setFrom(env.getProperty("spring.mail.username"));
-		mail.setSubject("Primer slanja emaila pomoću asinhronog Spring taska");
-		mail.setText("Pozdrav " + user.getName() + ",\n\nhvala što pratiš ISA." + "http://localhost:4200/verification/" + user.getId());
+		mail.setSubject("Account activation");
+		mail.setText("Welcome " + user.getName() + ",\n\nThank you for choosing MedBooking. To activate your account, please click the following link:\n\nhttp://localhost:4200/verification/" + user.getId() + "\n\nBest regards,\nThe MedBooking Team");
 		javaMailSender.send(mail);
 
 		System.out.println("Email poslat!");
@@ -94,9 +94,9 @@ public class EmailService {
 	    helper.setTo(reservation.getUser().getEmail());
 	    helper.setFrom(env.getProperty("spring.mail.username"));
 	    helper.setSubject("Reservation Confirmation");
-	    String emailContent = "Dear " + reservation.getUser().getName() + ",\n\n"
-	            + "Thank you for your reservation. To access reservation details, please scan the QR code below.\n\n"
-	            + "Best regards,\nThe MedBooking Team";
+	    String emailContent = "Dear, " + reservation.getUser().getName() + ",\n\n"
+	            + "\n\nThank you for your reservation. To access reservation details, please scan the QR code below."
+	            + "\n\nBest regards,\nThe MedBooking Team";
 
 	    // Save the QR code image on disk
 	    File qrCodeFile = saveQRCodeImage(reservation);

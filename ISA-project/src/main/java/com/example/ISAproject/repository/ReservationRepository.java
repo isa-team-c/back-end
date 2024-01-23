@@ -8,10 +8,13 @@ import com.example.ISAproject.model.Reservation;
 import com.example.ISAproject.model.enumerations.ReservationStatus;
 import com.example.ISAproject.model.Company;
 import com.example.ISAproject.model.Reservation;
+import com.example.ISAproject.model.User;
+import com.example.ISAproject.model.Appointment;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 	 List<Reservation> findByEquipmentId(long equipmentId);
 	 Reservation getById(long id);
 	 List<Reservation> getByUserId(long userId);
 	 List<Reservation> findByUserIdAndStatus(Long userId, ReservationStatus status);
+	 Reservation findByAppointmentAndUser(Appointment appointment, User user);
 }

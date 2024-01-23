@@ -42,12 +42,19 @@ public class ReservationController {
 		
 		try {
 			System.out.println("Thread id: " + Thread.currentThread().getId());
-			emailService.sendReservationConfirmationEmail(savedReservation);			
+			if (savedReservation != null) {
+	            emailService.sendReservationConfirmationEmail(savedReservation);
+	            return new ResponseEntity<>(HttpStatus.CREATED);
+	        } else {
+	            logger.info("Objekat Reservation je null.");
+	            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	        }			
 		}catch( Exception e ){
 			logger.info("Greska prilikom slanja emaila: " + e.getMessage());
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		return new ResponseEntity<>(HttpStatus.CREATED);
+		
     }
 	
 	@GetMapping("/appointmentsByUserId/{userId}")
