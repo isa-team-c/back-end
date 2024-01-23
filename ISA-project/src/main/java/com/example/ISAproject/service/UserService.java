@@ -80,7 +80,7 @@ public class UserService {
 		user.setProfession(userDto.getProfession());
 		user.setCompanyInformation(userDto.getCompanyInformation());		
 		user.setIsVerified(false);
-		Role role = roleService.findByName("REGULAR_USER");
+		Role role = roleService.findByName("ROLE_REGULAR_USER");
 		user.setRole(role);
 		
 		return this.userRepository.save(user);

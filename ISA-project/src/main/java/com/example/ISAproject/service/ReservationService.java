@@ -7,10 +7,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.ISAproject.dto.AppointmentDto;
 import com.example.ISAproject.model.Appointment;
@@ -38,27 +41,36 @@ public class ReservationService {
 	@Autowired
 	private AppointmentRepository appointmentRepository;
 	
-	
-	public Reservation reserveEquipment(List<Long> equipmentIds, Long appointmentId, Long userId) {        
+	@Transactional
+	public Reservation reserveEquipment(List<Long> equipmentIds, Long appointmentId, Long userId) {  
+		List<Reservation> reservations = reservationRepository.getByUserId(userId);
+		for (Reservation reservation : reservations) {
+			Appointment appointment = reservation.getAppointment();
+			
+			if (reservation.getStatus() == ReservationStatus.CANCELLED) {
+				continue;
+			}
+			
+			if (isOverlap(appointment, appointmentId)) {
+				return null;
+			}
+		}
+		
 		List<Equipment> equipmentList = equipmentRepository.findAllById(equipmentIds);
 
-       for (Equipment equipment : equipmentList) {
+        for (Equipment equipment : equipmentList) {
            if (equipment.getQuantity() == equipment.getReservedQuantity()) {
                return null;
            }else {
                equipment.setReservedQuantity(equipment.getReservedQuantity() + 1);
                equipmentRepository.save(equipment);
            }
-       }
-        Appointment appointment = appointmentRepository.findById(appointmentId).orElse(null);
-        User user = userRepository.findById(userId).orElse(null);
-
-        if (!appointment.getIsFree()) {
-        	
         }
         
-        Reservation reservation = new Reservation();
+        Appointment appointment = appointmentRepository.findById(appointmentId).orElse(null);
+        User user = userRepository.findById(userId).orElse(null);
         
+        Reservation reservation = new Reservation();      
         reservation.setStatus(ReservationStatus.PENDING);
         reservation.setEquipment(new HashSet<>(equipmentList));
         reservation.setAppointment(appointment);
@@ -68,6 +80,23 @@ public class ReservationService {
         appointmentRepository.save(appointment);
         
         return reservationRepository.save(reservation);
+	}
+	
+	
+	private boolean isOverlap(Appointment existingAppointment, long newAppointmentId) {
+		Appointment newAppointment = appointmentRepository.getById(newAppointmentId);
+		
+		if (newAppointment != null && existingAppointment != null) {
+			LocalDateTime existingStart = existingAppointment.getStartDate();
+		    LocalDateTime existingEnd = existingStart.plusMinutes(existingAppointment.getDuration());
+		    
+			LocalDateTime newStart = newAppointment.getStartDate();
+		    LocalDateTime newEnd = newStart.plusMinutes(newAppointment.getDuration());
+		    
+		    return existingStart.isBefore(newEnd) && existingEnd.isAfter(newStart);
+		}
+		    
+	    return false;
 	}
 	
 	//future appointments
