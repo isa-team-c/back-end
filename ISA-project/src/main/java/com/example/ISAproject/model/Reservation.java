@@ -35,6 +35,9 @@ public class Reservation {
 	@Column(name = "price", nullable = false)
 	private double price;
 	
+	@Column(name = "qr_code")
+	private String qrCode;
+	
 	//@JsonIgnore 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "reservation_equipment", joinColumns = @JoinColumn(name = "reservation_id", referencedColumnName = "id"),
@@ -55,12 +58,13 @@ public class Reservation {
 	public Reservation() { }
 
 
-	public Reservation(long id, ReservationStatus status, double price, Set<Equipment> equipment, Appointment appointment,
+	public Reservation(long id, ReservationStatus status, double price, String qrCode, Set<Equipment> equipment, Appointment appointment,
 			User user) {
 		super();
 		this.id = id;
 		this.status = status;
 		this.price = price;
+		this.qrCode = qrCode;
 		this.equipment = equipment;
 		this.appointment = appointment;
 		this.user = user;
@@ -94,6 +98,16 @@ public class Reservation {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+
+
+	public String getQrCode() {
+		return qrCode;
+	}
+
+
+	public void setQrCode(String qrCode) {
+		this.qrCode = qrCode;
 	}
 
 

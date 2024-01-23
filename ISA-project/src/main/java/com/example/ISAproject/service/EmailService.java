@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.stream.Collectors;
 
@@ -37,6 +38,9 @@ public class EmailService {
 
 	@Autowired
 	private JavaMailSender javaMailSender;
+	
+	@Autowired
+	private ReservationService reservationService;
 	
 	@Autowired
 	private Environment env;
@@ -162,6 +166,11 @@ public class EmailService {
 	    // Kreirajte File objekat koristeći novu putanju
 	    File qrCodeFile = new File(directoryPath + qrCodeImageName);
 	    ImageIO.write(qrImage, "png", qrCodeFile);
+	    reservation.setQrCode("qrcodes/" + qrCodeImageName);
+
+
+	    reservationService.updateQRCode(reservation);
+	    
 	    
 	    return qrCodeFile;
 

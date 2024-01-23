@@ -65,6 +65,7 @@ public class ReservationService {
         reservation.setAppointment(appointment);
         appointment.setIsFree(false);
         reservation.setUser(user);
+        reservation.setQrCode("");
         
         appointmentRepository.save(appointment);
         
@@ -108,6 +109,15 @@ public class ReservationService {
         }
         
         return reservationsDto;
+    }
+
+	public void updateQRCode(Reservation reservation) {
+        // Provera da li rezervacija već postoji u bazi podataka
+        if (reservationRepository.existsById(reservation.getId())) {
+            reservationRepository.save(reservation);
+        } else {
+            throw new RuntimeException("Rezervacija sa ID-om " + reservation.getId() + " nije pronađena.");
+        }
     }
 	
 }
