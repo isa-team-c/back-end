@@ -32,8 +32,14 @@ public class Reservation {
 	@Column(name = "status", nullable = false)
 	private ReservationStatus status;
 	
+	@Column(name = "price", nullable = false)
+	private double price;
+	
+	@Column(name = "qr_code")
+	private String qrCode;
+	
 	//@JsonIgnore 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "reservation_equipment", joinColumns = @JoinColumn(name = "reservation_id", referencedColumnName = "id"),
 		inverseJoinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "id"))
 	private Set<Equipment> equipment  = new HashSet<Equipment>();
@@ -52,11 +58,13 @@ public class Reservation {
 	public Reservation() { }
 
 
-	public Reservation(long id, ReservationStatus status, Set<Equipment> equipment, Appointment appointment,
+	public Reservation(long id, ReservationStatus status, double price, String qrCode, Set<Equipment> equipment, Appointment appointment,
 			User user) {
 		super();
 		this.id = id;
 		this.status = status;
+		this.price = price;
+		this.qrCode = qrCode;
 		this.equipment = equipment;
 		this.appointment = appointment;
 		this.user = user;
@@ -80,6 +88,28 @@ public class Reservation {
 		this.status = status;
 	}	
 	
+	
+	
+
+	public double getPrice() {
+		return price;
+	}
+
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+
+	public String getQrCode() {
+		return qrCode;
+	}
+
+
+	public void setQrCode(String qrCode) {
+		this.qrCode = qrCode;
+	}
+
 
 	public Set<Equipment> getEquipment() {
 		return equipment;
@@ -107,4 +137,5 @@ public class Reservation {
 	public void setUser(User user) {
 		this.user = user;
 	}
+
 }

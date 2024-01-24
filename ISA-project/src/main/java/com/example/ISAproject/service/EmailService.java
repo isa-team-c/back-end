@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.stream.Collectors;
 
@@ -39,6 +40,9 @@ public class EmailService {
 	private JavaMailSender javaMailSender;
 	
 	@Autowired
+	private ReservationService reservationService;
+	
+	@Autowired
 	private Environment env;
 
 	@Async
@@ -51,8 +55,8 @@ public class EmailService {
 		SimpleMailMessage mail = new SimpleMailMessage();
 		mail.setTo(user.getEmail());
 		mail.setFrom(env.getProperty("spring.mail.username"));
-		mail.setSubject("Primer slanja emaila pomoću asinhronog Spring taska");
-		mail.setText("Pozdrav " + user.getName() + ",\n\nhvala što pratiš ISA." + "http://localhost:4200/verification/" + user.getId());
+		mail.setSubject("Account activation");
+		mail.setText("Welcome " + user.getName() + ",\n\nThank you for choosing MedBooking. To activate your account, please click the following link:\n\nhttp://localhost:4200/verification/" + user.getId() + "\n\nBest regards,\nThe MedBooking Team");
 		javaMailSender.send(mail);
 
 		System.out.println("Email poslat!");
@@ -91,8 +95,8 @@ public class EmailService {
 	    helper.setFrom(env.getProperty("spring.mail.username"));
 	    helper.setSubject("Reservation Confirmation");
 	    String emailContent = "Dear " + reservation.getUser().getName() + ",\n\n"
-	            + "Thank you for your reservation. To access reservation details, please scan the QR code below.\n\n"
-	            + "Best regards,\nThe MedBooking Team";
+	            + "\n\nThank you for your reservation. To access reservation details, please scan the QR code below."
+	            + "\n\nBest regards,\nThe MedBooking Team";
 
 	    // Save the QR code image on disk
 	    File qrCodeFile = saveQRCodeImage(reservation);
@@ -126,6 +130,7 @@ public class EmailService {
 	            .collect(Collectors.joining("\n\n"));
 	    String reservationDetails = "Reservation id: " + reservation.getId() +
 	            "\nStatus: " + reservation.getStatus() +
+	            "\nPrice: " + reservation.getPrice() +
 	            "\nEquipment: " + equipmentDetails +
 	            "\nAppointment Date: " + reservation.getAppointment().getStartDate() +
 	            "\nUser ID: " + reservation.getUser().getId() +
@@ -143,10 +148,32 @@ public class EmailService {
 	    }
 
 	    // Save the QR code image on disk
-	    File qrCodeFile = new File("qrcode.png");
-	    ImageIO.write(qrImage, "png", qrCodeFile);
+	   // File qrCodeFile = new File("qrcode.png");
+	    
 
+	   
+	    
+	    // Postavite putanju do direktorijuma gde želite da čuvate QR kodove
+	    String directoryPath = "./qrcodes/";
+
+	    String timestamp = String.valueOf(System.currentTimeMillis());
+	    //ovde sam izmenila da bi mi bilo lakse da dohvatim qr kodove za odredjenog korisnika
+        String qrCodeImageName = reservation.getUser().getId() + "_"+ reservation.getId() + "_" + timestamp + ".png";
+
+        // Create the full path to the QR code image
+        //String qrCodeImagePath = directoryPath + qrCodeImageName;
+
+	    // Kreirajte File objekat koristeći novu putanju
+	    File qrCodeFile = new File(directoryPath + qrCodeImageName);
+	    ImageIO.write(qrImage, "png", qrCodeFile);
+	    reservation.setQrCode("qrcodes/" + qrCodeImageName);
+
+
+	    reservationService.updateQRCode(reservation);
+	    
+	    
 	    return qrCodeFile;
+
 	}
 
    
