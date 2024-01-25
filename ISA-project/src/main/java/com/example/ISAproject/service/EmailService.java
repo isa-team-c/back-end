@@ -133,6 +133,7 @@ public class EmailService {
 	            "\nPrice: " + reservation.getPrice() +
 	            "\nEquipment: " + equipmentDetails +
 	            "\nAppointment Date: " + reservation.getAppointment().getStartDate() +
+	            "\nAppointment Duration: " + reservation.getAppointment().getDuration() +
 	            "\nUser ID: " + reservation.getUser().getId() +
 	            "\nCompany name: " + reservation.getAppointment().getCompanyAdministrator().getCompany().getName() +
 	            "\nCompany Administrator: " + reservation.getAppointment().getCompanyAdministrator().getUser().getName();
