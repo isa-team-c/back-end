@@ -65,7 +65,7 @@ public class EmailService {
 	
 	
 	@Async
-	public void sendMail(User user, String text) throws MailException, InterruptedException {
+	public void sendComplaintResponseMail(User user, String text) throws MailException, InterruptedException {
 		System.out.println("Async metoda se izvrsava u drugom Threadu u odnosu na prihvaceni zahtev. Thread id: " + Thread.currentThread().getId());
 		//Simulacija duze aktivnosti da bi se uocila razlika
 		Thread.sleep(10000);

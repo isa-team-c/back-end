@@ -116,7 +116,7 @@ public class UserController{
 	    
 	    try {
 	        System.out.println("Thread id: " + Thread.currentThread().getId());
-	        emailService.sendMail(savedUser, responseContent);         
+	        emailService.sendComplaintResponseMail(savedUser, responseContent);         
 	    } catch(Exception e) {
 	        logger.info("Error sending email: " + e.getMessage());
 	    }

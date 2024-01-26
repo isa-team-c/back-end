@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.ISAproject.dto.AppointmentDto;
 import com.example.ISAproject.dto.ReservationDto;
 import com.example.ISAproject.model.Appointment;
+import com.example.ISAproject.model.Company;
 import com.example.ISAproject.model.Equipment;
 import com.example.ISAproject.model.RegularUser;
 import com.example.ISAproject.model.Reservation;
@@ -156,4 +157,12 @@ public class ReservationService {
 	public Reservation findById(Long id) {
 		return reservationRepository.findById(id).orElseGet(null);
 	}
+	
+	public Reservation updateReservationStatus(Reservation updatedReservation) {
+        if (reservationRepository.existsById(updatedReservation.getId())) {
+            return reservationRepository.save(updatedReservation);
+        } else {
+            return null;
+    	}
+    }
 }

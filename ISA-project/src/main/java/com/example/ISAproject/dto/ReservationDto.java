@@ -17,6 +17,10 @@ public class ReservationDto {
 	private AppointmentDto appointment;
 	private UserDto user;
 	
+	public ReservationDto() {
+		
+	}
+	
 	public ReservationDto(long id, ReservationStatus status, double price, String qrCode, Set<EquipmentDto> equipment,
 			AppointmentDto appointment, UserDto user) {
 		super();
