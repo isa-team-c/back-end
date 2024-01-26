@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.ISAproject.dto.AppointmentDto;
+import com.example.ISAproject.dto.RegularUserDto;
 import com.example.ISAproject.dto.ReservationDto;
+import com.example.ISAproject.model.RegularUser;
 import com.example.ISAproject.model.Reservation;
 import com.example.ISAproject.service.EmailService;
 import com.example.ISAproject.service.ReservationService;
@@ -74,4 +76,16 @@ public class ReservationController {
         List<ReservationDto> upcomingReservations = reservationService.getUpcomingReservationsByUserId(userId);
         return new ResponseEntity<>(upcomingReservations, HttpStatus.OK);
     }
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<ReservationDto> get(@PathVariable Long id) {
+
+		Reservation reservation = reservationService.findById(id);
+
+		if (reservation == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<ReservationDto>(new ReservationDto(reservation), HttpStatus.OK);
+	}
 }

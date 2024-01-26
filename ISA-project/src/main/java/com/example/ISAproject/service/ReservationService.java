@@ -19,6 +19,7 @@ import com.example.ISAproject.dto.AppointmentDto;
 import com.example.ISAproject.dto.ReservationDto;
 import com.example.ISAproject.model.Appointment;
 import com.example.ISAproject.model.Equipment;
+import com.example.ISAproject.model.RegularUser;
 import com.example.ISAproject.model.Reservation;
 import com.example.ISAproject.model.User;
 import com.example.ISAproject.model.enumerations.ReservationStatus;
@@ -152,4 +153,7 @@ public class ReservationService {
         }
     }
 	
+	public Reservation findById(Long id) {
+		return reservationRepository.findById(id).orElseGet(null);
+	}
 }
