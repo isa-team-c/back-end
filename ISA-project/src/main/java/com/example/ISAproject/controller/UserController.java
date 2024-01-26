@@ -123,4 +123,18 @@ public class UserController{
 	    
 	    return new ResponseEntity<>(HttpStatus.CREATED);
 	}
+	
+	@PostMapping(value = "/auth/sendConfirmation")
+	public ResponseEntity<String> sendReceiveConfirmation(@RequestBody UserDto userDto) {
+	    User savedUser = userService.findByEmail(userDto.getEmail());
+	    
+	    try {
+	        System.out.println("Thread id: " + Thread.currentThread().getId());
+	        emailService.sendReceiveConfirmationMail(savedUser);
+	    } catch(Exception e) {
+	        logger.info("Error sending email: " + e.getMessage());
+	    }
+	    
+	    return new ResponseEntity<>(HttpStatus.CREATED);
+	}
 }

@@ -61,8 +61,6 @@ public class EmailService {
 
 		System.out.println("Email poslat!");
 	}
-
-	
 	
 	@Async
 	public void sendComplaintResponseMail(User user, String text) throws MailException, InterruptedException {
@@ -80,6 +78,24 @@ public class EmailService {
 
 		System.out.println("Email poslat!");
 	}
+	
+	@Async
+	public void sendReceiveConfirmationMail(User user) throws MailException, InterruptedException {
+		System.out.println("Async metoda se izvrsava u drugom Threadu u odnosu na prihvaceni zahtev. Thread id: " + Thread.currentThread().getId());
+		//Simulacija duze aktivnosti da bi se uocila razlika
+		Thread.sleep(10000);
+		System.out.println("Slanje emaila...");
+
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(user.getEmail());
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Potvrda o preuzimanju rezervisane opreme");
+		mail.setText("Obavestavamo Vas da je rezervisana oprema uspesno preuzeta.\n\n");
+		javaMailSender.send(mail);
+
+		System.out.println("Email poslat!");
+	}
+	
 	@Async
 	public void sendReservationConfirmationEmail(Reservation reservation) throws Exception {
 	    System.out.println("Async metoda se izvršava u drugom Threadu u odnosu na prihvaćeni zahtev. Thread id: " + Thread.currentThread().getId());
