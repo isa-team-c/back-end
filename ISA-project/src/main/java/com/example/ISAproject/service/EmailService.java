@@ -72,8 +72,8 @@ public class EmailService {
 		SimpleMailMessage mail = new SimpleMailMessage();
 		mail.setTo(user.getEmail());
 		mail.setFrom(env.getProperty("spring.mail.username"));
-		mail.setSubject("Odgovor na zalbu");
-		mail.setText("Admin sistema je odgovorio na vasu zalbu. Tekst odgovora glasi: \n\n" + text);
+		mail.setSubject("Complaint response");
+		mail.setText("Dear customer,\n\nAdmin has responded to your complaint. The respond reads: \n\n" + text);
 		javaMailSender.send(mail);
 
 		System.out.println("Email poslat!");
@@ -89,8 +89,8 @@ public class EmailService {
 		SimpleMailMessage mail = new SimpleMailMessage();
 		mail.setTo(user.getEmail());
 		mail.setFrom(env.getProperty("spring.mail.username"));
-		mail.setSubject("Potvrda o preuzimanju rezervisane opreme");
-		mail.setText("Obavestavamo Vas da je rezervisana oprema uspesno preuzeta.\n\n");
+		mail.setSubject("Confirmation: reserved equipment received");
+		mail.setText("Dear custormer,\n\nwe inform you that the company admin has confirmed that the reserved equipment has been received.\n\n");
 		javaMailSender.send(mail);
 
 		System.out.println("Email poslat!");
