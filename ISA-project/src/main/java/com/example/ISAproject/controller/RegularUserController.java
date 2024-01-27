@@ -43,8 +43,21 @@ public class RegularUserController {
 		return new ResponseEntity<RegularUserDto>(new RegularUserDto(user), HttpStatus.OK);
 	}
 	
+	@GetMapping("/by-user-id/{userId}")
+	public ResponseEntity<RegularUserDto> getByUserId(@PathVariable Long userId) {
+
+		RegularUser user = regularUserService.findByUserId(userId);
+
+		if (user == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<RegularUserDto>(new RegularUserDto(user), HttpStatus.OK);
+	}
+	
 	@PutMapping("/update")
     public ResponseEntity<RegularUserDto> updateRegularUser(@RequestBody RegularUserDto updatedUserDto) {
+		System.out.println("Regular user u kontroleru nakon penalizacije: id: " + updatedUserDto.getId() + ", broj penala: " + updatedUserDto.getPenalties());
 		try {
 
             RegularUser savedRegularUser = regularUserService.updateRegularUser(updatedUserDto);

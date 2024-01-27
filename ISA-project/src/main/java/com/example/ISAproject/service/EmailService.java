@@ -61,11 +61,9 @@ public class EmailService {
 
 		System.out.println("Email poslat!");
 	}
-
-	
 	
 	@Async
-	public void sendMail(User user, String text) throws MailException, InterruptedException {
+	public void sendComplaintResponseMail(User user, String text) throws MailException, InterruptedException {
 		System.out.println("Async metoda se izvrsava u drugom Threadu u odnosu na prihvaceni zahtev. Thread id: " + Thread.currentThread().getId());
 		//Simulacija duze aktivnosti da bi se uocila razlika
 		Thread.sleep(10000);
@@ -74,12 +72,30 @@ public class EmailService {
 		SimpleMailMessage mail = new SimpleMailMessage();
 		mail.setTo(user.getEmail());
 		mail.setFrom(env.getProperty("spring.mail.username"));
-		mail.setSubject("Odgovor na zalbu");
-		mail.setText("Admin sistema je odgovorio na vasu zalbu. Tekst odgovora glasi: \n\n" + text);
+		mail.setSubject("Complaint response");
+		mail.setText("Dear customer,\n\nAdmin has responded to your complaint. The respond reads: \n\n" + text);
 		javaMailSender.send(mail);
 
 		System.out.println("Email poslat!");
 	}
+	
+	@Async
+	public void sendReceiveConfirmationMail(User user) throws MailException, InterruptedException {
+		System.out.println("Async metoda se izvrsava u drugom Threadu u odnosu na prihvaceni zahtev. Thread id: " + Thread.currentThread().getId());
+		//Simulacija duze aktivnosti da bi se uocila razlika
+		Thread.sleep(10000);
+		System.out.println("Slanje emaila...");
+
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(user.getEmail());
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Confirmation: reserved equipment received");
+		mail.setText("Dear customer,\n\nwe inform you that the company admin has confirmed that the reserved equipment has been received.\n\n");
+		javaMailSender.send(mail);
+
+		System.out.println("Email poslat!");
+	}
+	
 	@Async
 	public void sendReservationConfirmationEmail(Reservation reservation) throws Exception {
 	    System.out.println("Async metoda se izvršava u drugom Threadu u odnosu na prihvaćeni zahtev. Thread id: " + Thread.currentThread().getId());
@@ -133,6 +149,7 @@ public class EmailService {
 	            "\nPrice: " + reservation.getPrice() +
 	            "\nEquipment: " + equipmentDetails +
 	            "\nAppointment Date: " + reservation.getAppointment().getStartDate() +
+	            "\nAppointment Duration: " + reservation.getAppointment().getDuration() +
 	            "\nUser ID: " + reservation.getUser().getId() +
 	            "\nCompany name: " + reservation.getAppointment().getCompanyAdministrator().getCompany().getName() +
 	            "\nCompany Administrator: " + reservation.getAppointment().getCompanyAdministrator().getUser().getName();
