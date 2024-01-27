@@ -57,6 +57,7 @@ public class RegularUserController {
 	
 	@PutMapping("/update")
     public ResponseEntity<RegularUserDto> updateRegularUser(@RequestBody RegularUserDto updatedUserDto) {
+		System.out.println("Regular user u kontroleru nakon penalizacije: id: " + updatedUserDto.getId() + ", broj penala: " + updatedUserDto.getPenalties());
 		try {
 
             RegularUser savedRegularUser = regularUserService.updateRegularUser(updatedUserDto);

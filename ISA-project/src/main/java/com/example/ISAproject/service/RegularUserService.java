@@ -36,7 +36,9 @@ public class RegularUserService {
 	
 
     public RegularUser updateRegularUser(RegularUserDto updatedUser) {
+    	System.out.println("Regular user u servisu nakon penalizacije: id: " + updatedUser.getId() + ", broj penala: " + updatedUser.getPenalties());
     	RegularUser existingUser = regularUserRepository.findById(updatedUser.getId()).orElseGet(null);
+    	existingUser.setPenalties(updatedUser.getPenalties());
     	UserDto user = updatedUser.getUser();
         userService.update(user);
         return regularUserRepository.save(existingUser);
