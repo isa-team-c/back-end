@@ -17,6 +17,7 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import javax.validation.constraints.NotEmpty;
 
 import com.example.ISAproject.dto.CompanyAdministratorDto;
@@ -41,6 +42,9 @@ public class Appointment {
 	
 	@Column(name = "is_free", nullable = false)
     private Boolean isFree;  
+	
+	@Version
+	private Integer version = 0;
 	
 	public Appointment() {}
 	
@@ -87,4 +91,15 @@ public class Appointment {
 	public void setIsFree(Boolean isFree) {
 		this.isFree = isFree;
 	}
+
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
+	
+	
+	
 }

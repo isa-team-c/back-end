@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.ISAproject.dto.AppointmentDto;
 import com.example.ISAproject.dto.ReservationDto;
+import com.example.ISAproject.exception.ReservationConflictException;
 import com.example.ISAproject.model.Reservation;
 import com.example.ISAproject.service.EmailService;
 import com.example.ISAproject.service.ReservationService;
@@ -36,21 +37,27 @@ public class ReservationController {
 	
 	@PostMapping("reserveEquipment/{equipmentIds}/{appointmentId}/{userId}")
     public ResponseEntity<String> reserveEquipment(@PathVariable List<Long> equipmentIds, @PathVariable Long appointmentId,
-            @PathVariable Long userId) {
-		
-		Reservation savedReservation = reservationService.reserveEquipment(equipmentIds, appointmentId, userId);
+            @PathVariable Long userId) throws Exception {
 		
 		try {
+			Reservation savedReservation = reservationService.reserveEquipment(equipmentIds, appointmentId, userId);
+			
 			System.out.println("Thread id: " + Thread.currentThread().getId());
 			if (savedReservation != null) {
-	            emailService.sendReservationConfirmationEmail(savedReservation);
+	            //emailService.sendReservationConfirmationEmail(savedReservation);
 	            return new ResponseEntity<>(HttpStatus.CREATED);
 	        } else {
 	            logger.info("Objekat Reservation je null.");
 	            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-	        }			
+	        }
+		} catch (IllegalArgumentException e) {
+	        // Oprema nije dostupna
+	        return new ResponseEntity<>(HttpStatus.CONFLICT);
+		} catch (ReservationConflictException e) {
+	        // Termin nije dostupan
+	        return new ResponseEntity<>("Appointment not available for reservation", HttpStatus.CONFLICT);
 		}catch( Exception e ){
-			logger.info("Greska prilikom slanja emaila: " + e.getMessage());
+			logger.info(e.getMessage());
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		

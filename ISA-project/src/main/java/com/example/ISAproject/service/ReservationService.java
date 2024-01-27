@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.ISAproject.dto.AppointmentDto;
 import com.example.ISAproject.dto.ReservationDto;
+import com.example.ISAproject.exception.ReservationConflictException;
 import com.example.ISAproject.model.Appointment;
 import com.example.ISAproject.model.Equipment;
 import com.example.ISAproject.model.Reservation;
@@ -42,8 +44,24 @@ public class ReservationService {
 	@Autowired
 	private AppointmentRepository appointmentRepository;
 	
-	@Transactional
-	public Reservation reserveEquipment(List<Long> equipmentIds, Long appointmentId, Long userId) {  
+	@Transactional(rollbackFor = { IllegalArgumentException.class, ReservationConflictException.class })
+	public Reservation reserveEquipment(List<Long> equipmentIds, Long appointmentId, Long userId) throws Exception {  
+		// Provera dostupnosti opreme unutar transakcije
+	    for (Long equipmentId : equipmentIds) {
+	        Equipment equipment = equipmentRepository.findById(equipmentId).orElse(null);
+	        if (equipment == null || equipment.getQuantity() == equipment.getReservedQuantity()) {
+	            // Oprema nije dostupna, poništite transakciju
+	        	throw new IllegalArgumentException("Equipment not available for rreservation");
+	        }
+	    }
+	    
+	    Appointment selectedAppointment = appointmentRepository.findById(appointmentId).orElse(null);
+	    if (selectedAppointment == null || !selectedAppointment.getIsFree()) {
+	        // Termin nije dostupan, poništite transakciju
+	        throw new ReservationConflictException("Appointment not available for reservation");
+	    }
+
+		
 		List<Reservation> reservations = reservationRepository.getByUserId(userId);
 		for (Reservation reservation : reservations) {
 			Appointment appointment = reservation.getAppointment();
@@ -57,34 +75,40 @@ public class ReservationService {
 			}
 		}
 		
-		List<Equipment> equipmentList = equipmentRepository.findAllById(equipmentIds);
+		try {
+			List<Equipment> equipmentList = equipmentRepository.findAllById(equipmentIds);
+	
+	        for (Equipment equipment : equipmentList) {
+	           equipment.setReservedQuantity(equipment.getReservedQuantity() + 1);
+	           equipmentRepository.save(equipment);          
+	        }
+	        
+	        Appointment appointment = appointmentRepository.findById(appointmentId).orElse(null);
+	        
+	        User user = userRepository.findById(userId).orElse(null);
+	        
+	        Reservation reservation = new Reservation();      
+	        reservation.setStatus(ReservationStatus.PENDING);
+	        reservation.setEquipment(new HashSet<>(equipmentList));
+	        for (Equipment equipment : equipmentList) {
+	            reservation.setPrice(reservation.getPrice() + equipment.getPrice());
+	        }
+	        reservation.setAppointment(appointment);
+	        appointment.setIsFree(false);
+	        reservation.setUser(user);
+	        reservation.setQrCode("");
+	        
+	        appointmentRepository.save(appointment);
+	        
+	        return reservationRepository.save(reservation);
+		} catch (OptimisticLockingFailureException e) {
+	        // Ako dođe do konflikta u verziji (optimističko zaključavanje), poništite transakciju
+	        throw new Exception("Reservation conflict", e);
 
-        for (Equipment equipment : equipmentList) {
-           if (equipment.getQuantity() == equipment.getReservedQuantity()) {
-               return null;
-           }else {
-               equipment.setReservedQuantity(equipment.getReservedQuantity() + 1);
-               equipmentRepository.save(equipment);
-           }
-        }
-        
-        Appointment appointment = appointmentRepository.findById(appointmentId).orElse(null);
-        User user = userRepository.findById(userId).orElse(null);
-        
-        Reservation reservation = new Reservation();      
-        reservation.setStatus(ReservationStatus.PENDING);
-        reservation.setEquipment(new HashSet<>(equipmentList));
-        for (Equipment equipment : equipmentList) {
-            reservation.setPrice(reservation.getPrice() + equipment.getPrice());
-        }
-        reservation.setAppointment(appointment);
-        appointment.setIsFree(false);
-        reservation.setUser(user);
-        reservation.setQrCode("");
-        
-        appointmentRepository.save(appointment);
-        
-        return reservationRepository.save(reservation);
+	    } catch (Exception e) {
+	        // Ako dođe do drugih izuzetaka, poništite transakciju
+	        throw new Exception("Reservation failed", e);
+	    }
 	}
 	
 	
