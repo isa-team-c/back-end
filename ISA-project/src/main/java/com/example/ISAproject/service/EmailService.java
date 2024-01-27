@@ -90,7 +90,7 @@ public class EmailService {
 		mail.setTo(user.getEmail());
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("Confirmation: reserved equipment received");
-		mail.setText("Dear custormer,\n\nwe inform you that the company admin has confirmed that the reserved equipment has been received.\n\n");
+		mail.setText("Dear customer,\n\nwe inform you that the company admin has confirmed that the reserved equipment has been received.\n\n");
 		javaMailSender.send(mail);
 
 		System.out.println("Email poslat!");
