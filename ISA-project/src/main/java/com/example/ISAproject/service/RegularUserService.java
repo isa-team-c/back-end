@@ -1,5 +1,7 @@
 package com.example.ISAproject.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,18 @@ public class RegularUserService {
 	
 	public RegularUser findById(Long id) {
 		return regularUserRepository.findById(id).orElseGet(null);
+	}
+	
+	public RegularUser findByUserId(Long userId) {
+		List<RegularUser> regularUsers = regularUserRepository.findAll();
+		
+		for(RegularUser regularUser : regularUsers) {
+			if(regularUser.getUser().getId() == userId) {
+				return regularUser;
+			}
+		}
+		
+		return null;
 	}
 	
 
