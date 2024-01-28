@@ -32,6 +32,13 @@ public class RegularUserService {
 		}
 		
 		return null;
+	public void deletePenalties() {
+		List<RegularUser> users = regularUserRepository.findAll();
+		for(RegularUser user: users) {
+			user.setPenalties(0);
+			RegularUserDto userDto = new RegularUserDto(user);
+			updateRegularUser(userDto);
+		}
 	}
 	
 
