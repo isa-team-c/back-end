@@ -1,6 +1,7 @@
 package com.example.ISAproject.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,12 +12,15 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.ISAproject.dto.AppointmentDto;
 import com.example.ISAproject.dto.ReservationDto;
+import com.example.ISAproject.exception.OverlapException;
 import com.example.ISAproject.exception.ReservationConflictException;
+import com.example.ISAproject.model.EquipmentQuantity;
 import com.example.ISAproject.model.Reservation;
 import com.example.ISAproject.service.EmailService;
 import com.example.ISAproject.service.ReservationService;
@@ -35,16 +39,17 @@ public class ReservationController {
 	@Autowired
 	private ReservationService reservationService;
 	
-	@PostMapping("reserveEquipment/{equipmentIds}/{appointmentId}/{userId}")
-    public ResponseEntity<String> reserveEquipment(@PathVariable List<Long> equipmentIds, @PathVariable Long appointmentId,
+	@PostMapping("reserveEquipment/{appointmentId}/{userId}")
+    public ResponseEntity<String> reserveEquipment(@RequestBody List<EquipmentQuantity> reservationRequests, @PathVariable Long appointmentId,
             @PathVariable Long userId) throws Exception {
 		
 		try {
-			Reservation savedReservation = reservationService.reserveEquipment(equipmentIds, appointmentId, userId);
+			
+			Reservation savedReservation = reservationService.reserveEquipment(reservationRequests, appointmentId, userId);
 			
 			System.out.println("Thread id: " + Thread.currentThread().getId());
 			if (savedReservation != null) {
-	            //emailService.sendReservationConfirmationEmail(savedReservation);
+	            emailService.sendReservationConfirmationEmail(savedReservation);
 	            return new ResponseEntity<>(HttpStatus.CREATED);
 	        } else {
 	            logger.info("Objekat Reservation je null.");
@@ -56,6 +61,8 @@ public class ReservationController {
 		} catch (ReservationConflictException e) {
 	        // Termin nije dostupan
 	        return new ResponseEntity<>("Appointment not available for reservation", HttpStatus.CONFLICT);
+		} catch (OverlapException e) {
+	        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}catch( Exception e ){
 			logger.info(e.getMessage());
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

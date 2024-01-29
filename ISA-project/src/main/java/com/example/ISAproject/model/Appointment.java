@@ -43,8 +43,8 @@ public class Appointment {
 	@Column(name = "is_free", nullable = false)
     private Boolean isFree;  
 	
-	@Version
-	private Integer version = 0;
+	//@Version
+	//private Integer version = 0;
 	
 	public Appointment() {}
 	
@@ -92,13 +92,13 @@ public class Appointment {
 		this.isFree = isFree;
 	}
 
-	public Integer getVersion() {
+	/*public Integer getVersion() {
 		return version;
 	}
 
 	public void setVersion(Integer version) {
 		this.version = version;
-	}
+	}*/
 	
 	
 	

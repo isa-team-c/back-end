@@ -36,12 +36,15 @@ INSERT INTO company (id, name, address, description, average_rating, work_end_ti
 INSERT INTO company (id, name, address, description, average_rating, work_end_time, work_start_time)
     VALUES (2, 'company2', 'Cirpanova', 'odlicnooo', 5, '19:00:00', '09:00:00');
 
-INSERT INTO public.equipment(description, name, quantity, reserved_quantity, type, price, version)
-VALUES ('medicinska', 'Stethoscope', 1, 0, 'Medical Device', 45, 0);
-INSERT INTO public.equipment(description, name, quantity, reserved_quantity, type, price, version) 
-	VALUES ( 'racunarska oprema','Laptop', 1, 0, 'IT Equipment', 35, 0);
-INSERT INTO public.equipment(description, name, quantity, reserved_quantity, type, price, version)
-	VALUES ( 'laboratorijska oprema','Microscope', 1, 0,'Laboratory Equipment', 24, 0);
+INSERT INTO public.equipment(description, name, quantity, reserved_quantity, type, price)
+VALUES ('medicinska', 'Stethoscope', 5, 0, 'Medical Device', 45);
+
+INSERT INTO public.equipment(description, name, quantity, reserved_quantity, type, price)
+VALUES ('racunarska oprema','Laptop', 1, 0, 'IT Equipment', 35);
+
+INSERT INTO public.equipment(description, name, quantity, reserved_quantity, type, price)
+VALUES ('laboratorijska oprema','Microscope', 1, 0,'Laboratory Equipment', 24);
+
 
 INSERT INTO public.company_equipment(
 	company_id, equipment_id)
@@ -63,21 +66,21 @@ INSERT INTO public.company_administrator(
 	user_id, company_id, logged_in_before)
 	VALUES (6, 1, false);
 
-INSERT INTO public.appointments(
-	id, duration, is_free, start_date, administrator_id, version)
-	VALUES (1 ,5, true, '2024-4-22T12:00:00', 2, 0);
+
+
+INSERT INTO public.appointments(id, duration, is_free, start_date, administrator_id)
+VALUES (1, 5, true, '2024-04-22T12:00:00', 2);
+
+INSERT INTO public.appointments(id, duration, is_free, start_date, administrator_id)
+VALUES (2, 30, true, '2024-06-11T12:00:00', 2);
 
 INSERT INTO public.appointments(
-	id, duration, is_free, start_date, administrator_id, version)
-	VALUES (2, 30, true, '2024-6-11T12:00:00', 2, 0);
+	id, duration, is_free, start_date, administrator_id)
+VALUES (3, 30, true, '2024-06-11T12:03:00', 6);
 
 INSERT INTO public.appointments(
-	id, duration, is_free, start_date, administrator_id, version)
-	VALUES (3, 30, true, '2024-6-11T12:03:00', 6, 0);
-
-INSERT INTO public.appointments(
-	id, duration, is_free, start_date, administrator_id, version)
-	VALUES (4 , 5, true, '2023-7-18T12:00:00', 3, 0);
+	id, duration, is_free, start_date, administrator_id)
+	VALUES (4 , 5, true, '2023-7-18T12:00:00', 3);
 
 
 INSERT INTO public.company_appointment(

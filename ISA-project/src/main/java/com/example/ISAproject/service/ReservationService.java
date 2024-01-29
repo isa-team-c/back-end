@@ -18,15 +18,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.ISAproject.dto.AppointmentDto;
 import com.example.ISAproject.dto.ReservationDto;
+import com.example.ISAproject.exception.OverlapException;
 import com.example.ISAproject.exception.ReservationConflictException;
 import com.example.ISAproject.model.Appointment;
 import com.example.ISAproject.model.Equipment;
+import com.example.ISAproject.model.EquipmentQuantity;
 import com.example.ISAproject.model.Reservation;
 import com.example.ISAproject.model.User;
 import com.example.ISAproject.model.enumerations.ReservationStatus;
 import com.example.ISAproject.repository.ReservationRepository;
 import com.example.ISAproject.repository.UserRepository;
 import com.example.ISAproject.repository.AppointmentRepository;
+import com.example.ISAproject.repository.EquipmentQuantityRepository;
 import com.example.ISAproject.repository.EquipmentRepository;
 
 @Service
@@ -44,44 +47,65 @@ public class ReservationService {
 	@Autowired
 	private AppointmentRepository appointmentRepository;
 	
-	@Transactional(rollbackFor = { IllegalArgumentException.class, ReservationConflictException.class })
-	public Reservation reserveEquipment(List<Long> equipmentIds, Long appointmentId, Long userId) throws Exception {  
+	@Autowired
+	private EquipmentQuantityRepository equipmentQuantityRepository;
+	
+	@Transactional//(rollbackFor = { IllegalArgumentException.class, ReservationConflictException.class })
+	public Reservation reserveEquipment(List<EquipmentQuantity> equipments, Long appointmentId, Long userId) throws Exception {  
 		// Provera dostupnosti opreme unutar transakcije
-	    for (Long equipmentId : equipmentIds) {
+	   /* for (Long equipmentId : equipmentIds) {
 	        Equipment equipment = equipmentRepository.findById(equipmentId).orElse(null);
 	        if (equipment == null || equipment.getQuantity() == equipment.getReservedQuantity()) {
 	            // Oprema nije dostupna, poništite transakciju
 	        	throw new IllegalArgumentException("Equipment not available for rreservation");
 	        }
-	    }
-	    
-	    Appointment selectedAppointment = appointmentRepository.findById(appointmentId).orElse(null);
-	    if (selectedAppointment == null || !selectedAppointment.getIsFree()) {
-	        // Termin nije dostupan, poništite transakciju
-	        throw new ReservationConflictException("Appointment not available for reservation");
-	    }
+	    }*/
 
 		
-		List<Reservation> reservations = reservationRepository.getByUserId(userId);
-		for (Reservation reservation : reservations) {
-			Appointment appointment = reservation.getAppointment();
-			
-			if (reservation.getStatus() == ReservationStatus.CANCELLED) {
-				continue;
-			}
-			
-			if (isOverlap(appointment, appointmentId)) {
-				return null;
-			}
-		}
-		
 		try {
-			List<Equipment> equipmentList = equipmentRepository.findAllById(equipmentIds);
+		    Appointment selectedAppointment = appointmentRepository.findById(appointmentId).orElse(null);
+		    if (selectedAppointment == null) {
+		        // Termin nije dostupan, poništite transakciju
+		        throw new ReservationConflictException("Appointment not available for reservation");
+		    }
+		    
+			List<Reservation> reservations = reservationRepository.getByUserId(userId);
+			for (Reservation reservation : reservations) {
+				Appointment appointment = reservation.getAppointment();
+				
+				if (reservation.getStatus() == ReservationStatus.CANCELLED) {
+					continue;
+				}
+				
+				if (isOverlap(appointment, appointmentId)) {
+					throw new OverlapException("The selected appointment overlaps with an existing reservation.");
+				}
+			}
 	
-	        for (Equipment equipment : equipmentList) {
+			List<Equipment> allEquipment = new ArrayList<>();
+		    
+		    for (EquipmentQuantity reservationRequest : equipments) {
+		        long equipmentId = reservationRequest.getEquipmentId();
+		        Integer quantity = reservationRequest.getQuantity();
+
+		        Equipment equipment = equipmentRepository.findById(equipmentId).orElse(null);
+
+		        if (equipment == null || equipment.getQuantity() < quantity || equipment.getReservedQuantity() + quantity > equipment.getQuantity()) {
+		        	throw new IllegalArgumentException("Equipment not available for reservation");
+		        }
+
+		        allEquipment.add(equipment);
+
+		        equipment.setReservedQuantity(equipment.getReservedQuantity() + quantity);
+		        equipmentRepository.save(equipment);
+		        equipmentQuantityRepository.save(reservationRequest);
+		        
+		    }
+		    
+	        /*for (Equipment equipment : allEquipment) {
 	           equipment.setReservedQuantity(equipment.getReservedQuantity() + 1);
 	           equipmentRepository.save(equipment);          
-	        }
+	        }*/
 	        
 	        Appointment appointment = appointmentRepository.findById(appointmentId).orElse(null);
 	        
@@ -89,14 +113,32 @@ public class ReservationService {
 	        
 	        Reservation reservation = new Reservation();      
 	        reservation.setStatus(ReservationStatus.PENDING);
-	        reservation.setEquipment(new HashSet<>(equipmentList));
-	        for (Equipment equipment : equipmentList) {
+	        reservation.setEquipment(new HashSet<>(allEquipment));
+	        /*for (Equipment equipment : allEquipment) {
 	            reservation.setPrice(reservation.getPrice() + equipment.getPrice());
-	        }
+	        }*/
+	        
+	        for (EquipmentQuantity reservationRequest : equipments) {
+		        long equipmentId = reservationRequest.getEquipmentId();
+		        Integer quantity = reservationRequest.getQuantity();
+
+		        Equipment equipment = equipmentRepository.findById(equipmentId).orElse(null);
+
+		        reservation.setPrice(reservation.getPrice() + equipment.getPrice()*quantity);
+
+		        
+		    }
+	        
 	        reservation.setAppointment(appointment);
 	        appointment.setIsFree(false);
 	        reservation.setUser(user);
 	        reservation.setQrCode("");
+	        
+	        for (EquipmentQuantity equipmentQuantity : equipments) {
+	        	equipmentQuantity.setReservation(reservation);
+	        	equipmentQuantityRepository.save(equipmentQuantity);
+		    }
+	        
 	        
 	        appointmentRepository.save(appointment);
 	        

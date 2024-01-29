@@ -1,11 +1,8 @@
 package com.example.ISAproject.model;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,10 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Version;
 
 import com.example.ISAproject.model.enumerations.ReservationStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -56,9 +51,8 @@ public class Reservation {
 	inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
 	private User user;
   
-    @Column(name = "quantity")
-    private int quantity;
-	
+
+
 	public Reservation() { }
 
 
@@ -141,6 +135,5 @@ public class Reservation {
 	public void setUser(User user) {
 		this.user = user;
 	}
-
 
 }

@@ -34,8 +34,8 @@ public class Equipment {
 	@NotNull
 	private int reservedQuantity;
 	
-	@Version
-	private Integer version = 0;
+	//@Version
+	//private Integer version = 0;
 	
 	public Equipment() { this.reservedQuantity = 0; }
 
@@ -115,14 +115,14 @@ public class Equipment {
 	}
 	
 
-	public Integer getVersion() {
+	/*public Integer getVersion() {
 		return version;
 	}
 
 
 	public void setVersion(Integer version) {
 		this.version = version;
-	}
+	}*/
 
 
 	@Override
