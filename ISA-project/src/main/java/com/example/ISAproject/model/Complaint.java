@@ -41,7 +41,6 @@ public class Complaint {
 	private String complaintContent;
 	
 	@Column(name = "responded", nullable = false)
-	@NotEmpty
 	private boolean responded;
 	
 	

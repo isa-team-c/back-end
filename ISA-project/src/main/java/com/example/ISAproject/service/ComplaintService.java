@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.ISAproject.model.Complaint;
+import com.example.ISAproject.model.Reservation;
 import com.example.ISAproject.repository.ComplaintRepository;
 
 @Service
@@ -36,4 +37,16 @@ public class ComplaintService {
 
 	    return notRespondedComplaints;
 	}
+	
+	public Complaint findById(Long id) {
+		return complaintRepository.findById(id).orElseGet(null);
+	}
+	
+	public Complaint updateComplaintResponded(Complaint updatedComplaint) {
+        if (complaintRepository.existsById(updatedComplaint.getId())) {
+            return complaintRepository.save(updatedComplaint);
+        } else {
+            return null;
+    	}
+    }
 }
