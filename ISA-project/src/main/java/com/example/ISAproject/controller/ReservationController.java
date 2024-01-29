@@ -1,6 +1,7 @@
 package com.example.ISAproject.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,9 @@ import com.example.ISAproject.dto.ReservationDto;
 import com.example.ISAproject.dto.UserDto;
 import com.example.ISAproject.model.Company;
 import com.example.ISAproject.model.RegularUser;
+import com.example.ISAproject.exception.OverlapException;
+import com.example.ISAproject.exception.ReservationConflictException;
+import com.example.ISAproject.model.EquipmentQuantity;
 import com.example.ISAproject.model.Reservation;
 import com.example.ISAproject.model.User;
 import com.example.ISAproject.service.EmailService;
@@ -43,13 +47,14 @@ public class ReservationController {
 	@Autowired
 	private ReservationService reservationService;
 	
-	@PostMapping("reserveEquipment/{equipmentIds}/{appointmentId}/{userId}")
-    public ResponseEntity<String> reserveEquipment(@PathVariable List<Long> equipmentIds, @PathVariable Long appointmentId,
-            @PathVariable Long userId) {
-		
-		Reservation savedReservation = reservationService.reserveEquipment(equipmentIds, appointmentId, userId);
+	@PostMapping("reserveEquipment/{appointmentId}/{userId}")
+    public ResponseEntity<String> reserveEquipment(@RequestBody List<EquipmentQuantity> reservationRequests, @PathVariable Long appointmentId,
+            @PathVariable Long userId) throws Exception {
 		
 		try {
+			
+			Reservation savedReservation = reservationService.reserveEquipment(reservationRequests, appointmentId, userId);
+			
 			System.out.println("Thread id: " + Thread.currentThread().getId());
 			if (savedReservation != null) {
 	            emailService.sendReservationConfirmationEmail(savedReservation);
@@ -57,9 +62,17 @@ public class ReservationController {
 	        } else {
 	            logger.info("Objekat Reservation je null.");
 	            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-	        }			
+	        }
+		} catch (IllegalArgumentException e) {
+	        // Oprema nije dostupna
+	        return new ResponseEntity<>(HttpStatus.CONFLICT);
+		} catch (ReservationConflictException e) {
+	        // Termin nije dostupan
+	        return new ResponseEntity<>("Appointment not available for reservation", HttpStatus.CONFLICT);
+		} catch (OverlapException e) {
+	        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}catch( Exception e ){
-			logger.info("Greska prilikom slanja emaila: " + e.getMessage());
+			logger.info(e.getMessage());
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		

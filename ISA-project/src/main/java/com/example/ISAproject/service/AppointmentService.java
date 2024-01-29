@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.ISAproject.dto.AppointmentDto;
 import com.example.ISAproject.dto.CompanyAdministratorDto;
@@ -17,12 +18,14 @@ import com.example.ISAproject.model.Appointment;
 import com.example.ISAproject.model.Company;
 import com.example.ISAproject.model.CompanyAdministrator;
 import com.example.ISAproject.model.Equipment;
+import com.example.ISAproject.model.EquipmentQuantity;
 import com.example.ISAproject.model.RegularUser;
 import com.example.ISAproject.model.Reservation;
 import com.example.ISAproject.model.Role;
 import com.example.ISAproject.model.User;
 import com.example.ISAproject.model.enumerations.ReservationStatus;
 import com.example.ISAproject.repository.AppointmentRepository;
+import com.example.ISAproject.repository.EquipmentQuantityRepository;
 import com.example.ISAproject.repository.EquipmentRepository;
 import com.example.ISAproject.repository.RegularUserRepository;
 import com.example.ISAproject.repository.ReservationRepository;
@@ -52,6 +55,9 @@ public class AppointmentService {
     
     @Autowired
     private EquipmentRepository equipmentRepository;
+    
+	@Autowired
+	private EquipmentQuantityRepository equipmentQuantityRepository;
 	
 	public List<Appointment> generateAppointments(LocalDateTime selectedDateTime, int duration, long companyId) {
 		Company company = companyService.findById(companyId);
@@ -123,6 +129,7 @@ public class AppointmentService {
 		return appointmentRepository.save(appointment);
 	}
 	
+	
 	public Appointment saveGeneratedAppointment(AppointmentDto appointmentDto) {
 	    try {
 	        Appointment appointment = new Appointment();
@@ -150,6 +157,7 @@ public class AppointmentService {
 
 	}
 	
+	@Transactional
 	public void cancelAppointment(long appointmentId, long userId) {
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new IllegalArgumentException("Appointment not found"));
@@ -168,6 +176,23 @@ public class AppointmentService {
         updatePenalties(regularUser, penaltyReduction);
         
         Reservation reservation = reservationRepository.findByAppointmentAndUser(appointment, user);
+        
+        List<EquipmentQuantity> reservationRequests = equipmentQuantityRepository.findByReservation_id(reservation.getId());
+
+	    for (EquipmentQuantity reservationRequest : reservationRequests) {
+	        long equipmentId = reservationRequest.getEquipmentId();
+	        Integer quantity = reservationRequest.getQuantity();
+
+	        Equipment equipment = equipmentRepository.findById(equipmentId).orElse(null);
+
+	        if (equipment != null) {
+	            // Update the reserved quantity for each associated Equipment
+	            equipment.setReservedQuantity(equipment.getReservedQuantity() - quantity);
+	            equipmentRepository.save(equipment);
+	        }
+	    }
+        
+        
         updateReservationAndEquipment(reservation, ReservationStatus.CANCELLED);
       
         updateAppointmentStatus(appointment, true);
@@ -181,12 +206,6 @@ public class AppointmentService {
 	private void updateReservationAndEquipment(Reservation reservation, ReservationStatus status) {
 	    reservation.setStatus(status);
 	    reservationRepository.save(reservation);
-	    
-        for (Equipment equipment : reservation.getEquipment())
-        {
-        	equipment.setReservedQuantity(equipment.getReservedQuantity() - 1);
-        	equipmentRepository.save(equipment);
-        }
 	}
 
 	private void updateAppointmentStatus(Appointment appointment, boolean isFree) {

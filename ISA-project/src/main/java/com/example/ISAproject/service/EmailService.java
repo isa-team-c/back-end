@@ -110,7 +110,7 @@ public class EmailService {
 	    helper.setTo(reservation.getUser().getEmail());
 	    helper.setFrom(env.getProperty("spring.mail.username"));
 	    helper.setSubject("Reservation Confirmation");
-	    String emailContent = "Dear " + reservation.getUser().getName() + ",\n\n"
+	    String emailContent = "Dear " + reservation.getUser().getName() 
 	            + "\n\nThank you for your reservation. To access reservation details, please scan the QR code below."
 	            + "\n\nBest regards,\nThe MedBooking Team";
 

@@ -38,10 +38,13 @@ INSERT INTO company (id, name, address, description, average_rating, work_end_ti
 
 INSERT INTO public.equipment(description, name, quantity, reserved_quantity, type, price)
 VALUES ('medicinska', 'Stethoscope', 5, 0, 'Medical Device', 45);
-INSERT INTO public.equipment(description, name, quantity, reserved_quantity, type, price) 
-	VALUES ( 'racunarska oprema','Laptop', 10, 0, 'IT Equipment', 35);
+
 INSERT INTO public.equipment(description, name, quantity, reserved_quantity, type, price)
-	VALUES ( 'laboratorijska oprema','Microscope', 3, 0,'Laboratory Equipment', 24);
+VALUES ('racunarska oprema','Laptop', 1, 0, 'IT Equipment', 35);
+
+INSERT INTO public.equipment(description, name, quantity, reserved_quantity, type, price)
+VALUES ('laboratorijska oprema','Microscope', 1, 0,'Laboratory Equipment', 24);
+
 
 INSERT INTO public.company_equipment(
 	company_id, equipment_id)
@@ -67,13 +70,12 @@ INSERT INTO public.appointments(
 	id, duration, is_free, start_date, administrator_id)
 	VALUES (1 ,5, true, '2024-1-27T12:00:00', 2);
 
-INSERT INTO public.appointments(
-	id, duration, is_free, start_date, administrator_id)
-	VALUES (2, 30, true, '2024-6-11T12:00:00', 2);
+INSERT INTO public.appointments(id, duration, is_free, start_date, administrator_id)
+VALUES (2, 30, true, '2024-06-11T12:00:00', 2);
 
 INSERT INTO public.appointments(
 	id, duration, is_free, start_date, administrator_id)
-	VALUES (3, 30, true, '2024-6-11T12:03:00', 6);
+VALUES (3, 30, true, '2024-06-11T12:03:00', 6);
 
 INSERT INTO public.appointments(
 	id, duration, is_free, start_date, administrator_id)
