@@ -3,6 +3,7 @@ package com.example.ISAproject.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.ISAproject.model.Appointment;
+import com.example.ISAproject.model.Company;
 
 import java.util.List;
 
@@ -18,4 +19,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long>{
 	
 	
 	List<Appointment> findByCompanyAdministrator(CompanyAdministrator administrator);
+
+
 }

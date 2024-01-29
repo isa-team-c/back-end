@@ -16,7 +16,7 @@ INSERT INTO public.users(city, company_information, country, email, is_verified,
 INSERT INTO public.users(city, company_information, country, email, is_verified, last_password_reset_date, name, password, phone_number, profession, surname, role_id)
 	VALUES ('Subotica', 'preduzece4', 'Srbija', 'andjela1108@gmail.com', true, null, 'Andjela', '$2a$10$lhYgvOwC1Q.fxzQBkwVNI.xqwKaoQiY6Gum5fzeN9jsuYStzORNGi', '065720914', 'softverski inzenjer', 'Knezevic',1);
 INSERT INTO public.users(city, company_information, country, email, is_verified, last_password_reset_date, name, password, phone_number, profession, surname, role_id)
-	VALUES ('Nis', 'preduzece1', 'Srbija', 'andjela1108+vhb@gmail.com', true, null, 'Vasa', '$2a$10$lhYgvOwC1Q.fxzQBkwVNI.xqwKaoQiY6Gum5fzeN9jsuYStzORNGi', '065727714', 'softverski inzenjer', 'Rajcevic',1);
+	VALUES ('Nis', 'preduzece1', 'Srbija', 'andjela1108+vhb@gmail.com', true, null, 'Vasa', '$2a$10$lhYgvOwC1Q.fxzQBkwVNI.xqwKaoQiY6Gum5fzeN9jsuYStzORNGi', '065727714', 'softverski inzenjer', 'Rajcevic',2);
 	
 INSERT INTO public.regular_user(
 	user_id, penalties, role)
@@ -63,21 +63,18 @@ INSERT INTO public.company_administrator(
 	user_id, company_id, logged_in_before)
 	VALUES (6, 1, false);
 
-INSERT INTO public.appointments(
-	id, duration, is_free, start_date, administrator_id)
-	VALUES (1 ,5, true, '2024-1-27T12:00:00', 2);
+INSERT INTO public.appointments(id, duration, is_free, start_date, administrator_id, version)
+VALUES (1, 5, true, '2024-1-27T12:00:00', 2, 0);
 
-INSERT INTO public.appointments(
-	id, duration, is_free, start_date, administrator_id)
-	VALUES (2, 30, true, '2024-6-11T12:00:00', 2);
+INSERT INTO public.appointments(id, duration, is_free, start_date, administrator_id, version)
+VALUES (2, 30, true, '2024-6-12T12:00:00', 2, 0);
 
-INSERT INTO public.appointments(
-	id, duration, is_free, start_date, administrator_id)
-	VALUES (3, 30, true, '2024-6-11T12:03:00', 6);
+INSERT INTO public.appointments(id, duration, is_free, start_date, administrator_id, version)
+VALUES (3, 30, true, '2024-6-11T12:03:00', 6, 0);
 
-INSERT INTO public.appointments(
-	id, duration, is_free, start_date, administrator_id)
-	VALUES (4 , 5, true, '2023-7-18T12:00:00', 3);
+INSERT INTO public.appointments(id, duration, is_free, start_date, administrator_id, version)
+VALUES (4, 5, true, '2023-7-18T12:00:00', 3, 0);
+
 
 
 INSERT INTO public.company_appointment(

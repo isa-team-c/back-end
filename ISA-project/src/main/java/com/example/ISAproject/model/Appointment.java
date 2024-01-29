@@ -1,5 +1,6 @@
 package com.example.ISAproject.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +20,14 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
+import org.springframework.data.annotation.Version;
+
 import com.example.ISAproject.dto.CompanyAdministratorDto;
 
 @Entity
 @Table(name="appointments")
-public class Appointment {
+public class Appointment implements Serializable {
+	private static final long serialVersionUID = 1L;
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,6 +45,9 @@ public class Appointment {
 	
 	@Column(name = "is_free", nullable = false)
     private Boolean isFree;  
+	
+	@Version
+	private int version;
 	
 	public Appointment() {}
 	
