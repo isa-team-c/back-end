@@ -1,5 +1,6 @@
 package com.example.ISAproject.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,5 +22,18 @@ public class ComplaintService {
 	
 	public List<Complaint> getAllComplaints() {
 		return complaintRepository.findAll();
+	}
+	
+	public List<Complaint> getAllNotRespondedComplaints() {
+	    List<Complaint> allComplaints = complaintRepository.findAll();
+	    List<Complaint> notRespondedComplaints = new ArrayList<>();
+
+	    for (Complaint complaint : allComplaints) {
+	        if (!complaint.getResponded()) {
+	            notRespondedComplaints.add(complaint);
+	        }
+	    }
+
+	    return notRespondedComplaints;
 	}
 }

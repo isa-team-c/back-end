@@ -38,4 +38,21 @@ public class ComplaintController {
                 
         return new ResponseEntity<>(complaintDtos, HttpStatus.OK); 
 	}
+	
+	@GetMapping("/allNotResponded")
+	public ResponseEntity<List<ComplaintDto>> getAllNotRespondedComplaints() {
+
+		List<Complaint> complaints = complaintService.getAllNotRespondedComplaints();
+
+		if(complaints == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		List<ComplaintDto> complaintDtos = new ArrayList<>();
+		for (Complaint c : complaints) {
+			complaintDtos.add(new ComplaintDto(c));
+		}
+                
+        return new ResponseEntity<>(complaintDtos, HttpStatus.OK); 
+	}
 }

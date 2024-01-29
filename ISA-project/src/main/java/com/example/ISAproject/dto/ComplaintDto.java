@@ -8,6 +8,7 @@ public class ComplaintDto {
 	private CompanyDto companyDto;
 	//private CompanyAdministratorDto companyAdministratorDto;
 	private String complaintContent;
+	private boolean responded;
 	
 	public ComplaintDto () { }
 	
@@ -17,6 +18,7 @@ public class ComplaintDto {
 		this.companyDto = new CompanyDto(complaint.getCompany());
 		//this.companyAdministratorDto = new CompanyAdministratorDto(complaint.getCompanyAdministrator());
 		this.complaintContent = complaint.getComplaintContent();
+		this.responded = complaint.getResponded();
 	}
 
 	public long getId() {
@@ -59,5 +61,13 @@ public class ComplaintDto {
 
 	public void setComplaintContent(String complaintContent) {
 		this.complaintContent = complaintContent;
+	}
+
+	public boolean getResponded() {
+		return responded;
+	}
+
+	public void setResponded(boolean responded) {
+		this.responded = responded;
 	}
 }

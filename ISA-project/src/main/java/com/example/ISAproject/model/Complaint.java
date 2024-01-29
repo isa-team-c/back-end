@@ -40,11 +40,15 @@ public class Complaint {
 	@NotEmpty
 	private String complaintContent;
 	
+	@Column(name = "responded", nullable = false)
+	@NotEmpty
+	private boolean responded;
+	
 	
 	
 	public Complaint() { }
 	
-	public Complaint(long id, Company company, /*CompanyAdministrator companyAdministrator,*/ String complaint_content)
+	public Complaint(long id, Company company, /*CompanyAdministrator companyAdministrator,*/ String complaint_content, boolean responded)
 	{
 		super();
 		this.id = id;
@@ -52,6 +56,7 @@ public class Complaint {
 		this.company = company;
 		//this.companyAdministrator = companyAdministrator;
 		this.complaintContent = complaint_content;
+		this.responded = responded;
 	}
 	
 	
@@ -96,5 +101,13 @@ public class Complaint {
 
 	public void setComplaintContent(String complaintContent) {
 		this.complaintContent = complaintContent;
+	}
+
+	public boolean getResponded() {
+		return responded;
+	}
+
+	public void setResponded(boolean responded) {
+		this.responded = responded;
 	}
 }
