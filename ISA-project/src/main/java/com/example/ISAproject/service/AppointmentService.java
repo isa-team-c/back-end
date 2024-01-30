@@ -127,7 +127,7 @@ public class AppointmentService {
         return appointmentRepository.findByCompanyAdministrator(administrator);
     }
 
-	@Transactional(readOnly = false)
+	@Transactional
 	public Appointment save(Appointment appointment) {
 		LocalDateTime newAppointmentEnd = appointment.getStartDate().plusMinutes(appointment.getDuration());
 		if (isAppointmentOverlapForCompany(appointment.getCompanyAdministrator(), appointment.getStartDate(), newAppointmentEnd)) {
@@ -136,7 +136,7 @@ public class AppointmentService {
 		return appointmentRepository.save(appointment);
 	}
 	
-	@Transactional(readOnly = false)
+	@Transactional
 	public Appointment saveGeneratedAppointment(AppointmentDto appointmentDto) {
 	    try {
 	        Appointment newAppointment = new Appointment();
@@ -187,7 +187,7 @@ public class AppointmentService {
 	
 	private boolean isAppointmentOverlapForCompany(CompanyAdministrator administrator, LocalDateTime newStart, LocalDateTime newEnd) {
 		Company company = companyService.findById(administrator.getCompany().getId());
-	    Set<Appointment> existingAppointments = company.getAppointments();
+	    List<Appointment> existingAppointments = appointmentRepository.findAllByCompanyId(company.getId());
 
 	    for (Appointment existingAppointment : existingAppointments) {
 	        LocalDateTime existingStart = existingAppointment.getStartDate();

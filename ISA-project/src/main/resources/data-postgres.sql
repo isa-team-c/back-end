@@ -58,22 +58,22 @@ INSERT INTO public.company_administrator(
 	VALUES (2, 1, true);
 INSERT INTO public.company_administrator(
 	user_id, company_id, logged_in_before)
-	VALUES (3, 1, false);
+	VALUES (3, 1, true);
 INSERT INTO public.company_administrator(
 	user_id, company_id, logged_in_before)
-	VALUES (6, 1, false);
+	VALUES (6, 2, false);
 
-INSERT INTO public.appointments(id, duration, is_free, start_date, administrator_id, version)
-VALUES (1, 5, true, '2024-1-27T12:00:00', 2, 0);
+INSERT INTO public.appointments(id, duration, is_free, start_date, administrator_id)
+VALUES (1, 5, true, '2024-1-27T12:00:00', 2);
 
-INSERT INTO public.appointments(id, duration, is_free, start_date, administrator_id, version)
-VALUES (2, 30, true, '2024-6-12T12:00:00', 2, 0);
+INSERT INTO public.appointments(id, duration, is_free, start_date, administrator_id)
+VALUES (2, 30, true, '2024-6-12T12:00:00', 2);
 
-INSERT INTO public.appointments(id, duration, is_free, start_date, administrator_id, version)
-VALUES (3, 30, true, '2024-6-11T12:03:00', 6, 0);
+INSERT INTO public.appointments(id, duration, is_free, start_date, administrator_id)
+VALUES (3, 30, true, '2024-6-11T12:03:00', 6);
 
-INSERT INTO public.appointments(id, duration, is_free, start_date, administrator_id, version)
-VALUES (4, 5, true, '2023-7-18T12:00:00', 3, 0);
+INSERT INTO public.appointments(id, duration, is_free, start_date, administrator_id)
+VALUES (4, 5, true, '2023-7-18T12:00:00', 3);
 
 
 
