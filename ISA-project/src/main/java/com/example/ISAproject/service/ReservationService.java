@@ -86,7 +86,7 @@ public class ReservationService {
 		
 		try {
 		    Appointment selectedAppointment = appointmentRepository.findById(appointmentId).orElse(null);
-		    if (selectedAppointment == null) {
+		    if (selectedAppointment == null || selectedAppointment.getIsFree() == false) {
 		        // Termin nije dostupan, poništite transakciju
 		        throw new ReservationConflictException("Appointment not available for reservation");
 		    }
