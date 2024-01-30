@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EquipmentQuantityRepository extends JpaRepository<EquipmentQuantity, Long>{
 	List<EquipmentQuantity> findByReservation_id(long reservationId);
+	Integer findQuantityByReservation_idAndEquipmentId(long reservationId, long equipmentId); 
 }

@@ -64,7 +64,7 @@ INSERT INTO public.company_administrator(
 	VALUES (3, 1, true);
 INSERT INTO public.company_administrator(
 	user_id, company_id, logged_in_before)
-	VALUES (6, 2, false);
+	VALUES (6, 1, false);
 
 INSERT INTO public.appointments(id, duration, is_free, start_date, administrator_id)
 VALUES (1, 5, true, '2024-1-27T12:00:00', 2);

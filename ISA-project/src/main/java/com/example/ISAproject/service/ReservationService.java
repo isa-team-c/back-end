@@ -332,7 +332,7 @@ public class ReservationService {
 
 		   
 		    for (AppointmentForCompanyDto appointment : appointmentsDto) {
-		    	LocalDateTime endDate = appointment.getStartDate().plusDays(appointment.getDuration());
+		    	LocalDateTime endDate = appointment.getStartDate().plusMinutes(appointment.getDuration());
 		        for (Reservation reservation : getNotTakenReservations()) {
 		            if (appointment.getId() == reservation.getAppointment().getId()) {
 		               

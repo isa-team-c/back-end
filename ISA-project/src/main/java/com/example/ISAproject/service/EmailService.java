@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,8 +21,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.ISAproject.dto.UserDto;
 import com.example.ISAproject.model.Equipment;
+import com.example.ISAproject.model.EquipmentQuantity;
 import com.example.ISAproject.model.Reservation;
 import com.example.ISAproject.model.User;
+import com.example.ISAproject.repository.EquipmentQuantityRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -43,6 +46,10 @@ public class EmailService {
 	
 	@Autowired
 	private ReservationService reservationService;
+	
+	@Autowired
+	private EquipmentQuantityRepository equipmentQuantityRepository;
+	
 	
 	@Autowired
 	private Environment env;
@@ -140,12 +147,7 @@ public class EmailService {
 	    int height = 300;
 
 	    QRCodeWriter qrCodeWriter = new QRCodeWriter();
-	    String equipmentDetails = reservation.getEquipment().stream()
-	            .map(equipment -> "Equipment ID: " + equipment.getId() +
-	                    "\nName: " + equipment.getName() +
-	                    "\nType: " + equipment.getType() +
-	                    "\nDescription: " + equipment.getDescription())
-	            .collect(Collectors.joining("\n\n"));
+	    String equipmentDetails = generateEquipmentDetails(reservation);
 	    String reservationDetails = "Reservation id: " + reservation.getId() +
 	            "\nStatus: " + reservation.getStatus() +
 	            "\nPrice: " + reservation.getPrice() +
@@ -214,6 +216,26 @@ public class EmailService {
 		System.out.println("Email poslat!");
 	}
 
+	private Integer getEquipmentQuantity(Reservation reservation, long equipmentId) {
+        List<EquipmentQuantity> equipmentQuantities = equipmentQuantityRepository.findByReservation_id(reservation.getId());
 
+        Optional<Integer> quantity = equipmentQuantities.stream()
+                .filter(eq -> eq.getEquipmentId() == equipmentId)
+                .map(EquipmentQuantity::getQuantity)
+                .findFirst();
+
+        return quantity.orElse(0);
+    }
+
+
+    private String generateEquipmentDetails(Reservation reservation) {
+        return reservation.getEquipment().stream()
+                .map(equipment -> "Equipment ID: " + equipment.getId() +
+                        "\nName: " + equipment.getName() +
+                        "\nType: " + equipment.getType() +
+                        "\nDescription: " + equipment.getDescription() +
+                        "\nQuantity: " + getEquipmentQuantity(reservation, equipment.getId()))
+                .collect(Collectors.joining("\n\n"));
+    }
    
 }

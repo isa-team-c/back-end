@@ -10,13 +10,19 @@ import org.springframework.stereotype.Service;
 
 import com.example.ISAproject.model.Company;
 import com.example.ISAproject.model.Equipment;
+import com.example.ISAproject.model.EquipmentQuantity;
 import com.example.ISAproject.model.Reservation;
+import com.example.ISAproject.repository.EquipmentQuantityRepository;
 import com.example.ISAproject.repository.EquipmentRepository;
 
 @Service
 public class EquipmentService {
 	@Autowired
     private EquipmentRepository equipmnetRepository;
+	
+	@Autowired
+    private EquipmentQuantityRepository equipmentQuantityRepository;
+	
 	
 	@Autowired
     private CompanyService companyService;
@@ -57,19 +63,22 @@ public class EquipmentService {
 	    }
 
 	   
-	        Set<Equipment> equipmentList = reservation.getEquipment();
-	        for (Equipment equipment : equipmentList) {
-	            Equipment existingEquipment = findEquipmentById(equipment.getId());
+	        
+	        List<EquipmentQuantity> reservationRequests = equipmentQuantityRepository.findByReservation_id(reservation.getId());
 
-	            if (existingEquipment == null) {
-	                throw new EntityNotFoundException("Equipment not found");
-	            }
+		    for (EquipmentQuantity reservationRequest : reservationRequests) {
+		        long equipmentId = reservationRequest.getEquipmentId();
+		        Integer quantity = reservationRequest.getQuantity();
 
-	           
-	             existingEquipment.setQuantity(existingEquipment.getQuantity() - 1);
-	             equipmnetRepository.save(existingEquipment);
-	            
-	        }
+		        Equipment equipment = equipmnetRepository.findById(equipmentId).orElse(null);
+
+		        if (equipment != null) {
+		            // Update the reserved quantity for each associated Equipment
+		        	equipment.setQuantity(equipment.getQuantity() - quantity);
+		            equipment.setReservedQuantity(equipment.getReservedQuantity() - quantity);
+		            equipmnetRepository.save(equipment);
+		        }
+		    }
 	    
 
 	    companyService.save(company);
