@@ -9,6 +9,8 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.ISAproject.dto.AppointmentDto;
 import com.example.ISAproject.dto.CompanyAdministratorDto;
@@ -17,12 +19,14 @@ import com.example.ISAproject.model.Appointment;
 import com.example.ISAproject.model.Company;
 import com.example.ISAproject.model.CompanyAdministrator;
 import com.example.ISAproject.model.Equipment;
+import com.example.ISAproject.model.EquipmentQuantity;
 import com.example.ISAproject.model.RegularUser;
 import com.example.ISAproject.model.Reservation;
 import com.example.ISAproject.model.Role;
 import com.example.ISAproject.model.User;
 import com.example.ISAproject.model.enumerations.ReservationStatus;
 import com.example.ISAproject.repository.AppointmentRepository;
+import com.example.ISAproject.repository.EquipmentQuantityRepository;
 import com.example.ISAproject.repository.EquipmentRepository;
 import com.example.ISAproject.repository.RegularUserRepository;
 import com.example.ISAproject.repository.ReservationRepository;
@@ -52,7 +56,15 @@ public class AppointmentService {
     
     @Autowired
     private EquipmentRepository equipmentRepository;
+    
+	@Autowired
+	private EquipmentQuantityRepository equipmentQuantityRepository;
+    @Autowired
+    private ReservationService reservationService;
+    
+    
 	
+    @Transactional
 	public List<Appointment> generateAppointments(LocalDateTime selectedDateTime, int duration, long companyId) {
 		Company company = companyService.findById(companyId);
         LocalTime workStartTime = company.getWorkStartTime();
@@ -119,37 +131,83 @@ public class AppointmentService {
         return appointmentRepository.findByCompanyAdministrator(administrator);
     }
 
+	@Transactional
 	public Appointment save(Appointment appointment) {
+		LocalDateTime newAppointmentEnd = appointment.getStartDate().plusMinutes(appointment.getDuration());
+		if (isAppointmentOverlapForCompany(appointment.getCompanyAdministrator(), appointment.getStartDate(), newAppointmentEnd)) {
+            throw new IllegalArgumentException("Termin se preklapa sa već postojećim terminom.");
+        }
 		return appointmentRepository.save(appointment);
 	}
 	
+	
+	@Transactional
 	public Appointment saveGeneratedAppointment(AppointmentDto appointmentDto) {
 	    try {
-	        Appointment appointment = new Appointment();
-
+	        Appointment newAppointment = new Appointment();
 	        CompanyAdministratorDto administratorDto = appointmentDto.getCompanyAdministrator();
 	        long administratorId = administratorDto.getId();
 	        CompanyAdministrator administrator = companyAdministratorService.findById(administratorId);
-	        appointment.setCompanyAdministrator(administrator);
+	        
+	        LocalDateTime newAppointmentStart = appointmentDto.getStartDate();
+	        int newAppointmentDuration = appointmentDto.getDuration();
+	        LocalDateTime newAppointmentEnd = newAppointmentStart.plusMinutes(newAppointmentDuration);
 
-	        appointment.setStartDate(appointmentDto.getStartDate());
-	        appointment.setDuration(appointmentDto.getDuration());
-	        appointment.setIsFree(false);
+	        // Provera preklapanja sa postojećim terminima
+	        if (isAppointmentOverlap(administrator, newAppointmentStart, newAppointmentEnd)) {
+	            throw new IllegalArgumentException("Termin se preklapa sa već postojećim terminom.");
+	        }
 
-	        appointmentRepository.save(appointment);
+	        newAppointment.setCompanyAdministrator(administrator);
+	        newAppointment.setStartDate(newAppointmentStart);
+	        newAppointment.setDuration(newAppointmentDuration);
+	        newAppointment.setIsFree(true);
+
+	        appointmentRepository.save(newAppointment);
 
 	        Company company = administrator.getCompany();
-	        company.getAppointments().add(appointment);
+	        company.getAppointments().add(newAppointment);
 	        companyService.update(company);
 
-	        return appointment;
+	        return newAppointment;
 	    } catch (Exception e) {
 	        throw new RuntimeException("An error occurred while saving the appointment.", e);
 	    }
+	}
 
+	private boolean isAppointmentOverlap(CompanyAdministrator administrator, LocalDateTime newStart, LocalDateTime newEnd) {
+	    List<Appointment> existingAppointments = appointmentRepository.findByCompanyAdministrator(administrator);
 
+	    for (Appointment existingAppointment : existingAppointments) {
+	        LocalDateTime existingStart = existingAppointment.getStartDate();
+	        LocalDateTime existingEnd = existingStart.plusMinutes(existingAppointment.getDuration());
+
+	        if (newStart.isBefore(existingEnd) && newEnd.isAfter(existingStart)) {
+	            return true; // Termini se preklapaju
+	        }
+	    }
+
+	    return false; // Nema preklapanja
 	}
 	
+	private boolean isAppointmentOverlapForCompany(CompanyAdministrator administrator, LocalDateTime newStart, LocalDateTime newEnd) {
+		Company company = companyService.findById(administrator.getCompany().getId());
+	    List<Appointment> existingAppointments = appointmentRepository.findAllByCompanyId(company.getId());
+
+	    for (Appointment existingAppointment : existingAppointments) {
+	        LocalDateTime existingStart = existingAppointment.getStartDate();
+	        LocalDateTime existingEnd = existingStart.plusMinutes(existingAppointment.getDuration());
+
+	        if (newStart.isBefore(existingEnd) && newEnd.isAfter(existingStart)) {
+	            return true; // Termini se preklapaju
+	        }
+	    }
+
+	    return false; // Nema preklapanja
+	}
+
+	
+	@Transactional
 	public void cancelAppointment(long appointmentId, long userId) {
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new IllegalArgumentException("Appointment not found"));
@@ -193,6 +251,23 @@ public class AppointmentService {
         updatePenalties(regularUser, penaltyReduction);
         
         Reservation reservation = reservationRepository.findByAppointmentAndUser(appointment, user);
+        
+        List<EquipmentQuantity> reservationRequests = equipmentQuantityRepository.findByReservation_id(reservation.getId());
+
+	    for (EquipmentQuantity reservationRequest : reservationRequests) {
+	        long equipmentId = reservationRequest.getEquipmentId();
+	        Integer quantity = reservationRequest.getQuantity();
+
+	        Equipment equipment = equipmentRepository.findById(equipmentId).orElse(null);
+
+	        if (equipment != null) {
+	            // Update the reserved quantity for each associated Equipment
+	            equipment.setReservedQuantity(equipment.getReservedQuantity() - quantity);
+	            equipmentRepository.save(equipment);
+	        }
+	    }
+        
+        
         updateReservationAndEquipment(reservation, ReservationStatus.CANCELLED);
       
         updateAppointmentStatus(appointment, true);
@@ -206,12 +281,6 @@ public class AppointmentService {
 	private void updateReservationAndEquipment(Reservation reservation, ReservationStatus status) {
 	    reservation.setStatus(status);
 	    reservationRepository.save(reservation);
-	    
-        for (Equipment equipment : reservation.getEquipment())
-        {
-        	equipment.setReservedQuantity(equipment.getReservedQuantity() - 1);
-        	equipmentRepository.save(equipment);
-        }
 	}
 
 	private void updateAppointmentStatus(Appointment appointment, boolean isFree) {

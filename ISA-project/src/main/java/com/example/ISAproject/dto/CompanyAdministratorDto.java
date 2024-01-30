@@ -26,7 +26,7 @@ public class CompanyAdministratorDto {
         this.user = new UserDto(companyAdministrator.getUser());
         this.loggedInBefore = companyAdministrator.getLoggedInBefore();
         //this.companyDto = new CompanyDto(companyAdministrator.getCompany());
-        this.companyDto = new CompanyDto(companyAdministrator.getCompany());
+        //this.companyDto = new CompanyDto(companyAdministrator.getCompany());
     }
 
     public Long getId() {
@@ -45,7 +45,7 @@ public class CompanyAdministratorDto {
         this.user = user;
     }
 
-    public CompanyDto getCompanyDto() {
+   public CompanyDto getCompanyDto() {
 		return companyDto;
 	}
 

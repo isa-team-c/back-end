@@ -5,6 +5,7 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,8 +44,21 @@ public class RegularUserController {
 		return new ResponseEntity<RegularUserDto>(new RegularUserDto(user), HttpStatus.OK);
 	}
 	
+	@GetMapping("/by-user-id/{userId}")
+	public ResponseEntity<RegularUserDto> getByUserId(@PathVariable Long userId) {
+
+		RegularUser user = regularUserService.findByUserId(userId);
+
+		if (user == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<RegularUserDto>(new RegularUserDto(user), HttpStatus.OK);
+	}
+	
 	@PutMapping("/update")
     public ResponseEntity<RegularUserDto> updateRegularUser(@RequestBody RegularUserDto updatedUserDto) {
+		System.out.println("Regular user u kontroleru nakon penalizacije: id: " + updatedUserDto.getId() + ", broj penala: " + updatedUserDto.getPenalties());
 		try {
 
             RegularUser savedRegularUser = regularUserService.updateRegularUser(updatedUserDto);
@@ -56,6 +70,11 @@ public class RegularUserController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+	
+	@Scheduled(cron = "${penalties.cron}")
+	public void deletePenalties() {
+		regularUserService.deletePenalties();
+	}
 	
 	
 }

@@ -90,10 +90,11 @@ public class CompanyAdministratorController{
 	}
 	
 	@GetMapping("/user/{userId}")
-    public ResponseEntity<CompanyAdministrator> getCompanyAdministratorByUserId(@PathVariable Long userId) {
+    public ResponseEntity<CompanyAdministratorDto> getCompanyAdministratorByUserId(@PathVariable Long userId) {
         CompanyAdministrator administrator = companyAdministratorService.findByUserId(userId);
+        CompanyAdministratorDto administratorDto = new CompanyAdministratorDto(administrator);
         if (administrator != null) {
-            return ResponseEntity.ok(administrator);
+            return ResponseEntity.ok(administratorDto);
         } else {
             return ResponseEntity.notFound().build();
         }

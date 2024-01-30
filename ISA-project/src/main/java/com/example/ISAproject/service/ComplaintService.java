@@ -1,11 +1,13 @@
 package com.example.ISAproject.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.ISAproject.model.Complaint;
+import com.example.ISAproject.model.Reservation;
 import com.example.ISAproject.repository.ComplaintRepository;
 
 @Service
@@ -22,4 +24,29 @@ public class ComplaintService {
 	public List<Complaint> getAllComplaints() {
 		return complaintRepository.findAll();
 	}
+	
+	public List<Complaint> getAllNotRespondedComplaints() {
+	    List<Complaint> allComplaints = complaintRepository.findAll();
+	    List<Complaint> notRespondedComplaints = new ArrayList<>();
+
+	    for (Complaint complaint : allComplaints) {
+	        if (!complaint.getResponded()) {
+	            notRespondedComplaints.add(complaint);
+	        }
+	    }
+
+	    return notRespondedComplaints;
+	}
+	
+	public Complaint findById(Long id) {
+		return complaintRepository.findById(id).orElseGet(null);
+	}
+	
+	public Complaint updateComplaintResponded(Complaint updatedComplaint) {
+        if (complaintRepository.existsById(updatedComplaint.getId())) {
+            return complaintRepository.save(updatedComplaint);
+        } else {
+            return null;
+    	}
+    }
 }

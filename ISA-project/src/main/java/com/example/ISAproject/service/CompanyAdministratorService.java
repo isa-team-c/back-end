@@ -85,7 +85,9 @@ public class CompanyAdministratorService {
         return companyAdministratorRepository.findByCompany(company);
     }   
     
-    public CompanyAdministrator updateCompanyAdministratorForPassword(CompanyAdministratorPasswordDto updatedAdminDto) {
+     
+    
+    public CompanyAdministrator updateCompanyAdministratorForPassword(CompanyAdministratorDto updatedAdminDto) {
 		User existingUser = userRepository.findById(updatedAdminDto.getUser().getId())
 			    .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + updatedAdminDto.getUser().getId()));
 
