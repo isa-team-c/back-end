@@ -14,6 +14,7 @@ import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.ISAproject.dto.AppointmentDto;
@@ -52,8 +53,8 @@ public class ReservationService {
 	@Autowired
 	private EquipmentQuantityRepository equipmentQuantityRepository;
 	
-	@Transactional//(rollbackFor = { IllegalArgumentException.class, ReservationConflictException.class })
-	public Reservation reserveEquipment(List<EquipmentQuantity> equipments, Long appointmentId, Long userId) throws Exception {  
+	//@Transactional//(rollbackFor = { IllegalArgumentException.class, ReservationConflictException.class })
+	//public Reservation reserveEquipment(List<EquipmentQuantity> equipments, Long appointmentId, Long userId) throws Exception {  
 		// Provera dostupnosti opreme unutar transakcije
 	   /* for (Long equipmentId : equipmentIds) {
 	        Equipment equipment = equipmentRepository.findById(equipmentId).orElse(null);
@@ -62,6 +63,25 @@ public class ReservationService {
 	        	throw new IllegalArgumentException("Equipment not available for rreservation");
 	        }
 	    }*/
+	@Transactional
+	public Reservation reserveEquipment(List<Long> equipmentIds, Long appointmentId, Long userId) {  
+		List<Reservation> reservations = reservationRepository.getByUserId(userId);
+		for (Reservation reservation : reservations) {
+			Appointment appointment = reservation.getAppointment();
+			
+			if (reservation.getStatus() == ReservationStatus.CANCELLED) {
+				continue;
+			}
+			
+			if (isOverlap(appointment, appointmentId)) {
+				return null;
+			}
+		}
+		Appointment a = appointmentRepository.getById(appointmentId);
+		if(a.getIsFree() == false) {
+			throw new IllegalArgumentException("Appointment not available for reservation");
+		}
+		List<Equipment> equipmentList = equipmentRepository.findAllById(equipmentIds);
 
 		
 		try {
