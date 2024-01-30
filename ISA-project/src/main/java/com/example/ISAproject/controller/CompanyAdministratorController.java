@@ -82,7 +82,7 @@ public class CompanyAdministratorController{
     }
 	
 	@PutMapping(value = "/updateForPassword")
-	public ResponseEntity<String> updateCompanyAdministratorForPassword(@RequestBody CompanyAdministratorPasswordDto administratorDto)
+	public ResponseEntity<String> updateCompanyAdministratorForPassword(@RequestBody CompanyAdministratorDto administratorDto)
 	{
 		companyAdministratorService.updateCompanyAdministratorForPassword(administratorDto);
 		

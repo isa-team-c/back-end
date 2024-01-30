@@ -219,32 +219,7 @@ public class AppointmentService {
         
         LocalDateTime currentDateTime = LocalDateTime.now();
         LocalDateTime appointmentStart = appointment.getStartDate();
-
-	public Appointment saveAppointment(AppointmentDto appointmentDto) {
-	    try {
-	        Appointment appointment = new Appointment();
-
-	        CompanyAdministratorDto administratorDto = appointmentDto.getCompanyAdministrator();
-	        long administratorId = administratorDto.getId();
-	        CompanyAdministrator administrator = companyAdministratorService.findById(administratorId);
-	        appointment.setCompanyAdministrator(administrator);
-
-	        appointment.setStartDate(appointmentDto.getStartDate());
-	        appointment.setDuration(appointmentDto.getDuration());
-	        appointment.setIsFree(true);
-
-	        appointmentRepository.save(appointment);
-
-	        Company company = administrator.getCompany();
-	        company.getAppointments().add(appointment);
-	        companyService.update(company);
-
-	        return appointment;
-	    } catch (Exception e) {
-	        throw new RuntimeException("An error occurred while saving the appointment.", e);
-	    }
-
-
+        
         Duration timeDifference = Duration.between(currentDateTime, appointmentStart);
 
         int penaltyReduction = (timeDifference.toDays() <= 1) ? 2 : 1;
@@ -272,6 +247,33 @@ public class AppointmentService {
       
         updateAppointmentStatus(appointment, true);
     }
+
+	public Appointment saveAppointment(AppointmentDto appointmentDto) {
+	    try {
+	        Appointment appointment = new Appointment();
+
+	        CompanyAdministratorDto administratorDto = appointmentDto.getCompanyAdministrator();
+	        long administratorId = administratorDto.getId();
+	        CompanyAdministrator administrator = companyAdministratorService.findById(administratorId);
+	        appointment.setCompanyAdministrator(administrator);
+
+	        appointment.setStartDate(appointmentDto.getStartDate());
+	        appointment.setDuration(appointmentDto.getDuration());
+	        appointment.setIsFree(true);
+
+	        appointmentRepository.save(appointment);
+
+	        Company company = administrator.getCompany();
+	        company.getAppointments().add(appointment);
+	        companyService.update(company);
+
+	        return appointment;
+	    } catch (Exception e) {
+	        throw new RuntimeException("An error occurred while saving the appointment.", e);
+	    }
+
+	}
+   
 
 	private void updatePenalties(RegularUser regularUser, int penaltyReduction) {
 	    regularUser.setPenalties(regularUser.getPenalties() + penaltyReduction);
