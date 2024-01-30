@@ -97,6 +97,7 @@ public class WebSecurityConfig {
 			 .antMatchers("/company/**").permitAll()
 			 .antMatchers("/company/*").permitAll()
 			.antMatchers("/api/equipment/**").permitAll()
+			.antMatchers("/api/equipment/reduceQuantity/**").permitAll()
 			.antMatchers("/api/appointments/**").permitAll()
 			.antMatchers("/api/reservation/**").permitAll()
 			.antMatchers("/api/companyAdministrator/**").permitAll()

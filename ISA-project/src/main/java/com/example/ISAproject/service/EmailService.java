@@ -6,6 +6,8 @@ import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.Base64;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
@@ -192,6 +194,26 @@ public class EmailService {
 	    return qrCodeFile;
 
 	}
+	
+	
+	
+	@Async
+	public void sendEquipmentTakeoverConfirmationMail(User user) throws MailException, InterruptedException {
+		System.out.println("Async metoda se izvrsava u drugom Threadu u odnosu na prihvaceni zahtev. Thread id: " + Thread.currentThread().getId());
+		
+		Thread.sleep(10000);
+		System.out.println("Slanje emaila...");
+
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(user.getEmail());
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Confirmation: reserved equipment received");
+		mail.setText("Dear custormer,\n\nwe inform you that the company admin has confirmed that the reserved equipment has been received.\n\n");
+		javaMailSender.send(mail);
+
+		System.out.println("Email poslat!");
+	}
+
 
    
 }

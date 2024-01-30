@@ -125,7 +125,8 @@ public class CompanyAdministratorService {
     public CompanyAdministrator findByUserId(Long userId) {
         return companyAdministratorRepository.findByUserId(userId);
     }
-
+    
+    
 }
 
   

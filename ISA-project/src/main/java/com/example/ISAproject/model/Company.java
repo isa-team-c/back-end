@@ -117,24 +117,7 @@ public class Company {
 	
 	
 
-	public LocalTime getWorkStartTime() {
-		return workStartTime;
-	}
-
-
-	public void setWorkStartTime(LocalTime workStartTime) {
-		this.workStartTime = workStartTime;
-	}
-
-
-	public LocalTime getWorkEndTime() {
-		return workEndTime;
-	}
-
-
-	public void setWorkEndTime(LocalTime workEndTime) {
-		this.workEndTime = workEndTime;
-	}
+	
 
 
 	public Set<Equipment> getEquipment() {

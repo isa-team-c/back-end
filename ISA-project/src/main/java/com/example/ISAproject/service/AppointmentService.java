@@ -3,9 +3,12 @@ package com.example.ISAproject.service;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -220,6 +223,7 @@ public class AppointmentService {
         LocalDateTime currentDateTime = LocalDateTime.now();
         LocalDateTime appointmentStart = appointment.getStartDate();
         
+
         Duration timeDifference = Duration.between(currentDateTime, appointmentStart);
 
         int penaltyReduction = (timeDifference.toDays() <= 1) ? 2 : 1;
@@ -290,4 +294,53 @@ public class AppointmentService {
 	    appointmentRepository.save(appointment);
 	}
 	
+	
+	public long getAppointmentCountByYear(long companyId, int year) {
+	    Company company = companyService.findById(companyId);
+
+	    LocalDateTime startOfYear = LocalDateTime.of(year, 1, 1, 0, 0);
+	    LocalDateTime endOfYear = startOfYear.plusYears(1).minusSeconds(1);
+
+	    List<Appointment> appointments = company.getAppointments().stream()
+	            .filter(appointment -> appointment.getStartDate().isAfter(startOfYear) && appointment.getStartDate().isBefore(endOfYear))
+	            .collect(Collectors.toList());
+
+	    return appointments.size();
+	}
+
+	public List<Long> getAppointmentCountsByQuarter(long companyId, int year) {
+	    Company company = companyService.findById(companyId);
+	    List<Long> appointmentCounts = new ArrayList<>();
+
+	    for (int i = 1; i <= 4; i++) {
+	        LocalDateTime startOfQuarter = LocalDateTime.of(year, (i - 1) * 3 + 1, 1, 0, 0);
+	        LocalDateTime endOfQuarter = startOfQuarter.plusMonths(3).minusSeconds(1);
+
+	        List<Appointment> appointments = company.getAppointments().stream()
+	                .filter(appointment -> appointment.getStartDate().isAfter(startOfQuarter) && appointment.getStartDate().isBefore(endOfQuarter))
+	                .collect(Collectors.toList());
+
+	        appointmentCounts.add((long) appointments.size());
+	    }
+
+	    return appointmentCounts;
+	}
+	
+	
+	
+
+	public List<Long> getAppointmentCountsByMonth(long companyId, int year, int month) {
+	    Company company = companyService.findById(companyId);
+	    LocalDateTime startOfMonth = LocalDateTime.of(year, month, 1, 0, 0);
+	    LocalDateTime endOfMonth = startOfMonth.plusMonths(1).minusSeconds(1);
+
+	    List<Appointment> appointments = company.getAppointments().stream()
+	            .filter(appointment -> appointment.getStartDate().isAfter(startOfMonth) && appointment.getStartDate().isBefore(endOfMonth))
+	            .collect(Collectors.toList());
+
+	    return Collections.singletonList((long) appointments.size());
+	}
+
+
+	  
 }

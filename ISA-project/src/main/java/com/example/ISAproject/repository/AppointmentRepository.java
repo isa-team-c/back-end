@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import com.example.ISAproject.model.Appointment;
 import com.example.ISAproject.model.Company;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -26,4 +27,5 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long>{
 	@Query("SELECT a FROM Appointment a WHERE a.companyAdministrator.company.id = :companyId")
     List<Appointment> findAllByCompanyId(@Param("companyId") Long companyId);
 
+	List<Appointment> findByCompanyAdministratorAndStartDateBetween(CompanyAdministrator companyAdministrator, LocalDateTime startDate, LocalDateTime endDate);
 }

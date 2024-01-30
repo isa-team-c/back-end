@@ -7,4 +7,5 @@ import com.example.ISAproject.model.User;
 
 public interface RegularUserRepository extends JpaRepository<RegularUser, Long>{
 	RegularUser findByUser(User user);
+	
 }

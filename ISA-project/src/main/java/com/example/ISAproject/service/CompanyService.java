@@ -1,5 +1,6 @@
 package com.example.ISAproject.service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -11,11 +12,14 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.example.ISAproject.dto.UserDto;
 import com.example.ISAproject.model.Appointment;
 import com.example.ISAproject.model.Company;
 import com.example.ISAproject.model.CompanyAdministrator;
 import com.example.ISAproject.model.User;
 import com.example.ISAproject.model.Equipment;
+import com.example.ISAproject.model.RegularUser;
 import com.example.ISAproject.model.Reservation;
 import com.example.ISAproject.model.enumerations.ReservationStatus;
 import com.example.ISAproject.repository.CompanyAdministratorRepository;
@@ -47,8 +51,9 @@ public class CompanyService {
     @Autowired
     private CompanyAdministratorService companyAdministratorService;
  
-	
-	
+    @Autowired
+    private ReservationService reservationService;
+
         
     
 
@@ -196,6 +201,35 @@ public class CompanyService {
         // Sačuvajte kompaniju sa dodatom opremom
         return companyRepository.save(company);
     }
+    
+    
+    public List<UserDto> getUsersWithTakenReservationsByCompanyId(Long companyId) {
+        Company company = findById(companyId);
+
+        if (company == null) {
+            throw new EntityNotFoundException("Company not found with id: " + companyId);
+        }
+
+        List<UserDto> usersWithTakenReservations = new ArrayList<>();
+
+        for(Appointment appointment: company.getAppointments()) {
+            for (Reservation reservation : reservationService.getTakenReservations()) {
+                if (appointment.getId() == reservation.getAppointment().getId()) {
+                    User user = reservation.getUser();
+                    if (user != null) {
+                        UserDto userDto = new UserDto(user);
+                        if (!usersWithTakenReservations.contains(userDto)) {
+                            usersWithTakenReservations.add(userDto);
+                        }
+                    }
+                
+            }
+        }
+     } 
+        return usersWithTakenReservations;
+    }
+
+
 
 
 
