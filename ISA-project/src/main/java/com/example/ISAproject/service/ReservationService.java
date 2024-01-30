@@ -64,24 +64,24 @@ public class ReservationService {
 	        }
 	    }*/
 	@Transactional
-	public Reservation reserveEquipment(List<Long> equipmentIds, Long appointmentId, Long userId) {  
-		List<Reservation> reservations = reservationRepository.getByUserId(userId);
-		for (Reservation reservation : reservations) {
-			Appointment appointment = reservation.getAppointment();
-			
-			if (reservation.getStatus() == ReservationStatus.CANCELLED) {
-				continue;
-			}
-			
-			if (isOverlap(appointment, appointmentId)) {
-				return null;
-			}
-		}
-		Appointment a = appointmentRepository.getById(appointmentId);
-		if(a.getIsFree() == false) {
-			throw new IllegalArgumentException("Appointment not available for reservation");
-		}
-		List<Equipment> equipmentList = equipmentRepository.findAllById(equipmentIds);
+	public Reservation reserveEquipment(List<EquipmentQuantity> equipments, Long appointmentId, Long userId) throws Exception {    
+		//List<Reservation> reservations = reservationRepository.getByUserId(userId);
+//		for (Reservation reservation : reservations) {
+//			Appointment appointment = reservation.getAppointment();
+//			
+//			if (reservation.getStatus() == ReservationStatus.CANCELLED) {
+//				continue;
+//			}
+//			
+//			if (isOverlap(appointment, appointmentId)) {
+//				return null;
+//			}
+//		}
+		//Appointment a = appointmentRepository.getById(appointmentId);
+//		if(a.getIsFree() == false) {
+//			throw new IllegalArgumentException("Appointment not available for reservation");
+//		}
+//		List<Equipment> equipmentList = equipmentRepository.findAllById(equipmentIds);
 
 		
 		try {
