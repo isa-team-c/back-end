@@ -134,4 +134,34 @@ public class AppointmentController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+	
+	
+	@GetMapping("/count/year")
+    public ResponseEntity<Long> getAppointmentCountByYear(@RequestParam long companyId, @RequestParam int year) {
+        long count = appointmentService.getAppointmentCountByYear(companyId, year);
+        return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("/count/quarter")
+    public ResponseEntity<List<Long>> getAppointmentCountsByQuarter(@RequestParam long companyId, @RequestParam int year) {
+        List<Long> counts = appointmentService.getAppointmentCountsByQuarter(companyId, year);
+        return ResponseEntity.ok(counts);
+    }
+
+    @GetMapping("/count/month")
+    public ResponseEntity<List<Long>> getAppointmentCountsByMonth(@RequestParam long companyId, @RequestParam int year, @RequestParam int month) {
+        List<Long> counts = appointmentService.getAppointmentCountsByMonth(companyId, year, month);
+        return ResponseEntity.ok(counts);
+    }
+
+  
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

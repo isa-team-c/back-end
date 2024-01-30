@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.ISAproject.dto.CompanyDto;
 import com.example.ISAproject.dto.EquipmentDto;
 import com.example.ISAproject.model.Company;
 import com.example.ISAproject.model.Equipment;
+import com.example.ISAproject.model.Reservation;
 import com.example.ISAproject.service.CompanyService;
 import com.example.ISAproject.service.EquipmentService;
 import com.example.ISAproject.service.UserService;
@@ -152,4 +154,16 @@ public class EquipmentController {
 	    }
 	}
 
+	
+	@PostMapping("/reduceQuantity/{companyId}")
+    public ResponseEntity<String> reduceEquipmentQuantity(
+            @PathVariable Long companyId,
+            @RequestBody Reservation reservation) {
+        try {
+            equipmentService.reduceEquipmentQuantity(companyId, reservation);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (RuntimeException ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.ISAproject.dto.AppointmentDto;
 import com.example.ISAproject.dto.CompanyDto;
+import com.example.ISAproject.dto.UserDto;
 import com.example.ISAproject.model.Appointment;
 import com.example.ISAproject.model.Equipment;
 import com.example.ISAproject.model.Company;
@@ -259,4 +260,13 @@ public class CompanyController {
         }
     }
 	
+	@GetMapping("/{companyId}/users-with-taken-reservations")
+	public ResponseEntity<List<UserDto>> getUsersWithTakenReservationsByCompanyId(@PathVariable Long companyId) {
+	    try {
+	        List<UserDto> usersWithTakenReservations = companyService.getUsersWithTakenReservationsByCompanyId(companyId);
+	        return new ResponseEntity<>(usersWithTakenReservations, HttpStatus.OK);
+	    } catch (EntityNotFoundException e) {
+	        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	    }
+	}
 }

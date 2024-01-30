@@ -2,6 +2,7 @@ package com.example.ISAproject.controller;
 
 import java.security.Principal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -21,10 +22,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.ISAproject.dto.ReservationDto;
 import com.example.ISAproject.dto.UserDto;
 import com.example.ISAproject.model.Company;
+import com.example.ISAproject.model.Reservation;
 import com.example.ISAproject.model.User;
 import com.example.ISAproject.service.EmailService;
+import com.example.ISAproject.service.ReservationService;
 import com.example.ISAproject.service.UserService;
 
 
@@ -39,6 +43,9 @@ public class UserController{
 
 	@Autowired
 	private EmailService emailService;
+	
+	@Autowired
+	private ReservationService reservationService;
 	
 	private UserService userService;
 
@@ -123,4 +130,21 @@ public class UserController{
 	    
 	    return new ResponseEntity<>(HttpStatus.CREATED);
 	}
+	
+	@PostMapping(value = "/auth/sendConfirmationForEquipmentTakeover")
+	public ResponseEntity<String> sendEquipmentTakeoverConfirmationMail(@RequestBody UserDto userDto) {
+	    User savedUser = userService.findByEmail(userDto.getEmail());
+
+	    try {
+	        System.out.println("Thread id: " + Thread.currentThread().getId());
+	        emailService.sendEquipmentTakeoverConfirmationMail(savedUser);
+	    } catch(Exception e) {
+	        logger.info("Error sending email: " + e.getMessage());
+	    }
+
+	    return new ResponseEntity<>(HttpStatus.CREATED);
+	}
+	
+	
+	
 }
