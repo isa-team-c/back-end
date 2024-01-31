@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.ISAproject.model.Complaint;
 import com.example.ISAproject.model.Reservation;
@@ -25,6 +26,7 @@ public class ComplaintService {
 		return complaintRepository.findAll();
 	}
 	
+	@Transactional
 	public List<Complaint> getAllNotRespondedComplaints() {
 	    List<Complaint> allComplaints = complaintRepository.findAll();
 	    List<Complaint> notRespondedComplaints = new ArrayList<>();
@@ -42,6 +44,7 @@ public class ComplaintService {
 		return complaintRepository.findById(id).orElseGet(null);
 	}
 	
+	@Transactional
 	public Complaint updateComplaintResponded(Complaint updatedComplaint) {
         if (complaintRepository.existsById(updatedComplaint.getId())) {
             return complaintRepository.save(updatedComplaint);
